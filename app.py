@@ -279,11 +279,12 @@ def search_hospital():
 def hospital_details():
     selected_id = request.args.get('hosp_id')
     hosp = Hospital.find_hosp_by_id(int(selected_id))
-    specs = hosp.hosp_spec_upgraded
-    dec_specs = decodeSpecialties(specs)
-    print(specs)
-    print(dec_specs)
-    return render_template('hospitalDetails.html', title='Hospital Details', data=hosp)
+    specs_up = hosp.hosp_spec_upgraded
+    specs_emp = hosp.hosp_spec_empanl
+    dec_specs_up = decodeSpecialties(specs_up)
+    dec_specs_emp = decodeSpecialties(specs_emp)
+    return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
+                           specs_emp=specs_emp)
 
 
 if __name__ == "__main__":
