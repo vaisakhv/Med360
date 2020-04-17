@@ -258,7 +258,7 @@ def search_hospital():
             if len(hosp.all()) > 0:
                 return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=statename)
             else:
-                flash(message='No Hospitals found')
+                flash(message='No Hospitals found!!')
         else:
             flash(message="Enter a valid query")
     return render_template("search_hospital.html", current_user=current_user)
