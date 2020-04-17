@@ -1,0 +1,26 @@
+code,spec
+M1,General Medicine
+M2,Paediatric medical management
+M3,Neo-natal
+M4,Paediatric cancer
+M5,Medical Oncology
+M6,Radiation Oncology
+M7,Emergency Room Packages (Care requiring less than 12 hrs stay)
+M8,Mental Disorders Packages
+M10,OPD Diagnostic
+S1,General Surgery
+S10,Plastic & reconstructive
+S11,Burns management
+S12,Cardiology
+S13,Cardio-thoracic & Vascular surgery
+S14,Paediatric surgery
+S15,Surgical Oncology
+S16,Oral and Maxillofacial Surgery
+S2,Otorhinolaryngology
+S3,Opthalmology
+S4,Obstetrics & Gynaecology
+S5,Orthopaedics
+S6,Polytrauma
+S7,Urology
+S8,Neurosurgery
+S9,Interventional Neuroradiology
