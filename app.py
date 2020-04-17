@@ -19,22 +19,21 @@ db = SQLAlchemy(app)
 
 
 def decodeSpecialties(spec):
-    import pandas as pd
-    spec = ' S1,S2,S3,S4,S5,S16,M1,M7,M2,M8 '
-    codes = pd.read_csv('codes.csv')
-    codes.index = codes.code
-    codes = codes.drop('code', axis=1)
-    specs = []
-    if ',' in str(spec):
-        spec = str(spec).replace(' ', '')
-        spec = spec.split(',')
-        for _spec in spec:
-            specs.append(codes._get_value(_spec, col='spec'))
-        print(specs)
-    else:
-        specs.append(codes._get_value(spec, col='spec'))
-    return specs
-
+    if 'NA' not in str(spec):
+        import pandas as pd
+        codes = pd.read_csv('codes.csv')
+        codes.index = codes.code
+        codes = codes.drop('code', axis=1)
+        specs = []
+        if ',' in str(spec):
+            spec = str(spec).replace(' ', '')
+            spec = spec.split(',')
+            for _spec in spec:
+                specs.append(codes._get_value(_spec, col='spec'))
+        else:
+            specs.append(codes._get_value(spec, col='spec'))
+        return specs
+    return ['NA']
 
 class Hospital(db.Model):
     hosp_id = db.Column(db.Integer, primary_key=True)
@@ -282,6 +281,8 @@ def hospital_details():
     hosp = Hospital.find_hosp_by_id(int(selected_id))
     specs = hosp.hosp_spec_upgraded
     dec_specs = decodeSpecialties(specs)
+    print(specs)
+    print(dec_specs)
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp)
 
 
