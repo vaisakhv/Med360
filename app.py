@@ -284,7 +284,7 @@ def hospital_details():
     dec_specs_up = decodeSpecialties(specs_up)
     dec_specs_emp = decodeSpecialties(specs_emp)
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
-                           specs_emp=specs_emp)
+                           specs_emp=dec_specs_emp)
 
 
 if __name__ == "__main__":
