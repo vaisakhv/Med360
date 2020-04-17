@@ -18,6 +18,24 @@ login_manager.login_view = 'login'
 db = SQLAlchemy(app)
 
 
+def decodeSpecialties(spec):
+    import pandas as pd
+    spec = ' S1,S2,S3,S4,S5,S16,M1,M7,M2,M8 '
+    codes = pd.read_csv('codes.csv')
+    codes.index = codes.code
+    codes = codes.drop('code', axis=1)
+    specs = []
+    if ',' in str(spec):
+        spec = str(spec).replace(' ', '')
+        spec = spec.split(',')
+        for _spec in spec:
+            specs.append(codes._get_value(_spec, col='spec'))
+        print(specs)
+    else:
+        specs.append(codes._get_value(spec, col='spec'))
+    return specs
+
+
 class Hospital(db.Model):
     hosp_id = db.Column(db.Integer, primary_key=True)
     hosp_name = db.Column(db.String(100), unique=True, nullable=False)
@@ -28,22 +46,18 @@ class Hospital(db.Model):
     hosp_contact_mail = db.Column(db.String(80))
     hosp_type = db.Column(db.String(30), nullable=False)
 
-    # Method to save user to DB
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    # Method to remove user from DB
     def remove_from_db(self):
         db.session.delete(self)
         db.session.commit()
 
-    # Class method which finds user from DB by username
     @classmethod
     def find_hosp_by_name(cls, _name):
         return cls.query.filter_by(hosp_name=_name)
 
-    # Class method which finds user from DB by id
     @classmethod
     def find_hosp_by_id(cls, _id):
         return cls.query.filter_by(hosp_id=_id).first()
@@ -83,17 +97,14 @@ class User(db.Model, UserMixin):
     organ_donation = db.Column(db.Boolean(), nullable=True)
     bld_donation = db.Column(db.Boolean(), nullable=True)
 
-    # Method to save user to DB
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    # Method to remove user from DB
     def remove_from_db(self):
         db.session.delete(self)
         db.session.commit()
 
-    # Class method which finds user from DB by username
     @classmethod
     def find_user_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
@@ -184,9 +195,9 @@ def resetPassword():
                         flash(message='You cannot use the previous password as the new password')
                 else:
                     print(user.dob, dob)
-                    flash(message='Date of Birth does not match with the user details')
+                    flash(message='Date of Birth does not match with the user details!!')
             else:
-                flash(message='Passwords doesnt match')
+                flash(message='Passwords doesnt match!!')
         else:
             flash(message='Username not found')
     return render_template("resetpwd.html")
@@ -269,9 +280,12 @@ def search_hospital():
 def hospital_details():
     selected_id = request.args.get('hosp_id')
     hosp = Hospital.find_hosp_by_id(int(selected_id))
+    specs = hosp.hosp_spec_upgraded
+    dec_specs = decodeSpecialties(specs)
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp)
 
 
 if __name__ == "__main__":
     db.create_all()
     app.run(debug=True)
+
