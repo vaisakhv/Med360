@@ -31,9 +31,10 @@ def decodeSpecialties(spec):
             for _spec in spec:
                 specs.append(codes._get_value(_spec, col='spec'))
         else:
-            specs.append(codes._get_value(spec, col='spec'))
+            specs.append(codes._get_value(spec.replace(' ', ''), col='spec'))
         return specs
     return ['NA']
+
 
 class Hospital(db.Model):
     hosp_id = db.Column(db.Integer, primary_key=True)
@@ -260,8 +261,15 @@ def add_hospital():
 @app.route("/search_hospital",  methods=["GET", "POST"])
 @login_required
 def search_hospital():
+    # import pandas as pd
+    # states_dist = pd.read_csv('sates_dist.csv', delimiter=',')
+    # states_dist.index = states_dist.State
+    # states_dist = states_dist.drop('State', axis=1)
+
     if request.method == 'POST':
         statename = request.form['searchTerm']
+        # selectedState = request.form['states']
+        # print(selectedState)
         print(statename)
         if statename is not '' and not statename.isspace():
             hosp = Hospital.find_hosp_by_state(statename)
