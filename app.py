@@ -1,8 +1,11 @@
-from flask import Flask, render_template, flash, redirect, url_for, request
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_required, LoginManager, login_user, UserMixin, current_user, logout_user
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+
+from flask import Flask, render_template, flash, redirect, url_for, request, jsonify
+from flask_login import login_required, LoginManager, login_user, UserMixin, current_user, logout_user
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from werkzeug.security import generate_password_hash, check_password_hash
+from wtforms import SelectField
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -36,12 +39,39 @@ def decodeSpecialties(spec):
     return ['NA']
 
 
+class City(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    state = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+
+    def remove_from_db(self):
+        db.session.remove(self)
+        db.session.commit()
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def find_city_by_state(cls, state):
+        return cls.query.filter_by(state=state).all()
+
+    @classmethod
+    def get_by_id(cls, _id):
+        return cls.query.filter_by(id=_id).first()
+
+    def __init__(self, id, name, state):
+        self.id = id
+        self.name = name
+        self.state = state
+
+
 class Hospital(db.Model):
     hosp_id = db.Column(db.Integer, primary_key=True)
     hosp_name = db.Column(db.String(100), unique=True, nullable=False)
     hosp_addr = db.Column(db.String(200), nullable=False)
-    hosp_spec_empanl = db. Column(db.String(200))
-    hosp_spec_upgraded = db. Column(db.String(200))
+    hosp_spec_empanl = db.Column(db.String(200))
+    hosp_spec_upgraded = db.Column(db.String(200))
     hosp_contact_no = db.Column(db.Integer())
     hosp_contact_mail = db.Column(db.String(80))
     hosp_type = db.Column(db.String(30), nullable=False)
@@ -156,7 +186,6 @@ def login():
         user = User.find_user_by_username(username=uname)
         if user is not None:
             if check_password_hash(user.password, passw):
-                # session['username'] = uname
                 print(user.name)
                 print(user.password)
                 login_user(user)
@@ -230,8 +259,7 @@ def register():
                             name=name, sex=sex, dob=datetime.date(datetime.strptime(dob, "%Y-%m-%d")),
                             bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
                             organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation))
-            print(new_user.name)
-            print(new_user.password)
+            print(new_user.name, ' added with id ' + new_user.id)
             new_user.save_to_db()
             return redirect(url_for("login"))
         else:
@@ -254,32 +282,45 @@ def add_hospital():
                         hosp_contact_no=hosp_num, hosp_spec_empanl=hosp_spec_empnl, hosp_spec_upgraded=hosp_spec_up)
         db.session.add(hosp)
         db.session.commit()
-        return redirect(url_for("login"))#login for hosp
-    return render_template("register.html")#return to hosp registration
+        return redirect(url_for("login"))  # login for hosp
+    return render_template("register.html")  # return to hosp registration
 
 
-@app.route("/search_hospital",  methods=["GET", "POST"])
+class Form(FlaskForm):
+    states_in_db = [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
+    state = SelectField('state', choices=states_in_db)
+    city = SelectField('city', choices=[])
+
+
+@app.route('/city/<state>')
+@login_required
+def getDist(state):
+    cities = City.find_city_by_state(state=state)
+    city_array = []
+    for city in cities:
+        city_obj = {'id': city.id, 'name': city.name}
+        city_array.append(city_obj)
+    return jsonify({'cities': city_array})
+
+
+@app.route("/search_hospital", methods=["GET", "POST"])
 @login_required
 def search_hospital():
-    # import pandas as pd
-    # states_dist = pd.read_csv('sates_dist.csv', delimiter=',')
-    # states_dist.index = states_dist.State
-    # states_dist = states_dist.drop('State', axis=1)
-
+    form = Form()
+    form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
     if request.method == 'POST':
-        statename = request.form['searchTerm']
-        # selectedState = request.form['states']
-        # print(selectedState)
-        print(statename)
-        if statename is not '' and not statename.isspace():
-            hosp = Hospital.find_hosp_by_state(statename)
+        state_id = request.form['city']
+        city = City.get_by_id(state_id)
+        state_name = city.name
+        if state_name is not '' and not state_name.isspace():
+            hosp = Hospital.find_hosp_by_state(state_name)
             if len(hosp.all()) > 0:
-                return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=statename)
+                return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=state_name)
             else:
                 flash(message='No Hospitals found!!')
         else:
             flash(message="Enter a valid query")
-    return render_template("search_hospital.html", current_user=current_user)
+    return render_template("search_hospital.html", current_user=current_user, form=form)
 
 
 @app.route("/hospitalDetails", methods=["GET", "POST"])

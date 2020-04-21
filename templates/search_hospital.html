@@ -67,36 +67,53 @@ body{
   }
 </script>
 </head>
-<a translate="no">
+<body translate="no">
 {% block head %}
 <div style="text-align:right"> logged in as {{ current_user.username }}</div>
-<div style="text-align:right" class="col-sm-6"> <a href={{ url_for('logout') }} class="btn form-control btn-primary" >logout</a> </div>
-    <form method="POST" name="log-form" id="log-form">
-        <div class="wrap">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                     <ul class="alert">
-                        {% for message in messages %}
-                         <a class="alert alert-warning">{{ message }}</a>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <div class="search">
-                <input type="text" class="searchTerm" placeholder="Hospital located in?" id="searchTerm" name="searchTerm">
-<!--                <br/>-->
-<!--                <label for="states">States : </label>-->
-<!--                <select name="states" id="states" onfocus="this.selectedIndex = -1;">-->
-<!--                   {% for item in states %}-->
-<!--                   <option value="{{ item}}">{{item}}</option>-->
-<!--                   {% endfor %}-->
-<!--                </select>-->
-                <button type="submit" class="btn form-control btn-default">
+<div class="col-sm-6" style="text-align:right"><a class="btn form-control btn-primary" href={{url_for('logout') }}>logout</a>
+</div>
+<form id="log-form" method="POST" name="log-form">
+    <div class="wrap">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="alert">
+            {% for message in messages %}
+            <a class="alert alert-warning">{{ message }}</a>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <div class="search">
+            <br/>
+            <label>States :&nbsp</label>
+            {{form.state}}
+            <label>District :&nbsp</label>
+            {{form.city}}
+            <button class="btn form-control btn-default" type="submit">
                 <i class="fa fa-search"></i>
-                </button>
-            </div>
+            </button>
         </div>
-    </form>
+    </div>
+</form>
+<script>
+        let state_select = document.getElementById('state')
+        let city_select = document.getElementById('city')
+
+        state_select.onchange = function(){
+            state = state_select.value;
+            fetch('/city/'+state).then(function(response){
+                response.json().then(function(data){
+                    let optionHTML = '';
+                    for (city of data.cities){
+                        optionHTML += '<option value="'+city.id+'">'+city.name+'</option>';
+                    }
+                    city_select.innerHTML = optionHTML;
+                });
+            });
+        }
+
+
+</script>
 {% endblock %}
 </body>
 </html>
