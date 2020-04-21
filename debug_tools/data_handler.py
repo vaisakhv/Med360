@@ -14,7 +14,7 @@ def cleanVal(val):
 
 
 def addCities():
-    from views import City
+    from models import City
 
     states_dist = pd.read_csv('../kb/sates_dist.csv', delimiter=',')
     states_dist.index = states_dist.State
@@ -28,7 +28,8 @@ def addCities():
 
 
 def addHospitals():
-    from views import Hospital
+    from models import Hospital
+
     hospitals = pd.DataFrame()
     hospitals = hospitals.append(pd.read_csv('../kb/kerala_hospitals.csv'))
     hospitals = hospitals.append(pd.read_csv('../kb/tamilnadu_hospitals.csv'))
@@ -49,7 +50,7 @@ def addHospitals():
 
 
 def getCities(state):
-    from views import City
+    from models import City
     out = City.find_city_by_state('Kerala')
     return out
 
