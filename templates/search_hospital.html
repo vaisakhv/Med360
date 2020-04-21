@@ -73,6 +73,7 @@ body{
 <div class="col-sm-6" style="text-align:right"><a class="btn form-control btn-primary" href={{url_for('logout') }}>logout</a>
 </div>
 <form id="log-form" method="POST" name="log-form">
+    {{ form.csrf_token }}
     <div class="wrap">
         {% with messages = get_flashed_messages() %}
         {% if messages %}

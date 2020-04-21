@@ -1,48 +1,70 @@
-from flask_login import LoginManager, UserMixin
+from flask_login import UserMixin
+from flask_wtf import FlaskForm
+from wtforms import SelectField
 
-from views import db, app
+from . import db
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
+
+class City(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    state = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+
+    def remove_from_db(self):
+        db.session.remove(self)
+        db.session.commit()
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def find_city_by_state(cls, state):
+        return cls.query.filter_by(state=state).all()
+
+    @classmethod
+    def get_by_id(cls, _id):
+        return cls.query.filter_by(id=_id).first()
+
+    def __init__(self, id, name, state):
+        self.id = id
+        self.name = name
+        self.state = state
 
 
 class Hospital(db.Model):
     hosp_id = db.Column(db.Integer, primary_key=True)
     hosp_name = db.Column(db.String(100), unique=True, nullable=False)
     hosp_addr = db.Column(db.String(200), nullable=False)
-    hosp_spec_empanl = db. Column(db.String(200))
-    hosp_spec_upgraded = db. Column(db.String(200))
+    hosp_spec_empanl = db.Column(db.String(200))
+    hosp_spec_upgraded = db.Column(db.String(200))
     hosp_contact_no = db.Column(db.Integer())
     hosp_contact_mail = db.Column(db.String(80))
     hosp_type = db.Column(db.String(30), nullable=False)
 
-    # Method to save user to DB
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    # Method to remove user from DB
     def remove_from_db(self):
         db.session.delete(self)
         db.session.commit()
 
-    # Class method which finds user from DB by username
     @classmethod
     def find_hosp_by_name(cls, _name):
         return cls.query.filter_by(hosp_name=_name)
 
-    # Class method which finds user from DB by id
     @classmethod
     def find_hosp_by_id(cls, _id):
-        return cls.query.filter_by(id=_id).first()
+        return cls.query.filter_by(hosp_id=_id).first()
 
     @classmethod
     def find_hosp_by_state(cls, _state):
         return cls.query.filter(cls.hosp_addr.contains(_state))
 
-    def __init__(self, hosp_name, hosp_addr, hosp_spec_empanl, hosp_spec_upgraded, hosp_contact_no,
+    def __init__(self, hosp_id, hosp_name, hosp_addr, hosp_spec_empanl, hosp_spec_upgraded, hosp_contact_no,
                  hosp_contact_mail, hosp_type):
+        self.hosp_id = hosp_id
         self.hosp_name = hosp_name
         self.hosp_addr = hosp_addr
         self.hosp_spec_empanl = hosp_spec_empanl
@@ -61,7 +83,7 @@ class User(db.Model, UserMixin):
     pan = db.Column(db.String(10), nullable=False, unique=True)
     name = db.Column(db.String(80), nullable=False)
     sex = db.Column(db.String(10), nullable=False)
-    dob = db.Column(db.Date(), nullable=False)#datetime
+    dob = db.Column(db.Date(), nullable=False)
     bld_grp = db.Column(db.String(5), nullable=False)
     addr = db.Column(db.String(100), nullable=False)
     state = db.Column(db.String(80), nullable=False)
@@ -71,27 +93,17 @@ class User(db.Model, UserMixin):
     organ_donation = db.Column(db.Boolean(), nullable=True)
     bld_donation = db.Column(db.Boolean(), nullable=True)
 
-    # Method to save user to DB
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    # Method to remove user from DB
     def remove_from_db(self):
         db.session.delete(self)
         db.session.commit()
 
-    # Class method which finds user from DB by username
     @classmethod
-    @login_manager.user_loader
     def find_user_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
-
-    # Class method which finds user from DB by id
-    @classmethod
-    @login_manager.user_loader
-    def find_user_by_id(cls, _id):
-        return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def reset_password(cls, username, new_password):
@@ -117,3 +129,9 @@ class User(db.Model, UserMixin):
         self.aadhar = aadhar
         self.organ_donation = organ_donation
         self.bld_donation = bld_donaton
+
+
+class Form(FlaskForm):
+    states_in_db = [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
+    state = SelectField('state', choices=states_in_db)
+    city = SelectField('city', choices=[])
