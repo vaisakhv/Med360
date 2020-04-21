@@ -1,8 +1,6 @@
-import requests
-from bs4 import BeautifulSoup
 import lxml.html as lh
 import pandas as pd
-
+import requests
 
 pmjay_host = 'https://hospitals.pmjay.gov.in/Search/empnlWorkFlow.htm'
 cols = ['Sno', 'Hospital Name', 'Hospital Type', 'Hospital Address', 'Hospital E-Mail', 'Hospital Contact',

@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from flask_wtf import FlaskForm
 from wtforms import SelectField
 
-from . import db
+from med360 import db
 
 
 class City(db.Model):
@@ -135,3 +135,7 @@ class Form(FlaskForm):
     states_in_db = [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
     state = SelectField('state', choices=states_in_db)
     city = SelectField('city', choices=[])
+
+
+if __name__ == "__main__":
+    db.create_all()

@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def cleanVal(val):
     import re
     import numpy as np
@@ -15,7 +16,7 @@ def cleanVal(val):
 def addCities():
     from views import City
 
-    states_dist = pd.read_csv('sates_dist.csv', delimiter=',')
+    states_dist = pd.read_csv('../kb/sates_dist.csv', delimiter=',')
     states_dist.index = states_dist.State
     states_dist = states_dist.drop('State', axis=1)
     dists = states_dist._get_value('Tamil Nadu', col='District').split('\t')
@@ -29,8 +30,8 @@ def addCities():
 def addHospitals():
     from views import Hospital
     hospitals = pd.DataFrame()
-    hospitals = hospitals.append(pd.read_csv('kerala_hospitals.csv'))
-    hospitals = hospitals.append(pd.read_csv('tamilnadu_hospitals.csv'))
+    hospitals = hospitals.append(pd.read_csv('../kb/kerala_hospitals.csv'))
+    hospitals = hospitals.append(pd.read_csv('../kb/tamilnadu_hospitals.csv'))
     hospitals.index = hospitals.Sno
     hospitals = hospitals.drop('Sno', axis=1)
     hospitals = hospitals.drop('Unnamed: 0', axis=1)
@@ -56,4 +57,4 @@ def getCities(state):
 if __name__ == '__main__':
     # addHospitals()
     # addCities()
-    print(getCities("Kerala"))
+    getCities("Kerala")

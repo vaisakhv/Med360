@@ -4,8 +4,8 @@ from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_required, LoginManager, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from med360 import app, decodeSpecialties
 from models import User, Hospital, City, Form
-from . import app, decodeSpecialties
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -106,13 +106,24 @@ def register():
                             name=name, sex=sex, dob=datetime.date(datetime.strptime(dob, "%Y-%m-%d")),
                             bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
                             organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation))
-            print(new_user.name, ' added with id ' + new_user.id)
             new_user.save_to_db()
             return redirect(url_for("login"))
         else:
             print('user existing')
             flash(message='A user with same details already exists')
     return render_template("register.html")
+
+
+@app.route('/remove_acnt', methods=['POST', 'GET'])
+@login_required
+def remove_acnt():
+    user = User.find_user_by_username(username=current_user.username)
+
+    try:
+        user.remove_from_db()
+        return redirect(url_for("login"))
+    except Exception as e:
+        print(str(e))
 
 
 @app.route("/newHospital", methods=["GET", "POST"])
@@ -174,3 +185,7 @@ def hospital_details():
     dec_specs_emp = decodeSpecialties(specs_emp)
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
                            specs_emp=dec_specs_emp)
+
+
+if __name__ == '__main__':
+    app.run()

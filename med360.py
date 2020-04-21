@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 def decodeSpecialties(spec):
     if 'NA' not in str(spec):
         import pandas as pd
-        codes = pd.read_csv('codes.csv')
+        codes = pd.read_csv('kb/codes.csv')
         codes.index = codes.code
         codes = codes.drop('code', axis=1)
         specs = []
@@ -26,8 +26,3 @@ def decodeSpecialties(spec):
             specs.append(codes._get_value(spec.replace(' ', ''), col='spec'))
         return specs
     return ['NA']
-
-
-if __name__ == "__main__":
-    db.create_all()
-    app.run(debug=True)
