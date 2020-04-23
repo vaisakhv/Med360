@@ -8,7 +8,7 @@ cols = ['Sno', 'Hospital Name', 'Hospital Type', 'Hospital Address', 'Hospital E
 final_df = pd.DataFrame()
 for page_html in range(233):
     appended_data = []
-    req_params = {'actionFlag':  'ViewRegisteredHosptlsNew', 'search':  'Y', 'appReadOnly': 'Y', 'pageNo':  page_html,
+    req_params = {'actionFlag': 'ViewRegisteredHosptlsNew', 'search': 'Y', 'appReadOnly': 'Y', 'pageNo': page_html,
                   'searchState': 33, 'searchDistrict': -1, 'searchHospType': -1, 'searchSpeciality': -1, 'noOfPages': 0}
     page = requests.get(url=pmjay_host, params=req_params)
     doc = lh.fromstring(page.content)
