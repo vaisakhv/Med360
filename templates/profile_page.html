@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+	<link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css' rel='stylesheet'>
+	<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css' rel='stylesheet'>
+	<style>
+        body {
+          padding: 0;
+          margin: 0;
+          font-family: 'Lato', sans-serif;
+          color: #000;
+        }
+
+        .hosp-profile .card {
+          border-radius: 10px;
+        }
+
+        .hosp-profile .card .card-header .profile_img {
+          width: 150px;
+          height: 150px;
+          object-fit: cover;
+          margin: 10px auto;
+          border: 10px solid #ccc;
+          border-radius: 50%;
+        }
+
+        .hosp-profile .card h3 {
+          font-size: 20px;
+          font-weight: 700;
+        }
+
+        .hosp-profile .card p {
+          font-size: 16px;
+          color: #000;
+        }
+
+        .hosp-profile .table th,
+        .hosp-profile .table td {
+          font-size: 14px;
+          padding: 5px 10px;
+          color: #000;
+        }
+
+	</style>
+	<script>
+      window.console = window.console || function(t) {};
+
+	</script>
+	<script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+      }
+
+	</script>
+</head>
+<body translate="no">
+<!--	<div style="text-align:left"><a href={{url_for('search_hospital')}} class="btn form-control btn-primary" >Go Back</a></div>-->
+<!--	<div style="text-align:right"> logged in as {{current_user.username}}</div>-->
+<!--	<div style="text-align:right" class="col-sm-6"> <a href={{url_for('logout')}} class="btn form-control btn-primary" >logout</a> </div>-->
+<div class="hosp-profile py-4">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="card shadow-sm">
+					<div class="card-header bg-transparent text-center">
+						<img class="profile_img" height="480" src="{{url_for('static', filename='user.png')}}"
+							 width="640">
+						<h3>{{user.username}}</h3>
+					</div>
+					<div class="card-body">
+						<p class="mb-0"><strong class="pr-1">Address:</strong>{{user.addr}}</p>
+						<p class="mb-0"><strong class="pr-1">E-Mail:</strong>{{user.email}}</p>
+						<p class="mb-0"><strong class="pr-1">Contact Number:</strong>{{user.mobile}}</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-8">
+				<div class="card shadow-sm">
+					<div class="card-header bg-transparent border-0">
+						<h3 class="mb-0"><i class="far fa-clone pr-1"></i>Personal Information</h3>
+					</div>
+					<div class="card-body pt-0">
+						<table class="table table-bordered">
+							<tr>
+								<th width="30%">Name</th>
+								<td>{{user.name}}</td>
+							</tr>
+							<tr>
+								<th width="30%">Date of Birth</th>
+								<td>{{user.dob}}</td>
+							</tr>
+							<tr>
+								<th width="30%">Blood Group</th>
+								<td>{{user.bld_grp}}</td>
+							</tr>
+							<tr>
+								<th width="30%">Sex</th>
+								<td>{{user.sex}}</td>
+							</tr>
+							<tr>
+								<th width="30%">State</th>
+								<td>{{user.state}}</td>
+							</tr>
+							<tr>
+								<th width="30%">PAN Number</th>
+								<td>{{user.pan}}</td>
+							</tr>
+							<tr>
+								<th width="30%">Aadhaar Number</th>
+								<td>{{user.aadhar}}</td>
+							</tr>
+							<tr>
+								<th width="30%">Are you a donor?</th>
+								<td>
+									<li>Blood : {{user.bld_donation}}</li>
+									<li>Organ : {{user.organ_donation}}</li>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

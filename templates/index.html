@@ -18,14 +18,24 @@
             <div class="col-sm-6">
                 <ul>
                     {% if auth %}
-                        You are logged in as <strong>{{ current_user.username}}</strong> <br />
-                         <li class="col-sm-6"> <a href={{ url_for('logout') }} class="btn form-control btn-primary" >logout</a></li>
-                         <li class="col-sm-6"> <a href={{ url_for('search_hospital') }} class="btn form-control btn-primary" >Search Hospitals</a></li>
-                        {%else%}
-                        Please login here <br />
-                         <li class="col-sm-6"><a href={{ url_for('login') }} class="btn form-control btn-primary">login</a></li>
-                        Sign-up here <br />
-                        <li class="col-sm-6"><a href="/register" class="btn form-control btn-primary">Register</a></li>
+                    You are logged in as <strong>{{current_user.username}}</strong> <br/>
+                    <li class="col-sm-6"><a class="btn form-control btn-primary" href={{url_for('logout') }}>logout</a>
+                    </li>
+                    <li class="col-sm-6"><a class="btn form-control btn-primary" href={{url_for('search_hospital') }}>
+                        Search Hospitals</a></li>
+                    <br/>My Profile<br/>
+                    <li class="col-sm-6"><a class="btn form-control btn-primary" href={{url_for('view_profile') }}>
+                        View my Profile</a>
+                    </li>
+                    Remove my account <br/>
+                    <li class="col-sm-6"><a class="btn form-control btn-primary" href={{url_for('remove_acnt') }}>Delete
+                        Account</a></li>
+                    {%else%}
+                    Please login here <br/>
+                    <li class="col-sm-6"><a class="btn form-control btn-primary" href={{url_for('login') }}>login</a>
+                    </li>
+                    Sign-up here <br/>
+                    <li class="col-sm-6"><a href="/register" class="btn form-control btn-primary">Register</a></li>
                     {%endif %}
 
                 </ul>
