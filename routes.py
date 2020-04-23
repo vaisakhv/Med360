@@ -57,8 +57,6 @@ def logout():
 @app.route('/me')
 @login_required
 def view_profile():
-    # selected_id = request.args.get('username')
-    # user = User.find_user_by_username(username=current_user.username)
     return render_template('profile_page.html', title='My Details', user=current_user)
 
 
