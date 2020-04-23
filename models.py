@@ -1,6 +1,4 @@
 from flask_login import UserMixin
-from flask_wtf import FlaskForm
-from wtforms import SelectField
 
 from med360 import db
 
@@ -19,17 +17,21 @@ class City(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_city_by_state(cls, state):
-        return cls.query.filter_by(state=state).all()
+    def find_city_by_state(cls, _state):
+        return cls.query.filter_by(state=_state).all()
 
     @classmethod
     def get_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
 
-    def __init__(self, id, name, state):
+    def __init__(self, _id, _name, _state):
         self.id = id
-        self.name = name
-        self.state = state
+        self.name = _name
+        self.state = _state
+
+
+def get_all_states():
+    return [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
 
 
 class Hospital(db.Model):
@@ -62,9 +64,13 @@ class Hospital(db.Model):
     def find_hosp_by_state(cls, _state):
         return cls.query.filter(cls.hosp_addr.contains(_state))
 
-    def __init__(self, hosp_id, hosp_name, hosp_addr, hosp_spec_empanl, hosp_spec_upgraded, hosp_contact_no,
+    @classmethod
+    def find_hosp_by_spec_and_state(cls, _spec, _state):
+        return cls.query.filter(cls.hosp_addr.contains(_state), cls.hosp_spec_upgraded.contains(_spec))
+
+    def __init__(self, hosp_name, hosp_addr, hosp_spec_empanl, hosp_spec_upgraded, hosp_contact_no,
                  hosp_contact_mail, hosp_type):
-        self.hosp_id = hosp_id
+        # self.hosp_id = hosp_id
         self.hosp_name = hosp_name
         self.hosp_addr = hosp_addr
         self.hosp_spec_empanl = hosp_spec_empanl
@@ -129,12 +135,6 @@ class User(db.Model, UserMixin):
         self.aadhar = aadhar
         self.organ_donation = organ_donation
         self.bld_donation = bld_donaton
-
-
-class Form(FlaskForm):
-    states_in_db = [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
-    state = SelectField('state', choices=states_in_db)
-    city = SelectField('city', choices=[])
 
 
 if __name__ == "__main__":

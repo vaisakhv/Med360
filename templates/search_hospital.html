@@ -90,6 +90,8 @@ body{
             {{form.state}}
             <label>District :&nbsp</label>
             {{form.city}}
+            <label>Specialities :&nbsp</label>
+            {{form.spec}}
             <button class="btn form-control btn-default" type="submit">
                 <i class="fa fa-search"></i>
             </button>
@@ -99,6 +101,7 @@ body{
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
+
 
         state_select.onchange = function(){
             state = state_select.value;
