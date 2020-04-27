@@ -1,13 +1,12 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from models import db, User, City
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['TESTING'] = False
-app.config.from_object(__name__)
-app.config['SECRET_KEY'] = '12345'
-db = SQLAlchemy(app)
+
+def get_all_states_for_donors():
+    return [(r[0], r[0]) for r in db.session.query(User.state).distinct()]
+
+
+def get_all_states():
+    return [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
 
 
 def spec_code_dict():
@@ -18,7 +17,7 @@ def spec_code_dict():
     code_dict = []
     for i, j in codes.iterrows():
         if len(code_dict) == 0:
-            code_dict.append((None, 'Show all'))
+            code_dict.append(('None', 'Show all'))
         code_dict.append((j.name, j.spec))
     return code_dict
 

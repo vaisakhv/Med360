@@ -13,102 +13,115 @@
     <!-- Optional theme -->
     <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" rel="stylesheet">
+
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script>
+	$(function() {
+		$( ".dtpick" ).datepicker();
+	});
+	</script>
 </head>
+<style>
+
+input[type=radio]:checked ~ .check {
+  border: 5px solid #0DFF92;
+}
+
+input[type=radio]:checked ~ .check::before{
+  background: #0DFF92;
+}
+
+<!--input[type=radio]:checked ~ label{-->
+<!--  color: #0DFF92;-->
+<!--}-->
+
+</style>
 <body>
 <div class="container">
     <div class="row" style="margin-top: 40px">
         <div class="col-sm-6">
             {% block head %}
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class="flashes">
-                {% for message in messages %}
-                <div class="message_flash">{{ message }}</div>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-            {% endblock %}
-            <form method="POST">
-                <div class="form-group">
-                    <label for="name">Name : </label>
-                    <input class="form-control" id="name" name="name" required type="text">
+            <form id="log-form" method="POST" name="log-form">
+                {{form.hidden_tag()}}
+                {{ form.csrf_token }}
+                <div class="wrap">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class="alert">
+                        {% for message in messages %}
+                        <a class="alert alert-warning">{{ message }}</a>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="form-group">
+                        <label>Username :&nbsp</label>
+                        {{form.uname(class_='form-control') }}<br/>
+                        <label>Name :&nbsp</label>
+                        {{form.name(class_='form-control')}}<br/>
+                        <label>Email :&nbsp</label>
+                        {{form.mail(class_='form-control')}}<br/>
+                        <label>Mobile Number :&nbsp</label>
+                        {{form.mobile(class_='form-control')}}<br/>
+                        <label>Address :&nbsp</label>
+                        {{form.addr(class_='form-control')}}<br/>
+                        <label>State :&nbsp</label>
+                        {{form.state(class_='form-control')}}<br/>
+                        <label>city :&nbsp</label>
+                        {{form.city(class_='form-control')}}<br/>
+                        <label>Pincode :&nbsp</label>
+                        {{form.pincode(class_='form-control')}}<br/>
+                        <label>Password :&nbsp</label>
+                        {{form.passw(class_='form-control')}}<br/>
+                        <label>Confirm Password :&nbsp</label>
+                        {{form.conf_passw(class_='form-control')}}<br/>
+                        <label>Date Of Brth :&nbsp</label>
+                        {{form.dob}}<br/>
+                        <label>Age :&nbsp</label>
+                        {{form.age(class_='form-control')}}<br/>
+                        <label>PAN Number :&nbsp</label>
+                        {{form.pan(class_='form-control')}}<br/>
+                        <label>Aadhar Number :&nbsp</label>
+                        {{form.aadhar(class_='form-control')}}<br/>
+                        <label>Sex :&nbsp</label>
+                        {{form.sex}}<br/>
+                        <label>Blood Group :&nbsp</label>
+                        {{form.bld_grp(class_='form-control')}}<br/>
+                        <label>Are you willing to be a blood donor ?&nbsp</label>
+                        {{form.bld_donation}}<br/>
+                        <label>Are you willing to be a organ donor ?&nbsp</label>
+                        {{form.organ_donation}}<br/>
+                        <button class="btn form-control btn-default" type="submit">
+                            <i class="fa fa-search">Register</i>
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Username : </label>
-                    <input class="form-control" id="uname" name="uname" required type="text">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email : </label>
-                    <input class="form-control" id="mail" name="mail" required type="email">
-                </div>
-                <div class="form-group">
-                    <label for="mobile">Mobile Number : </label>
-                    <input class="form-control" id="mobile" minlength="10" name="mobile" required type="number">
-                </div>
-                <div class="form-group">
-                    <label for="email">Password : </label>
-                    <input class="form-control" id="passw" minlength="6" name="passw" required type="password">
-                </div>
-                <div class="form-group">
-                    <label for="dob">Date of Birth : </label>
-                    <input class="form-control" id="dob" name="dob" required type="date">
-                </div>
-                <div class="form-group">
-                    <label for="sex">Sex : </label>
-                    <select class="form-control" id="sex" name="sex" required>
-                        <option value='Male'>Male</option>
-                        <option value='Female'>Female</option>
-                        <option value='Other'>Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="bld_grp">Blood Group : </label>
-                    <input class="form-control" id="bld_grp" name="bld_grp" required type="text">
-                </div>
-                <div class="form-group">
-                    <label for="addr">Address : </label>
-                    <input class="form-control" id="addr" name="addr" required type="text">
-                </div>
-                <div class="form-group">
-                    <label for="state">State: </label><!--list options-->
-                    <input class="form-control" id="state" maxlength="20" name="state" required type="text">
-                </div>
-                <div class="form-group">
-                    <label for="pincode">Pincode : </label>
-                    <input class="form-control" id="pincode" maxlength="7" name="pincode" required type="number">
-                </div>
-                <div class="form-group">
-                    <label for="pan">PAN Number : </label>
-                    <input class="form-control" id="pan" maxlength="10" name="pan" required type="text">
-                </div>
-                <div class="form-group">
-                    <label for="aadhar">Aadhar Number : </label>
-                    <input class="form-control" id="aadhar" name="aadhar" required type="number">
-                </div>
-                <div class="form-group">
-                    <label for="organ_donation">Organ Donor : </label>
-                    <select class="form-control" id="organ_donation" name="organ_donation" required>
-                        <option value='True'>Yes</option>
-                        <option value='False'>No</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="bld_donation">Blood Donor : </label>
-                    <select class="form-control" id="bld_donation" name="bld_donation" required>
-                        <option value='True'>Yes</option>
-                        <option value='False'>No</option>
-                    </select>
-                </div>
-                <button class="btn form-control btn-default" type="submit">Register</button>
             </form>
         </div>
     </div>
 </div>
-
-
+<script>
+        $(' .datepicker').datepicker({});
+        let state_select = document.getElementById('state')
+        let city_select = document.getElementById('city')
+        state_select.onchange = function(){
+            state = state_select.value;
+            fetch('/city/'+state).then(function(response){
+                response.json().then(function(data){
+                    let optionHTML = '';
+                    for (city of data.cities){
+                        optionHTML += '<option value="'+city.id+'">'+city.name+'</option>';
+                    }
+                    city_select.innerHTML = optionHTML;
+                });
+            });
+        }
+</script>
 <!-- Latest compiled and minified JavaScript -->
 <script crossorigin="anonymous" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}
 </body>
 </html>

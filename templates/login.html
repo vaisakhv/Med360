@@ -161,23 +161,25 @@ body {
 <body translate="no">
 <div class="log-form">
     <h2>Login to your account</h2>
-    {% block head %}
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class="flashes">
-        {% for message in messages %}
-        <div class="message_flash">{{ message }}</div>
-        {% endfor %}
-    </ul>
-    {% endif %}
+     {% block content %}
+     {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="alert">
+            {% for message in messages %}
+            <a class="alert alert-warning">{{ message }}</a>
+            {% endfor %}
+        </ul>
+        {% endif %}
     {% endwith %}
-    {% endblock %}
-    <form id="log-form" method="POST" name="log-form">
-        <input id="uname" name="uname" placeholder="username" title="username" type="text"/>
-        <input id="passw" name="passw" placeholder="password" title="username" type="password"/>
+    <form action="/login" id="log-form" method="POST" name="log-form">
+        {{form.csrf_token}}
+        {{form.hidden_tag()}}
+        {{form.uname}}
+        {{form.passw}}
         <button class="btn form-control btn-default" type="submit">Login</button>
         <a class="forgot" href={{url_for('resetPassword')}}>Forgot Password?</a><br/>
         <a class="forgot" href={{url_for('register') }}>Sign-Up</a>
+    {% endblock %}
     </form>
 </div>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

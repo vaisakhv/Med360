@@ -7,7 +7,7 @@
     <meta content="CodePen" name="apple-mobile-web-app-title">
     <link href="ss/Medical-Health-Heart-beat.ico" rel="shortcut icon" type="image/x-icon"/>
     <link color="#111" href="ss/Medical-Health-Heart-beat.ico" rel="mask-icon" type=""/>
-    <title>Med360 | Hospital Search</title>
+    <title>Med360 | Find Blood Donor</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
@@ -74,9 +74,10 @@ body{
 <body translate="no">
 {% block head %}
 <div style="text-align:right"> logged in as {{ current_user.username }}</div>
-<div class="col-sm-6" style="text-align:right"><a class="btn form-control btn-primary" href={{url_for('logout')}}>logout</a>
+<div class="col-sm-6" style="text-align:right"><a class="btn form-control btn-primary" href={{url_for('logout') }}>logout</a>
 </div>
-<form action="/search_hospital" id="log-form" method="POST" name="log-form">
+<form id="log-form" method="POST" name="log-form">
+    {{ form.csrf_token }}
     <div class="wrap">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -89,13 +90,12 @@ body{
         {% endwith %}
         <div class="searchTerm">
             <br/>
-            {{form.hidden_tag()}}
             <label>States :&nbsp</label>
             {{form.state}}
             <label>District :&nbsp</label>
             {{form.city}}
-            <label>Specialities :&nbsp</label>
-            {{form.spec}}
+            <label>Blood Group :&nbsp</label>
+            {{form.bld_grp}}
             <button class="btn form-control btn-default" type="submit">
                 <i class="fa fa-search"></i>
             </button>
@@ -111,6 +111,8 @@ body{
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
+
+
         state_select.onchange = function(){
             state = state_select.value;
             fetch('/city/'+state).then(function(response){
@@ -123,6 +125,9 @@ body{
                 });
             });
         }
+
+
+
 </script>
 {% endblock %}
 </body>

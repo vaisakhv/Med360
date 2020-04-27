@@ -1,6 +1,14 @@
+from flask import Flask
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 
-from med360 import db
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['TESTING'] = False
+app.config.from_object(__name__)
+app.config['SECRET_KEY'] = '12345'
+db = SQLAlchemy(app)
 
 
 class City(db.Model):
@@ -25,13 +33,9 @@ class City(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     def __init__(self, _id, _name, _state):
-        self.id = id
+        self.id = _id
         self.name = _name
         self.state = _state
-
-
-def get_all_states():
-    return [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
 
 
 class Hospital(db.Model):
@@ -85,7 +89,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
-    # age = db.Column(db.Integer(), nullable=False)
+    age = db.Column(db.Integer(), nullable=False)
     pan = db.Column(db.String(10), nullable=False, unique=True)
     name = db.Column(db.String(80), nullable=False)
     sex = db.Column(db.String(10), nullable=False)
@@ -93,6 +97,7 @@ class User(db.Model, UserMixin):
     bld_grp = db.Column(db.String(5), nullable=False)
     addr = db.Column(db.String(100), nullable=False)
     state = db.Column(db.String(80), nullable=False)
+    city = db.Column(db.String(80), nullable=False)
     po_num = db.Column(db.Integer(), nullable=False)
     mobile = db.Column(db.Integer(), nullable=False, unique=True)
     aadhar = db.Column(db.Integer(), nullable=False, unique=True)
@@ -108,6 +113,13 @@ class User(db.Model, UserMixin):
         db.session.commit()
 
     @classmethod
+    def find_blood_donor(cls, blood_type, location):
+        users = cls.query.filter(cls.bld_donation == True, cls.bld_grp == blood_type,
+                                 cls.addr.contains(location) | cls.state.contains(location) | cls.city.contains(
+                                     location)).all()
+        return users
+
+    @classmethod
     def find_user_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
@@ -118,11 +130,11 @@ class User(db.Model, UserMixin):
         user.save_to_db()
 
     def __init__(self, username, email, password, pan, name, sex, dob, bld_grp, addr, state, po_num, mobile, aadhar,
-                 organ_donation, bld_donaton):
+                 organ_donation, bld_donaton, city, age):
         self.username = username
         self.email = email
         self.password = password
-        # self.age = age
+        self.age = age
         self.pan = pan
         self.name = name
         self.sex = sex
@@ -130,6 +142,7 @@ class User(db.Model, UserMixin):
         self.bld_grp = bld_grp
         self.addr = addr
         self.state = state
+        self.city = city
         self.po_num = po_num
         self.mobile = mobile
         self.aadhar = aadhar

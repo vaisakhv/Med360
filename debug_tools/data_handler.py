@@ -20,9 +20,9 @@ def addCities():
     states_dist.index = states_dist.State
     states_dist = states_dist.drop('State', axis=1)
     dists = states_dist._get_value('Tamil Nadu', col='District').split('\t')
-    i = 14
+    i = 47
     for dist in dists:
-        city = City(id=i, state='Tamil Nadu', name=dist)
+        city = City(_id=i, _state='Tamil Nadu', _name=dist)
         city.save_to_db()
         i += 1
 
@@ -58,4 +58,5 @@ def getCities(state):
 if __name__ == '__main__':
     # addHospitals()
     # addCities()
-    getCities("Kerala")
+    # getCities("Kerala")
+    pass

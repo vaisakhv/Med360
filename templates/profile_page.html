@@ -69,8 +69,13 @@
 			<div class="col-lg-4">
 				<div class="card shadow-sm">
 					<div class="card-header bg-transparent text-center">
-						<img class="profile_img" height="480" src="{{url_for('static', filename='user.png')}}"
+						{% if current_user.sex == 'Male' %}
+						<img class="profile_img" height="480" src="{{url_for('static', filename='male.png')}}"
 							 width="640">
+						{%else%}
+						<img class="profile_img" height="480" src="{{url_for('static', filename='female.png')}}"
+							 width="640">
+						{%endif %}
 						<h3>{{user.username}}</h3>
 					</div>
 					<div class="card-body">
@@ -106,6 +111,10 @@
 							<tr>
 								<th width="30%">State</th>
 								<td>{{user.state}}</td>
+							</tr>
+							<tr>
+								<th width="30%">City</th>
+								<td>{{user.city}}</td>
 							</tr>
 							<tr>
 								<th width="30%">PAN Number</th>
