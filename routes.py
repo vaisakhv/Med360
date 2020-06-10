@@ -11,6 +11,8 @@ from views import RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginFor
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+# login_manager.needs_refresh_message = u"To protect your account, please reauthenticate to access this page."
+# login_manager.refresh_view = "login"
 
 
 @login_manager.user_loader
@@ -26,12 +28,25 @@ def index():
     return render_template('index.html', auth=auth, current_user=current_user)
 
 
+@app.route('/check/<username>')
+def check(username):
+    user = User.find_user_by_username(username=username)
+    print(user)
+    if user is None:
+        return jsonify(False)
+    else:
+        return jsonify(True)
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         uname = form.uname.data
         passw = form.passw.data
+        print(uname, passw)
+        user = User.find_user_by_username(username=uname)
+        print(user)
         if uname != '' or passw != '':
             user = User.find_user_by_username(username=uname)
             if user is not None:
@@ -73,8 +88,9 @@ def resetPassword():
     form = ResetPasswordForm()
     if form.validate_on_submit():
         uname = form.uname.data
-        dob = datetime.date(datetime.strptime(form.dob.data, "%Y-%m-%d"))
+        dob = form.dob.data
         user = User.find_user_by_username(uname)
+        print(user.name)
         if user is not None:
             passw = form.passw.data
             conf_passw = form.conf_passw.data
@@ -103,6 +119,9 @@ def register():
     form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+    print(form.validate_on_submit())
+    print(form.errors)
+    print(form.city.data)
     if form.validate_on_submit():
         uname = form.uname.data
         mail = form.mail.data
@@ -113,6 +132,7 @@ def register():
         name = form.name.data
         sex = form.sex.data
         dob = form.dob.data
+        print(dob)
         bld_grp = form.bld_grp.data
         addr = form.addr.data
         state = form.state.data
@@ -127,7 +147,7 @@ def register():
             if conf_passw == passw:
                 new_user = User(username=uname, email=mail, password=generate_password_hash(passw, method='sha256'),
                                 pan=pan, city=city.name, age=age,
-                                name=name, sex=sex, dob=datetime.date(datetime.strptime(dob, "%Y-%m-%d")),
+                                name=name, sex=sex, dob=dob,
                                 bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
                                 organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation))
                 new_user.save_to_db()
@@ -145,7 +165,6 @@ def register():
 @login_required
 def remove_acnt():
     user = User.find_user_by_username(username=current_user.username)
-
     try:
         user.remove_from_db()
         return redirect(url_for("login"))
@@ -242,12 +261,10 @@ def search_blood_donor():
             print('found ', current_user.username, ' in donors list. removing it!')
             len_of_donors = len_of_donors - 1
         if len_of_donors > 0:
-            return render_template('donor_search_result.html', data=donors, current_user=current_user,
-                                   bld_grp=bld_grp)
-        else:
-            print('no donors with ', bld_grp)
-            flash(message="No donors found!!")
-            render_template("search_blood_donor.html", current_user=current_user, form=form)
+            return render_template('donor_search_result.html', data=donors, current_user=current_user, bld_grp=bld_grp)
+        print('no donors with ', bld_grp)
+        flash(message="No donors found!!")
+        render_template("search_blood_donor.html", current_user=current_user, form=form)
     return render_template("search_blood_donor.html", current_user=current_user, form=form)
 
 

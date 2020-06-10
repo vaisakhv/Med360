@@ -33,7 +33,8 @@ class ResetPasswordForm(FlaskForm):
                         render_kw={'placeholder': 'Username'})
     passw = PasswordField('passw', [validators.DataRequired('Please enter a new password'), validators.Length(min=7)],
                           render_kw={'placeholder': 'Password'})
-    conf_passw = PasswordField('conf_passw', [validators.DataRequired('Please re-enter the new password'), validators.Length(min=7)],
+    conf_passw = PasswordField('conf_passw',
+                               [validators.DataRequired('Please re-enter the new password'), validators.Length(min=7)],
                                render_kw={'placeholder': 'Confirm Password'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')
 
@@ -43,14 +44,14 @@ class RegisterForm(FlaskForm):
     uname = StringField('uname', [validators.DataRequired('Please enter a valid Username'), validators.Length(min=7)])
     name = StringField('name', [validators.DataRequired('Please enter you name')])
     mail = StringField('mail', [validators.DataRequired('Please enter a valid email'), validators.Email('Please enter '
-                                                                                                        'your valid email')])
-    mobile = IntegerField('mobile', [validators.DataRequired('Please enter you mobile number'),
-                                     validators.Length(min=10, max=10)])
+                                                                                                        'your valid '
+                                                                                                        'email')])
+    mobile = IntegerField('mobile', [validators.DataRequired('Please enter you mobile number')])
     addr = StringField('addr', [validators.DataRequired('Please enter you Address')])
     state = SelectField('state', [validators.DataRequired('Please select you state')], choices=states_in_db)
-    city = SelectField('city', [validators.DataRequired('Please select your current residing city')], choices=[])
-    pincode = IntegerField('pincode',
-                           [validators.DataRequired('Please enter you pincode'), validators.Length(min=6, max=6)])
+    city = SelectField('city', [validators.DataRequired('Please select your current residing city')], choices=[],
+                       coerce=int)
+    pincode = IntegerField('pincode', [validators.DataRequired('Please enter you pincode')])
     passw = PasswordField('passw', [validators.DataRequired('Please enter a valid password'), validators.Length(min=7)])
     conf_passw = PasswordField('conf_passw',
                                [validators.DataRequired('Please re-enter the password'), validators.Length(min=7)])
@@ -67,4 +68,3 @@ class RegisterForm(FlaskForm):
                                 choices=[('True', 'Yes'), ('False', 'No')])
     bld_donation = RadioField('bld_donation', [validators.DataRequired('Please select one')],
                               choices=[('True', 'Yes'), ('False', 'No')])
-

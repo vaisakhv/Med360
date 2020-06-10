@@ -11,6 +11,7 @@ app.config['SECRET_KEY'] = '12345'
 db = SQLAlchemy(app)
 
 
+# import admin_view for displaying model. a
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     state = db.Column(db.String(100), nullable=False)
