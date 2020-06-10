@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from cryptography.fernet import Fernet
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -39,3 +40,20 @@ def decodeSpecialties(spec):
             specs.append(codes._get_value(spec.replace(' ', ''), col='spec'))
         return specs
     return ['NA']
+
+
+class Security:
+    __key = b'aT_s_1b8FBAD_mGTxAkJ3RvUlfrSJCQ1ewYHqFV58Vg='
+
+    @classmethod
+    def encrypt(cls, plain):
+        f = Fernet(cls.__key)
+        return f.encrypt(plain.encode("utf-8")).decode("utf-8")
+
+    @classmethod
+    def decrypt(cls, encrypted):
+        f = Fernet(cls.__key)
+        return f.decrypt(encrypted.encode("utf-8")).decode("utf-8")
+
+    def __init__(self, __key):
+        self.__key = __key

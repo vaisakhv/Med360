@@ -6,8 +6,9 @@ from flask_wtf import FlaskForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import SelectField
 
-from med360 import app, decodeSpecialties, spec_code_dict
+from med360 import app, decodeSpecialties, spec_code_dict, Security
 from models import User, Hospital, City, get_all_states
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -193,10 +194,6 @@ def search_hospital():
                 flash(message="No Hospitals found, why don't you try without the Speciality filter!!")
         elif state_name is not '' and not state_name.isspace():
             hosp = Hospital.find_hosp_by_state(state_name)
-            if len(hosp.all()) > 0:
-                return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=state_name)
-            else:
-                flash(message='No Hospitals found!!')
         else:
             flash(message="Enter a valid query")
     return render_template("search_hospital.html", current_user=current_user, form=form)
