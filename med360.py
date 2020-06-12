@@ -40,6 +40,7 @@ def decodeSpecialties(spec):
         return specs
     return ['NA']
 
+
 class Security:
     __key = b'aT_s_1b8FBAD_mGTxAkJ3RvUlfrSJCQ1ewYHqFV58Vg='
 

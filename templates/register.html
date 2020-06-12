@@ -58,7 +58,8 @@ input[type=radio]:checked ~ .check::before{
                     {% endwith %}
                     <div class="form-group">
                         <label>Username :&nbsp</label>
-                        {{form.uname(class_='form-control') }}<br/>
+                        {{form.uname(class_='form-control') }}
+                        <div id="error-nwl-usr"></div><br/>
                         <label>Name :&nbsp</label>
                         {{form.name(class_='form-control')}}<br/>
                         <label>Email :&nbsp</label>
@@ -77,6 +78,7 @@ input[type=radio]:checked ~ .check::before{
                         {{form.passw(class_='form-control')}}<br/>
                         <label>Confirm Password :&nbsp</label>
                         {{form.conf_passw(class_='form-control')}}<br/>
+                        <div id="error-nwl"></div>
                         <label>Date Of Brth :&nbsp</label>
                         {{form.dob}}<br/>
                         <label>Age :&nbsp</label>
@@ -103,7 +105,6 @@ input[type=radio]:checked ~ .check::before{
     </div>
 </div>
 <script>
-        $(' .datepicker').datepicker({});
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
         state_select.onchange = function(){
@@ -118,6 +119,60 @@ input[type=radio]:checked ~ .check::before{
                 });
             });
         }
+</script>
+<script>
+       let input = document.querySelector('input[name=uname]');
+       var message = document.getElementById('error-nwl-usr');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+       input.onkeyup = function() {
+            $.get('/check/' + input.value, function(data) {
+                if (data == false){
+                    message.style.color = goodColor;
+                    message.innerHTML = "Username is available!"
+                }else{
+                    message.style.color = badColor;
+                    message.innerHTML = "Username is not available!"
+                }
+            });
+        };
+    </script>
+<script>
+$('#conf_passw').on('keyup', function ()
+{
+    var pass1 = document.getElementById('passw');
+    var pass2 = document.getElementById('conf_passw');
+    var message = document.getElementById('error-nwl');
+    var goodColor = "#66cc66";
+    var badColor = "#ff6666";
+
+    if(pass1.value.length > 5)
+    {
+        pass1.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "character number ok!"
+    }
+    else
+    {
+        pass1.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = " you have to enter at least 6 digit!"
+        return;
+    }
+
+    if(pass1.value == pass2.value)
+    {
+        pass2.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "ok!"
+    }
+	else
+    {
+        pass2.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = " These passwords don't match"
+    }
+});
 </script>
 <!-- Latest compiled and minified JavaScript -->
 <script crossorigin="anonymous" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
