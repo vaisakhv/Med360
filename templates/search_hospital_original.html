@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link href="ss/Medical-Health-Heart-beat.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link color="#111" href="ss/Medical-Health-Heart-beat.ico" rel="mask-icon" type=""/>
+    <title>Med360 | Hospital Search</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+body{
+  background: #f2f2f2;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border-right: none;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #32586b;
+<!--  color: #9DBFAF;-->
+}
+
+.searchTerm:focus{
+  color: #00B4CC;
+}
+
+.btn {
+  width: 40px;
+  height: 36px;
+  border: 1px solid #00B4CC;
+  background: #00B4CC;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+  width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+    </style>
+    <script>
+  window.console = window.console || function(t) {};
+
+    </script>
+    <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+
+    </script>
+</head>
+<body translate="no">
+{% block head %}
+<div style="text-align:right"> logged in as {{ current_user.username }}</div>
+<div class="col-sm-6" style="text-align:right"><a class="btn form-control btn-primary" href={{url_for('logout')}}>logout</a>
+</div>
+<form action="/search_hospital" id="log-form" method="POST" name="log-form">
+    <div class="wrap">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="alert">
+            {% for message in messages %}
+            <a class="alert alert-warning">{{ message }}</a>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <div class="searchTerm">
+            <br/>
+            {{form.hidden_tag()}}
+            <label>States :&nbsp</label>
+            {{form.state}}
+            <label>District :&nbsp</label>
+            {{form.city}}
+            <label>Specialities :&nbsp</label>
+            {{form.spec}}
+            <button class="btn form-control btn-default" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+<!--<script type="text/javascript">-->
+<!--    window.history.forward();-->
+<!--    function noBack() {-->
+<!--        window.history.forward();-->
+<!--    }-->
+<!--</script>-->
+<script>
+        let state_select = document.getElementById('state')
+        let city_select = document.getElementById('city')
+        state_select.onchange = function(){
+            state = state_select.value;
+            fetch('/city/'+state).then(function(response){
+                response.json().then(function(data){
+                    let optionHTML = '';
+                    for (city of data.cities){
+                        optionHTML += '<option value="'+city.id+'">'+city.name+'</option>';
+                    }
+                    city_select.innerHTML = optionHTML;
+                });
+            });
+        }
+</script>
+{% endblock %}
+</body>
+</html>
