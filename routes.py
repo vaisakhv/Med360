@@ -1,16 +1,22 @@
-from datetime import datetime
+from distutils.util import strtobool
 
+import requests
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_required, LoginManager, login_user, current_user, logout_user
+from flask_mail import Mail
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from med360 import decodeSpecialties
+from med360 import decodeSpecialties, Security
 from models import User, Hospital, City, app
-from views import RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm, ResetPasswordForm
+from views import RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm, ResetPasswordForm, ProfileUpdateForm, \
+    ContactForm
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+mail = Mail()
+mail.init_app(app)
 
 
 @login_manager.user_loader
@@ -18,12 +24,87 @@ def user_loader(uid):
     return User.query.get(int(uid))
 
 
-@app.route('/')
-def index():
+@login_manager.unauthorized_handler
+def unauthorized():
+    return render_template("403.html")
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
+
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template("500.html")
+
+
+@app.route("/about")
+def about():
+    return render_template("/about.html")
+
+
+@app.route("/services")
+def services():
     auth = False
     if current_user.is_authenticated:
         auth = True
-    return render_template('index.html', auth=auth, current_user=current_user)
+    return render_template("/services.html", auth=auth)
+
+
+@app.route('/contact')
+def contact():
+    form = ContactForm()
+    if request.method == 'POST':
+        return 'Form posted.'
+    # elif request.method == 'GET':
+    #     msg = Message(form.subject.data, sender='vais27@gmail.com', recipients=['vais27@gmail.com'])
+    #     msg.body = """
+    #           From: %s <%s>
+    #           %s
+    #           """ % (form.name.data, form.email.data, form.message.data)
+    #     mail.send(msg)
+    #     return render_template('contact.html', form=form, success=True)
+    return render_template('contact.html', form=form)
+
+
+def getCovidData():
+    corona_api_key = "f4491b20c4mshe066c8a643cdf41p1d21dfjsna43b3402be92"
+    url = "https://covid-19-data.p.rapidapi.com/country"
+    querystring = {"format": "json", "name": "india"}
+    headers = {
+        'x-rapidapi-host': "covid-19-data.p.rapidapi.com",
+        'x-rapidapi-key': corona_api_key
+    }
+
+    global_url = 'https://api.covid19api.com/summary'
+    global_resp = requests.request("GET", global_url)
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    india_val = response.json()
+    global_val = global_resp.json()
+    return india_val, global_val
+
+
+@app.route('/')
+def index():
+    india_val = [0]
+    global_val = {"Global":'0'}
+    auth = False
+    if current_user.is_authenticated:
+        india_val, global_val = getCovidData()
+        auth = True
+    print(india_val[0], '\n', global_val['Global'])
+    return render_template('index.html', auth=auth, current_user=current_user, india=india_val, world=global_val)
+
+
+@app.route('/check/<username>')
+def check(username):
+    user = User.find_user_by_username(username=username)
+    print(user)
+    if user is None:
+        return jsonify(False)
+    else:
+        return jsonify(True)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -32,6 +113,9 @@ def login():
     if form.validate_on_submit():
         uname = form.uname.data
         passw = form.passw.data
+        print(uname, passw)
+        user = User.find_user_by_username(username=uname)
+        print(user)
         if uname != '' or passw != '':
             user = User.find_user_by_username(username=uname)
             if user is not None:
@@ -42,17 +126,17 @@ def login():
                     next = request.args.get('next')
                     return redirect(next or url_for('index'))
                 flash('Invalid password for user ' + user.username)
-                return render_template("login.html", form=form)
-            flash('Invalid username and password')
-            return render_template("login.html", form=form)
-        flash('Invalid username and password')
-        return render_template("login.html", form=form)
+                return render_template("login_2.html", form=form)
+            flash('Invalid username ')
+            return render_template("login_2.html", form=form)
+        flash('Invalid username or/and password')
+        return render_template("login_2.html", form=form)
     elif 'passw' in form.errors.keys():
         flash('Invalid password')
-        return render_template("login.html", form=form)
+        return render_template("login_2.html", form=form)
     elif current_user.is_authenticated:
         return redirect(url_for('index'))
-    return render_template("login.html", form=form)
+    return render_template("login_2.html", form=form)
 
 
 @app.route('/logout')
@@ -73,9 +157,10 @@ def resetPassword():
     form = ResetPasswordForm()
     if form.validate_on_submit():
         uname = form.uname.data
-        dob = datetime.date(datetime.strptime(form.dob.data, "%Y-%m-%d"))
+        dob = form.dob.data
         user = User.find_user_by_username(uname)
         if user is not None:
+            print(user.name)
             passw = form.passw.data
             conf_passw = form.conf_passw.data
             if conf_passw == passw:
@@ -103,6 +188,9 @@ def register():
     form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+    print(form.validate_on_submit())
+    print(form.errors)
+    print(form.city.data)
     if form.validate_on_submit():
         uname = form.uname.data
         mail = form.mail.data
@@ -113,6 +201,7 @@ def register():
         name = form.name.data
         sex = form.sex.data
         dob = form.dob.data
+        print(dob)
         bld_grp = form.bld_grp.data
         addr = form.addr.data
         state = form.state.data
@@ -120,14 +209,14 @@ def register():
         po_num = form.pincode.data
         mobile = form.mobile.data
         aadhar = form.aadhar.data
-        organ_donation = form.organ_donation.data
-        bld_donation = form.bld_donation.data
+        organ_donation = bool(strtobool(form.organ_donation.data))
+        bld_donation = bool(strtobool(form.bld_donation.data))
         existing_user = User.query.filter_by(mobile=mobile, email=mail, username=uname, aadhar=aadhar, pan=pan).first()
         if existing_user is None:
             if conf_passw == passw:
                 new_user = User(username=uname, email=mail, password=generate_password_hash(passw, method='sha256'),
                                 pan=pan, city=city.name, age=age,
-                                name=name, sex=sex, dob=datetime.date(datetime.strptime(dob, "%Y-%m-%d")),
+                                name=name, sex=sex, dob=dob,
                                 bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
                                 organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation))
                 new_user.save_to_db()
@@ -141,11 +230,45 @@ def register():
     return render_template("register.html", form=form)
 
 
+@app.route('/update', methods=['POST', 'GET'])
+@login_required
+def update_profile():
+    user = User.find_user_by_username(username=current_user.username)
+    city = City.get_id_by_name(_name=current_user.city)
+    form = ProfileUpdateForm(city=city.id, bld_grp=user.bld_grp, sex=user.sex, organ_donation=bool(user.organ_donation),
+                             bld_donation=bool(user.bld_donation))
+    form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
+    print(form.validate_on_submit())
+    print(form.errors)
+    print('log')
+    if form.validate_on_submit():
+        # current_user.uname = user.username
+        user.uname = form.uname.data
+        user.mail = form.mail.data
+        user.age = form.age.data
+        user.pan = form.pan.data
+        user.name = form.name.data
+        user.sex = form.sex.data
+        user.dob = form.dob.data
+        user.bld_grp = form.bld_grp.data
+        user.addr = form.addr.data
+        user.state = form.state.data
+        curr_city = City.get_by_id(form.city.data)
+        user.city = curr_city.name
+        user.po_num = form.pincode.data
+        user.mobile = form.mobile.data
+        user.aadhar = form.aadhar.data
+        user.organ_donation = bool(strtobool(form.organ_donation.data))
+        user.bld_donation = bool(strtobool(form.bld_donation.data))
+        user.save_to_db()
+        return redirect(url_for("view_profile"))
+    return render_template("update_profile.html", form=form)
+
+
 @app.route('/remove_acnt', methods=['POST', 'GET'])
 @login_required
 def remove_acnt():
     user = User.find_user_by_username(username=current_user.username)
-
     try:
         user.remove_from_db()
         return redirect(url_for("login"))
@@ -194,7 +317,7 @@ def search_hospital():
             print("results form spec for ", decodeSpecialties(spec)[0])
             if len(hosps.all()) > 0:
                 return render_template('searchResult.html', data=hosps, current_user=current_user,
-                                       searchterm=state_name)
+                                       searchterm=state_name, encrypt=Security.encrypt)
             else:
                 print('no hospitals with ', spec)
                 flash("No Hospitals found, why don't you try without the Speciality filter!!")
@@ -202,7 +325,8 @@ def search_hospital():
         elif state_name is not '' and not state_name.isspace():
             hosp = Hospital.find_hosp_by_state(state_name)
             if len(hosp.all()) > 0:
-                return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=state_name)
+                return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=state_name,
+                                       encrypt=Security.encrypt)
             else:
                 flash('No Hospitals found!!')
                 return render_template("search_hospital.html", current_user=current_user, form=form)
@@ -215,12 +339,14 @@ def search_hospital():
 @app.route("/hospitalDetails", methods=["GET", "POST"])
 @login_required
 def hospital_details():
-    selected_id = request.args.get('hosp_id')
+    selected_id = Security.decrypt(str(request.args.get('hosp_id')))
     hosp = Hospital.find_hosp_by_id(int(selected_id))
     specs_up = hosp.hosp_spec_upgraded
     specs_emp = hosp.hosp_spec_empanl
     dec_specs_up = decodeSpecialties(specs_up)
     dec_specs_emp = decodeSpecialties(specs_emp)
+    # addr = ' '.join(hosp.hosp_addr.split()).replace(' ', '+')
+    # addr = addr.replace(',', '')
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
                            specs_emp=dec_specs_emp)
 
@@ -242,12 +368,10 @@ def search_blood_donor():
             print('found ', current_user.username, ' in donors list. removing it!')
             len_of_donors = len_of_donors - 1
         if len_of_donors > 0:
-            return render_template('donor_search_result.html', data=donors, current_user=current_user,
-                                   bld_grp=bld_grp)
-        else:
-            print('no donors with ', bld_grp)
-            flash(message="No donors found!!")
-            render_template("search_blood_donor.html", current_user=current_user, form=form)
+            return render_template('donor_search_result.html', data=donors, current_user=current_user, bld_grp=bld_grp)
+        print('no donors with ', bld_grp)
+        flash(message="No donors found!!")
+        render_template("search_blood_donor.html", current_user=current_user, form=form)
     return render_template("search_blood_donor.html", current_user=current_user, form=form)
 
 

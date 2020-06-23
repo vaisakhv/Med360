@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
+    <title>Register | Med360</title>
+    <!-- Latest compiled and minified CSS -->
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+
+    <!-- Optional theme -->
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" rel="stylesheet">
+
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script>
+	$(function() {
+		$( ".dtpick" ).datepicker();
+	});
+	</script>
+</head>
+<style>
+
+input[type=radio]:checked ~ .check {
+  border: 5px solid #0DFF92;
+}
+
+input[type=radio]:checked ~ .check::before{
+  background: #0DFF92;
+}
+
+<!--input[type=radio]:checked ~ label{-->
+<!--  color: #0DFF92;-->
+<!--}-->
+
+</style>
+<body>
+<div class="container">
+    <div class="row" style="margin-top: 40px">
+        <div class="col-sm-6">
+            {% block head %}
+            <form id="log-form" method="POST" name="log-form">
+                {{form.hidden_tag()}}
+                <div class="wrap">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class="alert">
+                        {% for message in messages %}
+                        <a class="alert alert-warning">{{ message }}</a>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="form-group">
+                        <label>Username :&nbsp</label>
+                        {{form.uname(class_='form-control') }}
+                        <div id="error-nwl-usr"></div><br/>
+                        <label>Name :&nbsp</label>
+                        {{form.name(class_='form-control')}}<br/>
+                        <label>Email :&nbsp</label>
+                        {{form.mail(class_='form-control')}}<br/>
+                        <label>Mobile Number :&nbsp</label>
+                        {{form.mobile(class_='form-control')}}<br/>
+                        <label>Address :&nbsp</label>
+                        {{form.addr(class_='form-control')}}<br/>
+                        <label>State :&nbsp</label>
+                        {{form.state(class_='form-control')}}<br/>
+                        <label>city :&nbsp</label>
+                        {{form.city(class_='form-control')}}<br/>
+                        <label>Pincode :&nbsp</label>
+                        {{form.pincode(class_='form-control')}}<br/>
+                        <label>Password :&nbsp</label>
+                        {{form.passw(class_='form-control')}}<br/>
+                        <label>Confirm Password :&nbsp</label>
+                        {{form.conf_passw(class_='form-control')}}<br/>
+                        <div id="error-nwl"></div>
+                        <label>Date Of Brth :&nbsp</label>
+                        {{form.dob}}<br/>
+                        <label>Age :&nbsp</label>
+                        {{form.age(class_='form-control')}}<br/>
+                        <label>PAN Number :&nbsp</label>
+                        {{form.pan(class_='form-control')}}<br/>
+                        <label>Aadhar Number :&nbsp</label>
+                        {{form.aadhar(class_='form-control')}}<br/>
+                        <label>Sex :&nbsp</label>
+                        {{form.sex}}<br/>
+                        <label>Blood Group :&nbsp</label>
+                        {{form.bld_grp(class_='form-control')}}<br/>
+                        <label>Are you willing to be a blood donor ?&nbsp</label>
+                        {{form.bld_donation}}<br/>
+                        <label>Are you willing to be a organ donor ?&nbsp</label>
+                        {{form.organ_donation}}<br/>
+                        <button class="btn form-control btn-default" type="submit">
+                            <i class="fa fa-search">Register</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+        let state_select = document.getElementById('state')
+        let city_select = document.getElementById('city')
+        state_select.onchange = function(){
+            state = state_select.value;
+            fetch('/city/'+state).then(function(response){
+                response.json().then(function(data){
+                    let optionHTML = '';
+                    for (city of data.cities){
+                        optionHTML += '<option value="'+city.id+'">'+city.name+'</option>';
+                    }
+                    city_select.innerHTML = optionHTML;
+                });
+            });
+        }
+
+       let input = document.querySelector('input[name=uname]');
+       var message = document.getElementById('error-nwl-usr');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+       input.onkeyup = function() {
+            $.get('/check/' + input.value, function(data) {
+                if (data == false){
+                    message.style.color = goodColor;
+                    message.innerHTML = "Username is available!"
+                }else{
+                    message.style.color = badColor;
+                    message.innerHTML = "Username is not available!"
+                }
+            });
+        };
+    </script>
+<script>
+$('#conf_passw').on('keyup', function ()
+{
+    var pass1 = document.getElementById('passw');
+    var pass2 = document.getElementById('conf_passw');
+    var message = document.getElementById('error-nwl');
+    var goodColor = "#66cc66";
+    var badColor = "#ff6666";
+
+    if(pass1.value.length > 5)
+    {
+        pass1.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "character number ok!"
+    }
+    else
+    {
+        pass1.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = " you have to enter at least 6 digit!"
+        return;
+    }
+
+    if(pass1.value == pass2.value)
+    {
+        pass2.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "ok!"
+    }
+	else
+    {
+        pass2.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = " These passwords don't match"
+    }
+});
+</script>
+<!-- Latest compiled and minified JavaScript -->
+<script crossorigin="anonymous" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}
+</body>
+</html>

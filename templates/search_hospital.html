@@ -1,83 +1,117 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="ie=edge" http-equiv="X-UA-Compatible">
 <head>
     <meta charset="UTF-8">
-    <link href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png"
-          rel="apple-touch-icon" type="image/png"/>
-    <meta content="CodePen" name="apple-mobile-web-app-title">
     <link href="ss/Medical-Health-Heart-beat.ico" rel="shortcut icon" type="image/x-icon"/>
     <link color="#111" href="ss/Medical-Health-Heart-beat.ico" rel="mask-icon" type=""/>
     <title>Med360 | Hospital Search</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
-body{
-  background: #f2f2f2;
-  font-family: 'Open Sans', sans-serif;
-}
+    body{
+      background: #f2f2f2;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .profile {
+        background-color: #6495ED;
+        }
+    form.searchBtn select {
+      padding: 10px;
+      font-size: 17px;
+      float: left;
+      width: 100%;
+      background: #f1f1f1;
+    }
+    form.searchBtn button {
+      width: 100%;
+      padding: 10px;
+      background: #2196F3;
+      color: white;
+      font-size: 17px;
+      border: 1px solid grey;
+      border-left: none;
+      cursor: pointer;
+    }
+    form.searchBtn button:hover {
+      background: #0b7dda;
+    }
+    form.searchBtn::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
 
-.search {
-  width: 100%;
-  position: relative;
-  display: flex;
-}
-
-.searchTerm {
-  width: 100%;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #32586b;
-<!--  color: #9DBFAF;-->
-}
-
-.searchTerm:focus{
-  color: #00B4CC;
-}
-
-.btn {
-  width: 40px;
-  height: 36px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-/*Resize the wrap to see the search bar change!*/
-.wrap{
-  width: 30%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-    </style>
+    .active {
+        background-color: #4CAF50;
+    }
+    .navbar{
+        background-color: #333;
+    }
+    .navbar a {
+        float: left;
+        font-size: 16px;
+        color: white;
+        text-align: center;
+        padding: 14px 14px;
+        text-decoration: none;
+    }
+    .center {
+      padding: 75% 0;
+      text-align: center;
+    }
+    body {
+      background-image: url("{{url_for('static', filename='search_bg.jpg')}}");
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 720px;
+      }
+      html, body {margin: 0; height: 100%; overflow: hidden}
+	</style>
     <script>
   window.console = window.console || function(t) {};
 
     </script>
     <script>
+
   if (document.location.search.match(/type=embed/gi)) {
     window.parent.postMessage("resize", "*");
   }
-
     </script>
 </head>
 <body translate="no">
-{% block head %}
-<div style="text-align:right"> logged in as {{ current_user.username }}</div>
-<div class="col-sm-6" style="text-align:right"><a class="btn form-control btn-primary" href={{url_for('logout')}}>logout</a>
-</div>
-<form action="/search_hospital" id="log-form" method="POST" name="log-form">
-    <div class="wrap">
+    <nav class="w3-mobile navbar navbar-fixed-top">
+      <div class="w3-mobile container">
+        <div class="w3-mobile navbar-header">
+          <a class=" w3-mobile navbar-brand " href="{{ url_for('index') }}">MED360</a>
+        </div>
+        <div class="w3-mobile collapse navbar-collapse" id="navbar-collapse-1">
+          <ul class=" w3-mobile nav navbar-nav" style="float:left">
+            <li><a class="active" href="{{url_for('search_hospital')}}">Search Hospitals</a></li>
+            <li><a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a></li>
+          </ul>
+            <div class="w3-mobile w3-dropdown-hover w3-right">
+                <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile" ><i style="color:white">Hi, {{current_user.name}} <i class="fa fa-bars"></i></i></button>
+                    <div class="w3-mobile w3-dropdown-content w3-bar-block w3-border" style="right:0">
+                        <button class="w3-mobile w3-button w3-teal" onclick="window.location.href='{{ url_for('view_profile') }}'" style="width:100%">My Profile</button>
+                        <button class="w3-mobile w3-button w3-teal"  onclick="window.location.href='{{url_for('logout') }}'" style="width:100%">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div><!--/.nav-collapse -->
+      </div><!-- /.container -->
+    </nav>
+    <br/><br/><br><br>
+<form action="/search_hospital" class="searchBtn" id="log-form" method="POST" name="log-form" style="margin:auto;max-width:auto;padding:20vw"|>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class="alert">
@@ -87,27 +121,24 @@ body{
         </ul>
         {% endif %}
         {% endwith %}
-        <div class="searchTerm">
-            <br/>
             {{form.hidden_tag()}}
-            <label>States :&nbsp</label>
-            {{form.state}}
-            <label>District :&nbsp</label>
-            {{form.city}}
-            <label>Specialities :&nbsp</label>
-            {{form.spec}}
-            <button class="btn form-control btn-default" type="submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
-    </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <nobr>
+                    <div class="col-sm-3">{{form.state}}</div>
+                    <div class="col-sm-3">{{form.city}}</div>
+                    <div class="col-sm-3">{{form.spec}}</div>
+                    <div class="col-sm-2"><button type="submit"><i class="fa fa-search"></i></button></div>
+                    </nobr>
+                </div>
+            </div>
 </form>
-<script type="text/javascript">
-    window.history.forward();
-    function noBack() {
-        window.history.forward();
-    }
-</script>
+<!--<script type="text/javascript">-->
+<!--    window.history.forward();-->
+<!--    function noBack() {-->
+<!--        window.history.forward();-->
+<!--    }-->
+<!--</script>-->
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
@@ -124,6 +155,5 @@ body{
             });
         }
 </script>
-{% endblock %}
 </body>
 </html>

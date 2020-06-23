@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_bootstrap import Bootstrap
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
@@ -8,9 +9,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TESTING'] = False
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = '12345'
+Bootstrap(app)
 db = SQLAlchemy(app)
 
 
+# import admin_view for displaying model. a
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     state = db.Column(db.String(100), nullable=False)
@@ -30,7 +33,12 @@ class City(db.Model):
 
     @classmethod
     def get_by_id(cls, _id):
-        return cls.query.filter_by(id=_id).first()
+        return cls.query.filter_by(id=_id).first()\
+
+
+    @classmethod
+    def get_id_by_name(cls, _name):
+        return cls.query.filter_by(name=_name).first()
 
     def __init__(self, _id, _name, _state):
         self.id = _id
@@ -89,24 +97,25 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
-    age = db.Column(db.Integer(), nullable=False)
-    pan = db.Column(db.String(10), nullable=False, unique=True)
     name = db.Column(db.String(80), nullable=False)
     sex = db.Column(db.String(10), nullable=False)
     dob = db.Column(db.Date(), nullable=False)
-    bld_grp = db.Column(db.String(5), nullable=False)
+    aadhar = db.Column(db.Integer(), nullable=False, unique=True)
     addr = db.Column(db.String(100), nullable=False)
     state = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)
-    po_num = db.Column(db.Integer(), nullable=False)
     mobile = db.Column(db.Integer(), nullable=False, unique=True)
-    aadhar = db.Column(db.Integer(), nullable=False, unique=True)
+    bld_donation = db.Column(db.Boolean(), nullable=False)
+    age = db.Column(db.Integer(), nullable=True)
+    bld_grp = db.Column(db.String(5), nullable=True)
+    po_num = db.Column(db.Integer(), nullable=True)
     organ_donation = db.Column(db.Boolean(), nullable=True)
-    bld_donation = db.Column(db.Boolean(), nullable=True)
+    pan = db.Column(db.String(10), nullable=True, unique=True)
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+        return 'commit-success'
 
     def remove_from_db(self):
         db.session.delete(self)
