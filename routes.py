@@ -14,6 +14,8 @@ from views import RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginFor
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+# login_manager.needs_refresh_message = u"To protect your account, please reauthenticate to access this page."
+# login_manager.refresh_view = "login"
 
 mail = Mail()
 mail.init_app(app)
@@ -107,6 +109,16 @@ def check(username):
         return jsonify(True)
 
 
+@app.route('/check/<username>')
+def check(username):
+    user = User.find_user_by_username(username=username)
+    print(user)
+    if user is None:
+        return jsonify(False)
+    else:
+        return jsonify(True)
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -159,6 +171,7 @@ def resetPassword():
         uname = form.uname.data
         dob = form.dob.data
         user = User.find_user_by_username(uname)
+        print(user.name)
         if user is not None:
             print(user.name)
             passw = form.passw.data

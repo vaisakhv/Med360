@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 
 from models import db, User, City
+from cryptography.fernet import Fernet
 
 
 def get_all_states_for_donors():
