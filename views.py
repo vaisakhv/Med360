@@ -62,7 +62,7 @@ class RegisterForm(FlaskForm):
     conf_passw = PasswordField('conf_passw',
                                [validators.DataRequired('Please re-enter the password'), validators.Length(min=7)],
                                render_kw={'placeholder': 'Confirm Password'})
-    age = IntegerField('age', [validators.DataRequired('Please enter a valid age')], render_kw={'placeholder': 'Age'})
+    # age = IntegerField('age', [validators.DataRequired('Please enter a valid age')], render_kw={'placeholder': 'Age'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')
     pan = StringField('pan', [validators.DataRequired('Enter your PAN number'), validators.Length(max=10, min=10)],
                       render_kw={'placeholder': 'PAN'})
@@ -94,7 +94,7 @@ class ProfileUpdateForm(FlaskForm):
                        coerce=int)
     pincode = IntegerField('pincode', [validators.DataRequired('Please enter you pincode')],
                            render_kw={'placeholder': 'Pincode'})
-    age = IntegerField('age', [validators.DataRequired('Please enter a valid age')], render_kw={'placeholder': 'Age'})
+    # age = IntegerField('age', [validators.DataRequired('Please enter a valid age')], render_kw={'placeholder': 'Age'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')
     pan = StringField('pan', [validators.DataRequired('Enter your PAN number'), validators.Length(max=10, min=10)],
                       render_kw={'placeholder': 'PAN'})

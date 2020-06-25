@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import UserMixin
@@ -7,6 +9,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TESTING'] = False
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = '12345'
 Bootstrap(app)

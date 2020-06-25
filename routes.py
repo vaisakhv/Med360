@@ -2,23 +2,23 @@ from distutils.util import strtobool
 
 import requests
 from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask_admin.contrib.sqla import ModelView
 from flask_login import login_required, LoginManager, login_user, current_user, logout_user
-from flask_mail import Mail
+# from flask_mail import Mail
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from med360 import decodeSpecialties, Security
-from models import User, Hospital, City, app
+from med360 import decodeSpecialties, get_age, Security, admin
+from models import User, Hospital, City, app, db
 from views import RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm, ResetPasswordForm, ProfileUpdateForm, \
     ContactForm
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-# login_manager.needs_refresh_message = u"To protect your account, please reauthenticate to access this page."
-# login_manager.refresh_view = "login"
 
-mail = Mail()
-mail.init_app(app)
+
+# mail = Mail()
+# mail.init_app(app)
 
 
 @login_manager.user_loader
@@ -89,24 +89,14 @@ def getCovidData():
 
 @app.route('/')
 def index():
-    india_val = [0]
-    global_val = {"Global":'0'}
+    india_val = [[0]]
+    global_val = {"Global": '0'}
     auth = False
     if current_user.is_authenticated:
         india_val, global_val = getCovidData()
         auth = True
     print(india_val[0], '\n', global_val['Global'])
     return render_template('index.html', auth=auth, current_user=current_user, india=india_val, world=global_val)
-
-
-@app.route('/check/<username>')
-def check(username):
-    user = User.find_user_by_username(username=username)
-    print(user)
-    if user is None:
-        return jsonify(False)
-    else:
-        return jsonify(True)
 
 
 @app.route('/check/<username>')
@@ -127,14 +117,17 @@ def login():
         passw = form.passw.data
         print(uname, passw)
         user = User.find_user_by_username(username=uname)
-        print(user)
         if uname != '' or passw != '':
-            user = User.find_user_by_username(username=uname)
             if user is not None:
                 if check_password_hash(user.password, passw):
                     print(user.name)
-                    print(user.password)
+                    print(user.username)
                     login_user(user)
+                    if user.username == "vaisakhv":
+                        admin.add_view(ModelView(User, db.session))
+                        admin.add_view(ModelView(Hospital, db.session))
+                        admin.add_view(ModelView(City, db.session))
+                        print("in admin view")
                     next = request.args.get('next')
                     return redirect(next or url_for('index'))
                 flash('Invalid password for user ' + user.username)
@@ -209,12 +202,13 @@ def register():
         mail = form.mail.data
         passw = form.passw.data
         conf_passw = form.conf_passw.data
-        age = form.age.data
+        # age = form.age.data
         pan = form.pan.data
         name = form.name.data
         sex = form.sex.data
         dob = form.dob.data
-        print(dob)
+        age = get_age(dob)
+        print(age, dob)
         bld_grp = form.bld_grp.data
         addr = form.addr.data
         state = form.state.data
@@ -358,8 +352,6 @@ def hospital_details():
     specs_emp = hosp.hosp_spec_empanl
     dec_specs_up = decodeSpecialties(specs_up)
     dec_specs_emp = decodeSpecialties(specs_emp)
-    # addr = ' '.join(hosp.hosp_addr.split()).replace(' ', '+')
-    # addr = addr.replace(',', '')
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
                            specs_emp=dec_specs_emp)
 
@@ -386,6 +378,11 @@ def search_blood_donor():
         flash(message="No donors found!!")
         render_template("search_blood_donor.html", current_user=current_user, form=form)
     return render_template("search_blood_donor.html", current_user=current_user, form=form)
+
+
+def __init__(self, **kwargs):
+    for key, value in kwargs.items():
+        setattr(self, key, value)
 
 
 if __name__ == '__main__':

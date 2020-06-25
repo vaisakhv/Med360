@@ -1,7 +1,11 @@
-from cryptography.fernet import Fernet
+from datetime import date
 
-from models import db, User, City
 from cryptography.fernet import Fernet
+from flask_admin import Admin
+
+from models import db, app, User, City
+
+admin = Admin(app)
 
 
 def get_all_states_for_donors():
@@ -41,6 +45,11 @@ def decodeSpecialties(spec):
             specs.append(codes._get_value(spec.replace(' ', ''), col='spec'))
         return specs
     return ['NA']
+
+
+def get_age(dob):
+    today = date.today()
+    return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
 
 class Security:

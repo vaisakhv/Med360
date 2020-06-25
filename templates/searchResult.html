@@ -104,8 +104,8 @@
     <tbody>
     {% for item in data %}
     <tr>
-        <!--        <td>{{ item.hosp_spec_empnl }}</td>-->
-        <td><a hosp_id=encrypt(item.hosp_id|string()))}} href={{url_for('hospital_details',>{{ item.hosp_name }}</a></td>
+        <td><a hosp_id=encrypt(item.hosp_id|string()))}} href={{url_for('hospital_details',>{{ item.hosp_name }}</a>
+        </td>
         <td>{{ item.hosp_addr }}</td>
         <td>{{ item.hosp_contact_mail }}</td>
         <td>{{ item.hosp_contact_no }}</td>
