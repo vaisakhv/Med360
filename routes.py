@@ -403,6 +403,5 @@ def __init__(self, **kwargs):
     for key, value in kwargs.items():
         setattr(self, key, value)
 
-
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
