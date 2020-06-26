@@ -1,4 +1,3 @@
 # Med360
 MED360 | A Total healthcare platform
-![GitHub Logo](/static/med.png){:height="100px" width="100px"}
-Format: ![MED360](url)
+<img src="https://raw.githubusercontent.com/vaisakhv/Med360/beta_01/static/med.png?token=AE66CTH7XMZZTJJJ23RPZYC66YIVU" width="250">
