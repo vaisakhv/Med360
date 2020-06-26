@@ -3,7 +3,7 @@ from datetime import date
 from cryptography.fernet import Fernet
 from flask_admin import Admin
 
-from models import db, app, User, City
+from models import db, app, User, City, Role
 
 admin = Admin(app)
 
@@ -14,6 +14,10 @@ def get_all_states_for_donors():
 
 def get_all_states():
     return [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
+
+
+def get_all_roles():
+    return [(r[0], r[1]) for r in db.session.query(Role.id, Role.name).distinct()]
 
 
 def spec_code_dict():

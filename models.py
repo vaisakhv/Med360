@@ -3,6 +3,9 @@ from datetime import timedelta
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import UserMixin
+# import for migrate
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -14,9 +17,11 @@ app.config.from_object(__name__)
 app.config['SECRET_KEY'] = '12345'
 Bootstrap(app)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 
-# import admin_view for displaying model. a
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     state = db.Column(db.String(100), nullable=False)
@@ -36,8 +41,7 @@ class City(db.Model):
 
     @classmethod
     def get_by_id(cls, _id):
-        return cls.query.filter_by(id=_id).first()\
-
+        return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def get_id_by_name(cls, _name):
@@ -112,8 +116,9 @@ class User(db.Model, UserMixin):
     age = db.Column(db.Integer(), nullable=True)
     bld_grp = db.Column(db.String(5), nullable=True)
     po_num = db.Column(db.Integer(), nullable=True)
-    organ_donation = db.Column(db.Boolean(), nullable=True)
+    organ_donation = db.Column(db.Boolean(), nullable=False)
     pan = db.Column(db.String(10), nullable=True, unique=True)
+    role = db.Column(db.Integer(), nullable=False, default=2)
 
     def save_to_db(self):
         db.session.add(self)
@@ -142,7 +147,7 @@ class User(db.Model, UserMixin):
         user.save_to_db()
 
     def __init__(self, username, email, password, pan, name, sex, dob, bld_grp, addr, state, po_num, mobile, aadhar,
-                 organ_donation, bld_donaton, city, age):
+                 organ_donation, bld_donaton, city, age, role):
         self.username = username
         self.email = email
         self.password = password
@@ -160,7 +165,34 @@ class User(db.Model, UserMixin):
         self.aadhar = aadhar
         self.organ_donation = organ_donation
         self.bld_donation = bld_donaton
+        self.role = role
+
+
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+    @classmethod
+    def find_role_by_name(cls, name):
+        return cls.query.filter_by(name=name).first()
+
+    @classmethod
+    def find_role_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def __init__(self, name):
+        self.name = name
 
 
 if __name__ == "__main__":
-    db.create_all()
+    # db.create_all()
+    # run migrate
+    manager.run()

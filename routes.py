@@ -8,7 +8,7 @@ from flask_login import login_required, LoginManager, login_user, current_user, 
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from med360 import decodeSpecialties, get_age, Security, admin
-from models import User, Hospital, City, app, db
+from models import User, Hospital, City, Role, app, db
 from views import RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm, ResetPasswordForm, ProfileUpdateForm, \
     ContactForm
 
@@ -36,6 +36,7 @@ def not_found(e):
     return render_template("404.html")
 
 
+@app.errorhandler
 @app.errorhandler(500)
 def server_error(e):
     return render_template("500.html")
@@ -120,14 +121,21 @@ def login():
         if uname != '' or passw != '':
             if user is not None:
                 if check_password_hash(user.password, passw):
-                    print(user.name)
                     print(user.username)
                     login_user(user)
-                    if user.username == "vaisakhv":
+                    try:
+                        user_role = Role.find_role_by_id(user.role)
+                    except Exception as e:
+                        print(str(e))
+                    print('role_name=', user_role.name, 'role_id=', user_role.id)
+                    # all_roles = Role.get_all_roles()
+
+                    if user_role.name == "admin":
                         admin.add_view(ModelView(User, db.session))
                         admin.add_view(ModelView(Hospital, db.session))
                         admin.add_view(ModelView(City, db.session))
-                        print("in admin view")
+                        admin.add_view(ModelView(Role, db.session))
+                        print("Enabling admin view")
                     next = request.args.get('next')
                     return redirect(next or url_for('index'))
                 flash('Invalid password for user ' + user.username)
@@ -154,7 +162,8 @@ def logout():
 @app.route('/me')
 @login_required
 def view_profile():
-    return render_template('profile_page.html', title='My Details', user=current_user)
+    user_role = Role.find_role_by_id(current_user.role)
+    return render_template('profile_page.html', title='My Details', user=current_user, role=user_role.name)
 
 
 @app.route("/resetpwd", methods=["GET", "POST"])
@@ -196,19 +205,15 @@ def register():
         return redirect(url_for('index'))
     print(form.validate_on_submit())
     print(form.errors)
-    print(form.city.data)
     if form.validate_on_submit():
         uname = form.uname.data
         mail = form.mail.data
         passw = form.passw.data
         conf_passw = form.conf_passw.data
-        # age = form.age.data
         pan = form.pan.data
         name = form.name.data
         sex = form.sex.data
         dob = form.dob.data
-        age = get_age(dob)
-        print(age, dob)
         bld_grp = form.bld_grp.data
         addr = form.addr.data
         state = form.state.data
@@ -218,14 +223,18 @@ def register():
         aadhar = form.aadhar.data
         organ_donation = bool(strtobool(form.organ_donation.data))
         bld_donation = bool(strtobool(form.bld_donation.data))
+        user_role = int(form.role.data)
+        print('selected role id is ', user_role)
+        r = Role.find_role_by_id(user_role)
+        print('selected role name is ', r.name)
         existing_user = User.query.filter_by(mobile=mobile, email=mail, username=uname, aadhar=aadhar, pan=pan).first()
         if existing_user is None:
             if conf_passw == passw:
                 new_user = User(username=uname, email=mail, password=generate_password_hash(passw, method='sha256'),
-                                pan=pan, city=city.name, age=age,
+                                pan=pan, city=city.name, age=get_age(dob),
                                 name=name, sex=sex, dob=dob,
                                 bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
-                                organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation))
+                                organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation), role=user_role)
                 new_user.save_to_db()
                 return redirect(url_for("login"))
             print("Password don't match")
@@ -245,6 +254,9 @@ def update_profile():
     form = ProfileUpdateForm(city=city.id, bld_grp=user.bld_grp, sex=user.sex, organ_donation=bool(user.organ_donation),
                              bld_donation=bool(user.bld_donation))
     form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
+
+    role = Role.find_role_by_id(current_user.role)
+    print('user role is ', role.name)
     print(form.validate_on_submit())
     print(form.errors)
     print('log')
@@ -252,11 +264,11 @@ def update_profile():
         # current_user.uname = user.username
         user.uname = form.uname.data
         user.mail = form.mail.data
-        user.age = form.age.data
+        user.dob = form.dob.data
+        user.age = get_age(form.dob.data)
         user.pan = form.pan.data
         user.name = form.name.data
         user.sex = form.sex.data
-        user.dob = form.dob.data
         user.bld_grp = form.bld_grp.data
         user.addr = form.addr.data
         user.state = form.state.data
@@ -265,11 +277,17 @@ def update_profile():
         user.po_num = form.pincode.data
         user.mobile = form.mobile.data
         user.aadhar = form.aadhar.data
+        user_role = int(form.role.data)
         user.organ_donation = bool(strtobool(form.organ_donation.data))
         user.bld_donation = bool(strtobool(form.bld_donation.data))
+        role = Role.find_role_by_id(user_role)
+        user.role = role.id
         user.save_to_db()
+        print(current_user.id)
+        print('user_id=', user.id, 'selected_role_id=', role.id, 'selected_role_name=', role.name)
+        print('user_id=', user.id, 'role_id_db=', user.role, )
         return redirect(url_for("view_profile"))
-    return render_template("update_profile.html", form=form)
+    return render_template("update_profile.html", form=form, role=role.name)
 
 
 @app.route('/remove_acnt', methods=['POST', 'GET'])

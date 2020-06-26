@@ -3,7 +3,7 @@ from wtforms import SelectField, StringField, IntegerField, PasswordField, valid
     SubmitField
 from wtforms.fields.html5 import DateField
 
-from med360 import get_all_states, get_all_states_for_donors, spec_code_dict
+from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles
 
 
 class SearchHospitalForm(FlaskForm):
@@ -42,6 +42,9 @@ class ResetPasswordForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     states_in_db = get_all_states()
+    roles_from_db = get_all_roles()
+    role = SelectField('role', [validators.DataRequired('Please enter a valid Role')], choices=roles_from_db,
+                       coerce=int)
     uname = StringField('uname', [validators.DataRequired('Please enter a valid Username'), validators.Length(min=7)],
                         render_kw={'placeholder': 'Username'})
     name = StringField('name', [validators.DataRequired('Please enter you name')],
@@ -81,6 +84,9 @@ class RegisterForm(FlaskForm):
 
 class ProfileUpdateForm(FlaskForm):
     states_in_db = get_all_states()
+    roles_from_db = get_all_roles()
+    role = SelectField('role', [validators.DataRequired('Please enter a valid Role')], choices=roles_from_db,
+                       coerce=int)
     uname = StringField('uname', render_kw={'disabled': 'disabled'})
     name = StringField('name')
     mail = StringField('mail', [validators.DataRequired('Please enter a valid email'),

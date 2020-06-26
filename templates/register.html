@@ -153,8 +153,10 @@ body {
         </ul>
         {% endif %}
     {% endwith %}
-    <form action="" class="login-form"  method="POST">
+    <form action="" class="login-form" method="POST">
 		{{form.hidden_tag()}}
+		<label>Role :&nbsp</label>
+		{{form.role(class_='form-control')}}<br>
 		{{form.uname(class_='form-control')}}
 		{{form.name(class_='form-control')}}
 		{{form.mail(class_='form-control')}}
@@ -166,7 +168,6 @@ body {
 		<div id="error-nwl"></div>
 		<label>Date Of Brth :&nbsp</label>
 		{{form.dob(class_='form-control')}}<br/>
-<!--		{{form.age(class_='form-control')}}<br/>-->
 		{{form.pan(class_='form-control')}}<br/>
 		{{form.aadhar(class_='form-control')}}<br/>
 		<label>State :&nbsp</label>

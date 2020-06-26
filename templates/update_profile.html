@@ -203,26 +203,26 @@ body {
         </ul>
         {% endif %}
     {% endwith %}
-    <form action="" class="login-form"  method="POST">
-		{{form.hidden_tag()}}
-		{{form.uname(value=current_user.username)}}
-		{{form.name(value=current_user.name)}}
-		{{form.mail(value=current_user.email)}}
-		{{form.mobile(value=current_user.mobile)}}
-		{{form.addr(value=current_user.addr)}}
-		{{form.pincode(value=current_user.po_num)}}
-		<label>Date Of Brth :&nbsp</label>
-		{{form.dob(value=current_user.dob)}}<br/>
-<!--		{{form.age(value=current_user.age)}}<br/>-->
-		{{form.pan(value=current_user.pan)}}<br/>
-		{{form.aadhar(value=current_user.aadhar)}}<br/>
-		<label>State :&nbsp</label>
-		{{form.state(class_='form-control')}}<br>
-		<label>city :&nbsp</label>
-		{{form.city(class_='form-control')}}<br>
-		<label>Sex :&nbsp</label>
-		{{form.sex(class_='form-control')}}<br><br>
-		<label>Blood Group :&nbsp</label>
+    <form action="" class="login-form" method="POST">
+        {{form.hidden_tag()}}
+        {{form.role(class_='form-control')}}
+        {{form.uname(value=current_user.username)}}
+        {{form.name(value=current_user.name)}}
+        {{form.mail(value=current_user.email)}}
+        {{form.mobile(value=current_user.mobile)}}
+        {{form.addr(value=current_user.addr)}}
+        {{form.pincode(value=current_user.po_num)}}
+        <label>Date Of Brth :&nbsp</label>
+        {{form.dob(value=current_user.dob)}}<br/>
+        {{form.pan(value=current_user.pan)}}<br/>
+        {{form.aadhar(value=current_user.aadhar)}}<br/>
+        <label>State :&nbsp</label>
+        {{form.state(class_='form-control')}}<br>
+        <label>city :&nbsp</label>
+        {{form.city(class_='form-control')}}<br>
+        <label>Sex :&nbsp</label>
+        {{form.sex(class_='form-control')}}<br><br>
+        <label>Blood Group :&nbsp</label>
 		{{form.bld_grp(class_='form-control')}}<br/>
 		<label>Are you willing to be a blood donor ?&nbsp</label>
 		{{form.bld_donation(class_='form-control')}}<br/>
