@@ -129,13 +129,13 @@ def login():
                         print(str(e))
                     print('role_name=', user_role.name, 'role_id=', user_role.id)
                     # all_roles = Role.get_all_roles()
-
                     if user_role.name == "admin":
+                        print("Enabling admin view")
                         admin.add_view(ModelView(User, db.session))
                         admin.add_view(ModelView(Hospital, db.session))
                         admin.add_view(ModelView(City, db.session))
                         admin.add_view(ModelView(Role, db.session))
-                        print("Enabling admin view")
+
                     next = request.args.get('next')
                     return redirect(next or url_for('index'))
                 flash('Invalid password for user ' + user.username)
