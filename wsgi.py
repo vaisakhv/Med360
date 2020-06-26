@@ -1,4 +1,3 @@
-from models import create_app
+from routes import app
 
-app = create_app()
-app.run()
+app
