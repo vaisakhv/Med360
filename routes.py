@@ -128,7 +128,8 @@ def login():
                     except Exception as e:
                         print(str(e))
                     print('role_name=', user_role.name, 'role_id=', user_role.id)
-                    # all_roles = Role.get_all_roles()
+                    # all_roles =
+                    # Role.get_all_roles()
                     if user_role.name == "admin":
                         print("Enabling admin view")
                         admin.add_view(ModelView(User, db.session))

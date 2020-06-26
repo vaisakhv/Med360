@@ -4,22 +4,28 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import UserMixin
 # import for migrate
-from flask_migrate import Migrate, MigrateCommand
-from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['TESTING'] = False
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
-app.config.from_object(__name__)
-app.config['SECRET_KEY'] = '12345'
-Bootstrap(app)
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['TESTING'] = False
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
+    app.config.from_object(__name__)
+    app.config['SECRET_KEY'] = '12345'
+    Bootstrap(app)
+    return app
+
+
+app = create_app()
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
+
+
+# migrate = Migrate(app, db)
+# manager = Manager(app)
+# manager.add_command('db', MigrateCommand)
 
 
 class City(db.Model):
