@@ -58,7 +58,7 @@
         <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
         {% if auth %}
         <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn">Hi, {{current_user.name}}
+            <button class="dropbtn" style="float:right;">Hi, {{current_user.name}}
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
@@ -68,7 +68,7 @@
         </div>
         {%else%}
         <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn">Hi, Guest
+            <button class="dropbtn" style="float:right;">Hi, Guest
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">

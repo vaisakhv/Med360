@@ -20,6 +20,12 @@ login_manager.login_view = 'login'
 # mail = Mail()
 # mail.init_app(app)
 
+def is_auth():
+    auth = False
+    if current_user.is_authenticated:
+        auth = True
+    return auth
+
 
 @login_manager.user_loader
 def user_loader(uid):
@@ -44,15 +50,12 @@ def server_error(e):
 
 @app.route("/about")
 def about():
-    return render_template("/about.html")
+    return render_template("/about.html", auth=is_auth())
 
 
 @app.route("/services")
 def services():
-    auth = False
-    if current_user.is_authenticated:
-        auth = True
-    return render_template("/services.html", auth=auth)
+    return render_template("/services.html", auth=is_auth())
 
 
 @app.route('/contact')
@@ -68,7 +71,7 @@ def contact():
     #           """ % (form.name.data, form.email.data, form.message.data)
     #     mail.send(msg)
     #     return render_template('contact.html', form=form, success=True)
-    return render_template('contact.html', form=form)
+    return render_template('contact.html', form=form, auth=is_auth())
 
 
 def getCovidData():
@@ -92,12 +95,8 @@ def getCovidData():
 def index():
     india_val = [[0]]
     global_val = {"Global": '0'}
-    auth = False
-    if current_user.is_authenticated:
-        india_val, global_val = getCovidData()
-        auth = True
     print(india_val[0], '\n', global_val['Global'])
-    return render_template('index.html', auth=auth, current_user=current_user, india=india_val, world=global_val)
+    return render_template('index.html', auth=is_auth(), current_user=current_user, india=india_val, world=global_val)
 
 
 @app.route('/check/<username>')
@@ -164,7 +163,8 @@ def logout():
 @login_required
 def view_profile():
     user_role = Role.find_role_by_id(current_user.role)
-    return render_template('profile_page.html', title='My Details', user=current_user, role=user_role.name)
+    return render_template('profile_page.html', title='My Details', user=current_user, role=user_role.name,
+                           auth=is_auth())
 
 
 @app.route("/resetpwd", methods=["GET", "POST"])
@@ -195,7 +195,7 @@ def resetPassword():
             return render_template("resetpwd.html", form=form)
         flash(message='Username not found')
         return render_template("resetpwd.html", form=form)
-    return render_template("resetpwd.html", form=form)
+    return render_template("resetpwd.html", form=form, auth=is_auth())
 
 
 @app.route("/register", methods=["GET", "POST"])

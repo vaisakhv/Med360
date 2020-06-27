@@ -192,24 +192,25 @@ span.psw {
 		<a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
 		{% if auth %}
 		<div class="dropdown w3-dropdown-hover">
-			<button class="dropbtn">Hi, {{current_user.name}}
-				<i class="fa fa-caret-down"></i>
-			</button>
-			<div class="dropdown-content">
-				<a href="{{ url_for('view_profile') }}">My Profile</a>
-				<a href="{{url_for('logout') }}">Logout</a>
-			</div>
-		</div>
+            <button class="dropbtn" style="float:right;>Hi, {{current_user.name}}
+				<i class=" fa fa-caret-down
+            "></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('view_profile') }}">My Profile</a>
+                <a href="{{url_for('logout') }}">Logout</a>
+            </div>
+        </div>
 		{%else%}
-		<div class="dropdown w3-dropdown-hover">
-			<button class="dropbtn">Hi, Guest
-				<i class="fa fa-caret-down"></i>
-			</button>
-			<div class="dropdown-content">
-				<a href="{{ url_for('login') }}">Login</a>
-				<a href="{{url_for('register') }}">Register</a>
-			</div>
-		</div>
+        <div class="dropdown w3-dropdown-hover">
+            <button class="dropbtn" style="float:right;">Hi, Guest
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{url_for('register') }}">Register</a>
+            </div>
+        </div>
 		<a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
 	</div>
 	{% endif %}
