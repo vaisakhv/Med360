@@ -28,6 +28,7 @@
 
 .dropdown {
   overflow: hidden;
+  float:right;
 }
 
 .dropdown .dropbtn {
