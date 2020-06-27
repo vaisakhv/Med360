@@ -4,8 +4,6 @@
 <meta content="ie=edge" http-equiv="X-UA-Compatible">
 <head>
     <meta charset="UTF-8">
-    <link href="ss/Medical-Health-Heart-beat.ico" rel="shortcut icon" type="image/x-icon"/>
-    <link color="#111" href="ss/Medical-Health-Heart-beat.ico" rel="mask-icon" type=""/>
     <title>Med360 | Hospital Search</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -52,13 +50,16 @@
       padding: 75% 0;
       text-align: center;
     }
+
+    html, body {margin: 0; height: 100%; overflow: hidden}
+
     body {
       background-image: url("{{url_for('static', filename='search_bg.jpg')}}");
       background-size: cover;
       background-repeat: no-repeat;
-      height: 720px;
+      height: 100%;
       }
-      html, body {margin: 0; height: 100%; overflow: hidden}
+
 	</style>
     <script>
   window.console = window.console || function(t) {};
@@ -75,9 +76,9 @@
 <div id="test">
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('index') }}"><a class="navbar-brand active" href="{{ url_for('index') }}">
-            <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
+            <img src="{{url_for('static', filename='logo_small.PNG')}}" style="padding:0;"></a>
         </a>
-        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
+        <a class="active" href="{{url_for('search_hospital') }}">Search Hospitals</a>
         <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
         <div class="dropdown" style="float:right;">
             <button class="dropbtn">Hi, {{current_user.name}}
@@ -138,8 +139,6 @@
                 });
             });
         }
-
-
 </script>
 <script>
     function myFunction() {
@@ -150,9 +149,6 @@
     x.className = "topnav";
   }
 }
-
-
-
 </script>
 </body>
 </html>
