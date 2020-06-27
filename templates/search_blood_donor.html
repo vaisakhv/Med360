@@ -71,8 +71,7 @@ body{
         </a>
         <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
         <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        {% if auth %}
-        <div class="dropdown w3-dropdown-hover">
+        <div class="dropdown ">
             <button class="dropbtn">Hi, {{current_user.name}}
                 <i class="fa fa-caret-down"></i>
             </button>
@@ -81,19 +80,8 @@ body{
                 <a href="{{url_for('logout') }}">Logout</a>
             </div>
         </div>
-        {%else%}
-        <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn">Hi, Guest
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{url_for('register') }}">Register</a>
-            </div>
-        </div>
         <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
     </div>
-    {% endif %}
 </div>
 <form class="searchBtn" id="log-form" method="POST" name="log-form" style="margin:auto;max-width:auto;padding:1 0vw"|>
     {{ form.csrf_token }}
