@@ -28,7 +28,6 @@
 
 .dropdown {
   overflow: hidden;
-  float:right;
 }
 
 .dropdown .dropbtn {
@@ -40,6 +39,7 @@
   background-color: inherit;
   font-family: inherit;
   margin: 0;
+  float:right;
 }
 
 .dropdown-content {
