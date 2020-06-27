@@ -67,36 +67,67 @@ input[type=submit]:hover {
 </head>
 <body>
 <div class="container">
-  <div style="text-align:center">
-    <h2>Contact Us</h2>
-    <p>Swing by for a cup of coffee, or leave us a message:</p>
-  </div>
-  <div class="row">
-    <div class="column">
-      <img src="{{url_for('static', filename='med.png')}}" style="width:100%">
+    <div id="body">
+        <div class="topnav" id="myTopnav">
+            <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
+                <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
+            </a>
+            <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
+            <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
+            {% if auth %}
+            <div class="dropdown w3-dropdown-hover">
+                <button class="dropbtn">Hi, {{current_user.name}}
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('view_profile') }}">My Profile</a>
+                    <a href="{{url_for('logout') }}">Logout</a>
+                </div>
+            </div>
+            {%else%}
+            <div class="dropdown w3-dropdown-hover">
+                <button class="dropbtn">Hi, Guest
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{url_for('register') }}">Register</a>
+                </div>
+            </div>
+            <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+        </div>
+        {% endif %}
     </div>
-    <div class="column">
-          {% if success %}
-    <p>Thank you for your message. We'll get back to you shortly.</p>
+    <div style="text-align:center">
+        <h2>Contact Us</h2>
+        <p>Swing by for a cup of coffee, or leave us a message:</p>
+    </div>
+    <div class="row">
+        <div class="column">
+            <img src="{{url_for('static', filename='med.png')}}" style="width:100%">
+        </div>
+        <div class="column">
+            {% if success %}
+            <p>Thank you for your message. We'll get back to you shortly.</p>
 
-  {% else %}
+            {% else %}
 
-    {% for message in form.name.errors %}
-      <div class="flash">{{ message }}</div>
-    {% endfor %}
+            {% for message in form.name.errors %}
+            <div class="flash">{{ message }}</div>
+            {% endfor %}
 
-    {% for message in form.email.errors %}
-      <div class="flash">{{ message }}</div>
-    {% endfor %}
+            {% for message in form.email.errors %}
+            <div class="flash">{{ message }}</div>
+            {% endfor %}
 
-    {% for message in form.subject.errors %}
-      <div class="flash">{{ message }}</div>
-    {% endfor %}
+            {% for message in form.subject.errors %}
+            <div class="flash">{{ message }}</div>
+            {% endfor %}
 
-    {% for message in form.message.errors %}
-      <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
+            {% for message in form.message.errors %}
+            <div class="flash">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
       <form action="{{ url_for('contact') }}" method=post>
           {{ form.hidden_tag() }}
           {{ form.name.label }}

@@ -13,6 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
             type="text/javascript"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
+
     <style>
 @font-face {
   font-family: 'Open Sans';
@@ -151,23 +153,6 @@ body {
 }
 
     </style>
-    <style>
-		.active {
-		background-color: #4CAF50;
-		}
-		.navbar{
-		background-color: #333;
-		}
-
-		.navbar a {
-		float: left;
-		font-size: 16px;
-		color: white;
-		text-align: center;
-		padding: 14px 14px;
-		text-decoration: none;
-		}
-	</style>
     <script>
   window.console = window.console || function(t) {};
 
@@ -180,6 +165,37 @@ body {
     </script>
 </head>
 <body translate="no">
+<div id="body">
+    <div class="topnav" id="myTopnav">
+        <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
+            <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
+        </a>
+        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
+        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
+        {% if auth %}
+        <div class="dropdown w3-dropdown-hover">
+            <button class="dropbtn">Hi, {{current_user.name}}
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('view_profile') }}">My Profile</a>
+                <a href="{{url_for('logout') }}">Logout</a>
+            </div>
+        </div>
+        {%else%}
+        <div class="dropdown w3-dropdown-hover">
+            <button class="dropbtn">Hi, Guest
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{url_for('register') }}">Register</a>
+            </div>
+        </div>
+        <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+    </div>
+    {% endif %}
+</div>
 <div class="log-form">
     <h2>Reset your account password</h2>
     {% block head %}
@@ -241,6 +257,21 @@ $('#conf_passw').on('keyup', function ()
         message.innerHTML = " These passwords don't match"
     }
 });
+
+
+</script>
+<script>
+    function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+
+
 </script>
 </body>
 </html>

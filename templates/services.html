@@ -8,6 +8,7 @@
 <!-- Latest compiled and minified CSS -->
 <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
 <style>
 body {
   font-family: Arial;
@@ -15,21 +16,7 @@ body {
 .profile {
       background-color: #6495ED;
       }
-  .active {
-    background-color: #4CAF50;
-  }
-  .navbar{
-background-color: #333;
-  }
 
-  .navbar a {
-      float: left;
-      font-size: 16px;
-      color: white;
-      text-align: center;
-      padding: 14px 14px;
-      text-decoration: none;
-  }
 .split {
   height: 100%;
   width: 50%;
@@ -90,41 +77,36 @@ background-color: #333;
 </style>
 </head>
 <body>
-<div>
-  <nav class="w3-mobile navbar navbar-fixed-top">
-      <div class="w3-mobile container">
-        <div class="w3-mobile navbar-header">
-          <button aria-expanded="false" class="w3-mobile navbar-toggle collapsed" data-target="{{ url_for('index') }}" data-toggle="collapse" style="float:left" type="button">
-          </button>
-          <a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}"><img src="{{url_for('static', filename='logo_small.png')}}" style="position:relative;top:-5px" ></a>
-        </div>
-        <div class="w3-mobile collapse navbar-collapse" id="navbar-collapse-1">
-          <ul class=" w3-mobile nav navbar-nav" style="float:left">
-            <li><a href="{{url_for('search_hospital') }}">Search Hospitals</a></li>
-            <li><a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a></li>
-          </ul>
-             {% if auth %}
-            <div class="w3-mobile w3-dropdown-hover w3-right">
-                <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile" ><i style="color:white">Hi, {{current_user.name}} <i class="fa fa-bars"/></i></button>
-                <div class="w3-mobile w3-dropdown-content w3-bar-block w3-border" style="right:0">
-                    <button class="w3-mobile w3-button w3-teal" onclick="window.location.href='{{ url_for('view_profile') }}'" style="width:100%">My Profile</button>
-                    <button class="w3-mobile w3-button w3-teal"  onclick="window.location.href='{{url_for('logout') }}'" style="width:100%">Logout</button>
-                </div>
+<div id="body">
+    <div class="topnav" id="myTopnav">
+        <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
+            <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
+        </a>
+        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
+        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
+        {% if auth %}
+        <div class="dropdown w3-dropdown-hover">
+            <button class="dropbtn">Hi, {{current_user.name}}
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('view_profile') }}">My Profile</a>
+                <a href="{{url_for('logout') }}">Logout</a>
             </div>
-            {%else%}
-            <div>
-                <div class="w3-mobile w3-dropdown-hover w3-right">
-                    <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile" >Hi, Guest <i class="fa fa-bars"></i></button>
-                    <div class="w3-mobile w3-dropdown-content w3-bar-block w3-border" style="right:0">
-                        <button  class="w3-mobile w3-button w3-teal" onclick="window.location.href='{{ url_for('login') }}'" style="width:100%">Login</button>
-                        <button class="w3-mobile w3-button w3-teal"  onclick="window.location.href='{{url_for('register') }}'" style="width:100%">Register</button>
-                    </div>
-                </div>
-             </div>
-            {%endif %}
-        </div><!--/.nav-collapse -->
-      </div><!-- /.container -->
-  </nav>
+        </div>
+        {%else%}
+        <div class="dropdown w3-dropdown-hover">
+            <button class="dropbtn">Hi, Guest
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{url_for('register') }}">Register</a>
+            </div>
+        </div>
+        <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+    </div>
+    {% endif %}
 </div>
 <img class="split left bg_image "  src="{{url_for('static', filename='grad_left.jpg')}}" style="top:-20px;">
 
@@ -159,4 +141,17 @@ background-color: #333;
   </div>
 </div>
 </body>
+<script>
+    function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+
+
+</script>
 </html>

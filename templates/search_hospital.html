@@ -7,24 +7,21 @@
     <link href="ss/Medical-Health-Heart-beat.ico" rel="shortcut icon" type="image/x-icon"/>
     <link color="#111" href="ss/Medical-Health-Heart-beat.ico" rel="mask-icon" type=""/>
     <title>Med360 | Hospital Search</title>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
+
     <style>
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-
+    .column {
+      float: left;
+      margin-bottom: 16px;
+      padding: 0 8px;
+    }
     body{
       background: #f2f2f2;
       font-family: 'Open Sans', sans-serif;
     }
-    .profile {
-        background-color: #6495ED;
-        }
     form.searchBtn select {
       padding: 10px;
       font-size: 17px;
@@ -51,20 +48,6 @@
       display: table;
     }
 
-    .active {
-        background-color: #4CAF50;
-    }
-    .navbar{
-        background-color: #333;
-    }
-    .navbar a {
-        float: left;
-        font-size: 16px;
-        color: white;
-        text-align: center;
-        padding: 14px 14px;
-        text-decoration: none;
-    }
     .center {
       padding: 75% 0;
       text-align: center;
@@ -89,28 +72,25 @@
     </script>
 </head>
 <body translate="no">
-    <nav class="w3-mobile navbar navbar-fixed-top">
-      <div class="w3-mobile container">
-        <div class="w3-mobile navbar-header">
-          <a class=" w3-mobile navbar-brand " href="{{ url_for('index') }}">MED360</a>
-        </div>
-        <div class="w3-mobile collapse navbar-collapse" id="navbar-collapse-1">
-          <ul class=" w3-mobile nav navbar-nav" style="float:left">
-            <li><a class="active" href="{{url_for('search_hospital')}}">Search Hospitals</a></li>
-            <li><a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a></li>
-          </ul>
-            <div class="w3-mobile w3-dropdown-hover w3-right">
-                <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile" ><i style="color:white">Hi, {{current_user.name}} <i class="fa fa-bars"></i></i></button>
-                    <div class="w3-mobile w3-dropdown-content w3-bar-block w3-border" style="right:0">
-                        <button class="w3-mobile w3-button w3-teal" onclick="window.location.href='{{ url_for('view_profile') }}'" style="width:100%">My Profile</button>
-                        <button class="w3-mobile w3-button w3-teal"  onclick="window.location.href='{{url_for('logout') }}'" style="width:100%">Logout</button>
-                    </div>
-                </div>
+<div id="test">
+    <div class="topnav" id="myTopnav">
+        <a href="{{ url_for('index') }}"><a class="navbar-brand active" href="{{ url_for('index') }}">
+            <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
+        </a>
+        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
+        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
+        <div class="dropdown" style="float: right;">
+            <button class="dropbtn">Hi, {{current_user.name}}
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('view_profile') }}">My Profile</a>
+                <a href="{{url_for('logout') }}">Logout</a>
             </div>
-        </div><!--/.nav-collapse -->
-      </div><!-- /.container -->
-    </nav>
-    <br/><br/><br><br>
+            <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+        </div>
+    </div>
+</div>
 <form action="/search_hospital" class="searchBtn" id="log-form" method="POST" name="log-form" style="margin:auto;max-width:auto;padding:20vw"|>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -125,10 +105,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <nobr>
-                    <div class="col-sm-3">{{form.state}}</div>
-                    <div class="col-sm-3">{{form.city}}</div>
-                    <div class="col-sm-3">{{form.spec}}</div>
-                    <div class="col-sm-2"><button type="submit"><i class="fa fa-search"></i></button></div>
+                        <div class="column" style="width:28%">{{form.state}}</div>
+                        <div class="column" style="width:28%">{{form.city}}</div>
+                        <div class="column" style="width:28%">{{form.spec}}</div>
+                        <div class="col-sm-2">
+                            <button style="width:14%" type="submit">
+                                <i aria-hidden="true" class="fa fa-search fa-lg"></i>
+                            </button>
+                        </div>
                     </nobr>
                 </div>
             </div>
@@ -154,6 +138,21 @@
                 });
             });
         }
+
+
+</script>
+<script>
+    function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+
+
 </script>
 </body>
 </html>
