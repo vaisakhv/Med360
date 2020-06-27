@@ -29,6 +29,14 @@
         padding: 14px 14px;
         text-decoration: none;
     }
+    @media screen and (max-width: 600px) {
+      .navbar-fixed-top :not(:first-child) {display: none;}
+      .navbar-fixed-top a.icon {
+        float: right;
+        display: block;
+      }
+    }
+
       /* Coronavirus */
     /* The grid: Three equal columns that floats next to each other */
     .column_corona {
@@ -245,8 +253,9 @@
                 {% if auth %}
                 <a class="icon w3-right" href="javascript:void(0);" onclick="myFunction()">
                     <div class="navbar w3-mobile w3-dropdown-hover ">
-                        <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile"><i style="color:white">Hi,
-                            {{current_user.name}} <i class="fa fa-bars"/></i></button>
+                        <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile">
+                            <i style="color:white">Hi, {{current_user.name}} <a class="fa fa-bars"></a></i>
+                        </button>
                         <div class="w3-mobile w3-dropdown-content w3-bar-block w3-border" style="right:0">
                             <button class="w3-mobile w3-button w3-teal"
                                     onclick="window.location.href='{{ url_for('view_profile') }}'" style="width:100%">My
@@ -263,8 +272,9 @@
                 <div>
                     <a class="icon" href="javascript:void(0);" onclick="myFunction()">
                         <div class="w3-mobile w3-dropdown-hover w3-right">
-                            <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile">Hi, Guest <i
-                                    class="fa fa-bars"></i></button>
+                            <button class="w3-mobile w3-button w3-bar-item w3-text-grey profile">Hi, Guest <a
+                                    class="fa fa-bars"></a>
+                            </button>
                             <div class="w3-mobile w3-dropdown-content w3-bar-block w3-border" style="right:0">
                                 <button class="w3-mobile w3-button w3-teal"
                                         onclick="window.location.href='{{ url_for('login') }}'" style="width:100%">Login
