@@ -3,20 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-     <title>Med360 | Hospital Deatails</title>
+    <title>Med360 | Hospital Deatails</title>
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css' rel='stylesheet'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
     <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
 
     <style>
-  .profile {
+	  .profile {
 		background-color: #6495ED;
 		}
-
+		.active {
+		background-color: #4CAF50;
+		}
+        body {
+          font-family: 'Lato', sans-serif;
+        }
+        .main_body_div{
+          padding: 10;
+          margin: 5;
+        }
         .hosp-profile .card {
           border-radius: 10px;
         }
@@ -47,6 +57,31 @@
           color: #000;
         }
 
+
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 93.25%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+
+  html, body {margin: 0; height: 100%; overflow: hidden}
     </style>
     <style>
 		.active {
@@ -97,56 +132,57 @@
     </div>
     {% endif %}
 </div>
+<div class="main_body_div">
     <div class="hosp-profile py-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-transparent text-center">
-                        <img class="profile_img" height="480" src="{{url_for('static', filename='logo.jpg')}}"
-                             width="640">
-                        <h3>{{data.hosp_name}}</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="mb-0"><strong class="pr-1">Address:</strong>{{data.hosp_addr}}</p>
-                        <p class="mb-0"><strong class="pr-1">E-Mail:</strong>{{data.hosp_contact_mail}}</p>
-                        <p class="mb-0"><strong class="pr-1">Contact Number:</strong>{{data.hosp_contact_no}}</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-transparent text-center">
+                            <img class="profile_img" height="480" src="{{url_for('static', filename='logo.jpg')}}"
+                                 width="640">
+                            <h3>{{data.hosp_name}}</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-0"><strong class="pr-1">Address:</strong>{{data.hosp_addr}}</p>
+                            <p class="mb-0"><strong class="pr-1">E-Mail:</strong>{{data.hosp_contact_mail}}</p>
+                            <p class="mb-0"><strong class="pr-1">Contact Number:</strong>{{data.hosp_contact_no}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-transparent border-0">
-                        <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
-                    </div>
-                    <div class="card-body pt-0">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th width="30%">Type</th>
-                                <td>{{data.hosp_type}}</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">Specialities Upgraded</th>
-                                <td>
-                                    {% for item in specs_up %}
-                                    <li>{{item}}</li>
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th width="30%">Specialities Empanelled</th>
-                                <td>
-                                    {% for item in specs_emp %}
-                                    <li>{{item}}</li>
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        </table>
+                <div class="col-lg-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-transparent border-0">
+                            <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
+                        </div>
+                        <div class="card-body pt-0">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th width="30%">Type</th>
+                                    <td>{{data.hosp_type}}</td>
+                                </tr>
+                                <tr>
+                                    <th width="30%">Specialities Upgraded</th>
+                                    <td>
+                                        {% for item in specs_up %}
+                                        <li>{{item}}</li>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th width="30%">Specialities Empanelled</th>
+                                    <td>
+                                        {% for item in specs_emp %}
+                                        <li>{{item}}</li>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </div>
 </body>
 <script>
@@ -158,8 +194,5 @@
     x.className = "topnav";
   }
 }
-
-
-
 </script>
 </html>

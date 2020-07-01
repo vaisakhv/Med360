@@ -10,12 +10,11 @@ from flask_sqlalchemy import SQLAlchemy
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'DATABASE_URL'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TESTING'] = False
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
     app.config.from_object(__name__)
-    app.config['SECRET_KEY'] = '12345'
+    app.config['SECRET_KEY'] = 'kUwY%@tWnNXpigScMbSk7RYBZ#3BpVF3WG^u9oFje2Q$8h#e!^X4'
     Bootstrap(app)
     return app
 
@@ -200,6 +199,6 @@ class Role(db.Model):
 
 
 if __name__ == "__main__":
-    # db.create_all()
+    db.create_all()
     # run migrate
-    manager.run()
+    # manager.run()

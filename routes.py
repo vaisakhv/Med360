@@ -95,6 +95,8 @@ def getCovidData():
 def index():
     india_val = [[0]]
     global_val = {"Global": '0'}
+    if current_user.is_authenticated:
+        india_val, global_val = getCovidData()
     print(india_val[0], '\n', global_val['Global'])
     return render_template('index.html', auth=is_auth(), current_user=current_user, india=india_val, world=global_val)
 
@@ -102,7 +104,6 @@ def index():
 @app.route('/check/<username>')
 def check(username):
     user = User.find_user_by_username(username=username)
-    print(user)
     if user is None:
         return jsonify(False)
     else:
@@ -127,15 +128,12 @@ def login():
                     except Exception as e:
                         print(str(e))
                     print('role_name=', user_role.name, 'role_id=', user_role.id)
-                    # all_roles =
-                    # Role.get_all_roles()
                     if user_role.name == "admin":
                         print("Enabling admin view")
                         admin.add_view(ModelView(User, db.session))
                         admin.add_view(ModelView(Hospital, db.session))
                         admin.add_view(ModelView(City, db.session))
                         admin.add_view(ModelView(Role, db.session))
-
                     next = request.args.get('next')
                     return redirect(next or url_for('index'))
                 flash('Invalid password for user ' + user.username)
@@ -174,7 +172,6 @@ def resetPassword():
         uname = form.uname.data
         dob = form.dob.data
         user = User.find_user_by_username(uname)
-        print(user.name)
         if user is not None:
             print(user.name)
             passw = form.passw.data
@@ -262,7 +259,6 @@ def update_profile():
     print(form.errors)
     print('log')
     if form.validate_on_submit():
-        # current_user.uname = user.username
         user.uname = form.uname.data
         user.mail = form.mail.data
         user.dob = form.dob.data
@@ -284,7 +280,6 @@ def update_profile():
         role = Role.find_role_by_id(user_role)
         user.role = role.id
         user.save_to_db()
-        print(current_user.id)
         print('user_id=', user.id, 'selected_role_id=', role.id, 'selected_role_name=', role.name)
         print('user_id=', user.id, 'role_id_db=', user.role, )
         return redirect(url_for("view_profile"))
@@ -342,7 +337,7 @@ def search_hospital():
             hosps = Hospital.find_hosp_by_spec_and_state(_spec=spec, _state=state_name)
             print("results form spec for ", decodeSpecialties(spec)[0])
             if len(hosps.all()) > 0:
-                return render_template('searchResult.html', data=hosps, current_user=current_user,
+                return render_template('searchResult.html', data=hosps, current_user=current_user, auth=is_auth(),
                                        searchterm=state_name, encrypt=Security.encrypt)
             else:
                 print('no hospitals with ', spec)
@@ -352,7 +347,7 @@ def search_hospital():
             hosp = Hospital.find_hosp_by_state(state_name)
             if len(hosp.all()) > 0:
                 return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=state_name,
-                                       encrypt=Security.encrypt)
+                                       encrypt=Security.encrypt, auth=is_auth())
             else:
                 flash('No Hospitals found!!')
                 return render_template("search_hospital.html", current_user=current_user, form=form)
@@ -372,7 +367,7 @@ def hospital_details():
     dec_specs_up = decodeSpecialties(specs_up)
     dec_specs_emp = decodeSpecialties(specs_emp)
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
-                           specs_emp=dec_specs_emp)
+                           specs_emp=dec_specs_emp, auth=is_auth())
 
 
 @app.route('/search_blood_donor', methods=['POST', 'GET'])
