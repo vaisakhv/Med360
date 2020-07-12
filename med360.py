@@ -1,11 +1,18 @@
 from datetime import date
 
+import requests
 from cryptography.fernet import Fernet
 from flask_admin import Admin
 
-from models import db, app, User, City, Role
+from models import db, app, User, City, Role, Scheme
 
 admin = Admin(app)
+
+
+def get_scheme_data():
+    import pandas as pd
+    schemes_file = r'../kb/scheme_hosp.txt'
+    return pd.read_csv(open(schemes_file, 'r'), delimiter='\t')
 
 
 def get_all_states_for_donors():
@@ -18,6 +25,10 @@ def get_all_states():
 
 def get_all_roles():
     return [(r[0], r[1]) for r in db.session.query(Role.id, Role.name).distinct()]
+
+
+def get_all_schemes():
+    return [(r[0], r[1]) for r in db.session.query(Scheme.id, Scheme.name).distinct()]
 
 
 def spec_code_dict():
@@ -54,6 +65,23 @@ def decodeSpecialties(spec):
 def get_age(dob):
     today = date.today()
     return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+
+def covid_data():
+    corona_api_key = "f4491b20c4mshe066c8a643cdf41p1d21dfjsna43b3402be92"
+    url = "https://covid-19-data.p.rapidapi.com/country"
+    querystring = {"format": "json", "name": "india"}
+    headers = {
+        'x-rapidapi-host': "covid-19-data.p.rapidapi.com",
+        'x-rapidapi-key': corona_api_key
+    }
+
+    global_url = 'https://api.covid19api.com/summary'
+    global_resp = requests.request("GET", global_url)
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    india_val = response.json()
+    global_val = global_resp.json()
+    return india_val, global_val
 
 
 class Security:

@@ -1,16 +1,16 @@
 from distutils.util import strtobool
 
-import requests
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_admin.contrib.sqla import ModelView
 from flask_login import login_required, LoginManager, login_user, current_user, logout_user
 # from flask_mail import Mail
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from med360 import decodeSpecialties, get_age, Security, admin
-from models import User, Hospital, City, Role, app, db
-from views import RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm, ResetPasswordForm, ProfileUpdateForm, \
-    ContactForm
+from med360 import decodeSpecialties, get_age, Security, admin, covid_data
+from models import User, Hospital, City, Role, app, db, Scheme
+from views import (RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm,
+                   ResetPasswordForm, ProfileUpdateForm,
+                   ContactForm, SearchForm)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -74,36 +74,19 @@ def contact():
     return render_template('contact.html', form=form, auth=is_auth())
 
 
-def getCovidData():
-    corona_api_key = "f4491b20c4mshe066c8a643cdf41p1d21dfjsna43b3402be92"
-    url = "https://covid-19-data.p.rapidapi.com/country"
-    querystring = {"format": "json", "name": "india"}
-    headers = {
-        'x-rapidapi-host': "covid-19-data.p.rapidapi.com",
-        'x-rapidapi-key': corona_api_key
-    }
-
-    global_url = 'https://api.covid19api.com/summary'
-    global_resp = requests.request("GET", global_url)
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    india_val = response.json()
-    global_val = global_resp.json()
-    return india_val, global_val
-
-
 @app.route('/')
 def index():
     india_val = [[0]]
     global_val = {"Global": '0'}
     if current_user.is_authenticated:
-        india_val, global_val = getCovidData()
+        india_val, global_val = covid_data()
     print(india_val[0], '\n', global_val['Global'])
     return render_template('index.html', auth=is_auth(), current_user=current_user, india=india_val, world=global_val)
 
 
 @app.route('/check/<username>')
 def check(username):
-    user = User.find_user_by_username(username=username)
+    user = User.find_by_username(username=username)
     if user is None:
         return jsonify(False)
     else:
@@ -117,14 +100,15 @@ def login():
         uname = form.uname.data
         passw = form.passw.data
         print(uname, passw)
-        user = User.find_user_by_username(username=uname)
+        user = User.find_by_username(username=uname)
+        print('found ', user.username)
         if uname != '' or passw != '':
             if user is not None:
                 if check_password_hash(user.password, passw):
                     print(user.username)
                     login_user(user)
                     try:
-                        user_role = Role.find_role_by_id(user.role)
+                        user_role = Role.find_by_id(user.role)
                     except Exception as e:
                         print(str(e))
                     print('role_name=', user_role.name, 'role_id=', user_role.id)
@@ -160,7 +144,7 @@ def logout():
 @app.route('/me')
 @login_required
 def view_profile():
-    user_role = Role.find_role_by_id(current_user.role)
+    user_role = Role.find_by_id(current_user.role)
     return render_template('profile_page.html', title='My Details', user=current_user, role=user_role.name,
                            auth=is_auth())
 
@@ -171,7 +155,7 @@ def resetPassword():
     if form.validate_on_submit():
         uname = form.uname.data
         dob = form.dob.data
-        user = User.find_user_by_username(uname)
+        user = User.find_by_username(uname)
         if user is not None:
             print(user.name)
             passw = form.passw.data
@@ -198,7 +182,7 @@ def resetPassword():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
-    form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
+    form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     print(form.validate_on_submit())
@@ -223,7 +207,7 @@ def register():
         bld_donation = bool(strtobool(form.bld_donation.data))
         user_role = int(form.role.data)
         print('selected role id is ', user_role)
-        r = Role.find_role_by_id(user_role)
+        r = Role.find_by_id(user_role)
         print('selected role name is ', r.name)
         existing_user = User.query.filter_by(mobile=mobile, email=mail, username=uname, aadhar=aadhar, pan=pan).first()
         if existing_user is None:
@@ -247,13 +231,13 @@ def register():
 @app.route('/update', methods=['POST', 'GET'])
 @login_required
 def update_profile():
-    user = User.find_user_by_username(username=current_user.username)
+    user = User.find_by_username(username=current_user.username)
     city = City.get_id_by_name(_name=current_user.city)
     form = ProfileUpdateForm(city=city.id, bld_grp=user.bld_grp, sex=user.sex, organ_donation=bool(user.organ_donation),
                              bld_donation=bool(user.bld_donation))
-    form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
+    form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
 
-    role = Role.find_role_by_id(current_user.role)
+    role = Role.find_by_id(current_user.role)
     print('user role is ', role.name)
     print(form.validate_on_submit())
     print(form.errors)
@@ -277,7 +261,7 @@ def update_profile():
         user_role = int(form.role.data)
         user.organ_donation = bool(strtobool(form.organ_donation.data))
         user.bld_donation = bool(strtobool(form.bld_donation.data))
-        role = Role.find_role_by_id(user_role)
+        role = Role.find_by_id(user_role)
         user.role = role.id
         user.save_to_db()
         print('user_id=', user.id, 'selected_role_id=', role.id, 'selected_role_name=', role.name)
@@ -289,7 +273,7 @@ def update_profile():
 @app.route('/remove_acnt', methods=['POST', 'GET'])
 @login_required
 def remove_acnt():
-    user = User.find_user_by_username(username=current_user.username)
+    user = User.find_by_username(username=current_user.username)
     try:
         user.remove_from_db()
         return redirect(url_for("login"))
@@ -316,7 +300,7 @@ def add_hospital():
 
 @app.route('/city/<state>')
 def getDist(state):
-    cities = City.find_city_by_state(state)
+    cities = City.find_by_state(state)
     city_array = []
     for city in cities:
         city_obj = {'id': city.id, 'name': city.name}
@@ -328,13 +312,28 @@ def getDist(state):
 @login_required
 def search_hospital():
     form = SearchHospitalForm()
-    form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
+    form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
     if form.is_submitted():
         city = City.get_by_id(form.city.data)
         state_name = city.name
         spec = form.spec.data
+        scheme_id = form.scheme.data
         if spec != "None" and state_name is not '' and not state_name.isspace():
-            hosps = Hospital.find_hosp_by_spec_and_state(_spec=spec, _state=state_name)
+            hosps = Hospital.find_by_spec_and_state(_spec=spec, _state=state_name).all()
+            if scheme_id != 0:
+                filtered = []
+                scheme = Scheme.find_by_scheme_id(scheme_id)
+                print(scheme.name)
+                print(scheme.partner_hospitals)
+                for a_hosp in hosps:
+                    if a_hosp in scheme.partner_hospitals.all():
+                        filtered.append(a_hosp)
+                print(filtered)
+                if len(filtered) <= 0:
+                    flash("No Hospitals found, why don't you try without the Scheme filter!!")
+                    return render_template("search_hospital.html", current_user=current_user, form=form)
+                return render_template('searchResult.html', data=filtered, current_user=current_user, auth=is_auth(),
+                                       searchterm=state_name, encrypt=Security.encrypt)
             print("results form spec for ", decodeSpecialties(spec)[0])
             if len(hosps.all()) > 0:
                 return render_template('searchResult.html', data=hosps, current_user=current_user, auth=is_auth(),
@@ -344,8 +343,21 @@ def search_hospital():
                 flash("No Hospitals found, why don't you try without the Speciality filter!!")
                 return render_template("search_hospital.html", current_user=current_user, form=form)
         elif state_name is not '' and not state_name.isspace():
-            hosp = Hospital.find_hosp_by_state(state_name)
+            hosp = Hospital.find_by_state(state_name)
             if len(hosp.all()) > 0:
+                if scheme_id != 0:
+                    scheme = Scheme.find_by_scheme_id(scheme_id)
+                    filtered = []
+                    for a_hosp in hosp:
+                        if a_hosp in scheme.partner_hospitals.all():
+                            filtered.append(a_hosp)
+                    print(filtered)
+                    if len(filtered) <= 0:
+                        flash("No Hospitals found, why don't you try without the Scheme filter!!")
+                        return render_template("search_hospital.html", current_user=current_user, form=form)
+                    return render_template('searchResult.html', data=filtered, current_user=current_user,
+                                           auth=is_auth(),
+                                           searchterm=state_name, encrypt=Security.encrypt)
                 return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=state_name,
                                        encrypt=Security.encrypt, auth=is_auth())
             else:
@@ -361,7 +373,7 @@ def search_hospital():
 @login_required
 def hospital_details():
     selected_id = Security.decrypt(str(request.args.get('hosp_id')))
-    hosp = Hospital.find_hosp_by_id(int(selected_id))
+    hosp = Hospital.find_by_id(int(selected_id))
     specs_up = hosp.hosp_spec_upgraded
     specs_emp = hosp.hosp_spec_empanl
     dec_specs_up = decodeSpecialties(specs_up)
@@ -374,7 +386,7 @@ def hospital_details():
 @login_required
 def search_blood_donor():
     form = FindBloodDonorForm()
-    form.city.choices = [(city.id, city.name) for city in City.find_city_by_state('Kerala')]
+    form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
     if form.is_submitted():
         city = City.get_by_id(form.city.data)
         state_name = form.state.data
@@ -392,6 +404,36 @@ def search_blood_donor():
         flash(message="No donors found!!")
         render_template("search_blood_donor.html", current_user=current_user, form=form)
     return render_template("search_blood_donor.html", current_user=current_user, form=form)
+
+
+@app.route('/hosp_by_scheme')
+def search_hosp_by_scheme():
+    pass
+
+
+@app.route('/scheme_by_hosp')
+def search_scheme_by_hosp():
+    hosp_id = 17
+    hosp = Hospital.find_by_id(hosp_id)
+    scheme_list = hosp.Schemes
+
+
+def find_hosp_by_scheme():
+    id = 8
+    scheme = Scheme.find_by_scheme_id(id)
+    parter_hosps = scheme.partner_hospitals
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.is_submitted():
+        search_term = form.search.data
+        results = Hospital.find_by_name(_name=search_term)
+        print(results)
+        return render_template('keyword_search.html', form=form, results=results, encrypt=Security.encrypt,
+                               query=search_term)
+    return render_template('keyword_search.html', form=form)
 
 
 def __init__(self, **kwargs):

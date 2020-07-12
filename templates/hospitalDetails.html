@@ -80,14 +80,12 @@ button:hover {
      display: block;
      float: none;
   }
-
-  html, body {margin: 0; height: 100%; overflow: hidden}
     </style>
     <style>
 		.active {
 		background-color: #4CAF50;
 		}
-		html, body {margin: 0; height: 100%; overflow: hidden}
+		html, body {margin: 0; height: 100%; }
 	</style>
     <script>
       window.console = window.console || function(t) {};
@@ -97,7 +95,6 @@ button:hover {
       if (document.location.search.match(/type=embed/gi)) {
         window.parent.postMessage("resize", "*");
       }
-
     </script>
 </head>
 <body translate="no">
@@ -177,12 +174,21 @@ button:hover {
                                         {% endfor %}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <th width="30%">Schemes Available</th>
+                                    <td>
+                                        {% for scheme in data.Schemes %}
+                                        <li>{{scheme.name}}</li>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 </body>
 <script>

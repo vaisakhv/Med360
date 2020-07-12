@@ -1,17 +1,25 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, IntegerField, PasswordField, validators, TextAreaField, \
-    SubmitField
+from wtforms import (SelectField,
+                     StringField,
+                     IntegerField,
+                     PasswordField,
+                     validators,
+                     TextAreaField,
+                     SubmitField)
 from wtforms.fields.html5 import DateField
 
-from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles
+from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles, get_all_schemes
 
 
 class SearchHospitalForm(FlaskForm):
     states_in_db = get_all_states()
     spec_codes = spec_code_dict()
+    schemes = get_all_schemes()
+    schemes.insert(0, (0, 'Show All'))
     state = SelectField('state', choices=states_in_db)
     city = SelectField('city', choices=[], coerce=int)
     spec = SelectField('spec', choices=spec_codes)
+    scheme = SelectField('scheme', choices=schemes, coerce=int)
 
 
 class FindBloodDonorForm(FlaskForm):
@@ -123,3 +131,7 @@ class ContactForm(FlaskForm):
     subject = StringField("Subject", [validators.DataRequired()])
     message = TextAreaField("Message", [validators.DataRequired()])
     submit = SubmitField("Send")
+
+
+class SearchForm(FlaskForm):
+    search = StringField('search', validators=[validators.DataRequired()])

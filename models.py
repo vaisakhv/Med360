@@ -3,7 +3,6 @@ from datetime import timedelta
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import UserMixin
-# import for migrate
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -21,11 +20,15 @@ def create_app():
 
 app = create_app()
 db = SQLAlchemy(app)
+db.init_app(app)
 
+#
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
 
-# migrate = Migrate(app, db)
-# manager = Manager(app)
-# manager.add_command('db', MigrateCommand)
+manager = Manager(app)
+migrate = Migrate(app, db, render_as_batch=True)
+manager.add_command('db', MigrateCommand)
 
 
 class City(db.Model):
@@ -42,7 +45,7 @@ class City(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_city_by_state(cls, _state):
+    def find_by_state(cls, _state):
         return cls.query.filter_by(state=_state).all()
 
     @classmethod
@@ -57,6 +60,50 @@ class City(db.Model):
         self.id = _id
         self.name = _name
         self.state = _state
+
+
+partners = db.Table('partners',
+                    db.Column('id', db.Integer, db.ForeignKey('scheme.id')),
+                    db.Column('hosp_id', db.Integer, db.ForeignKey('hospital.hosp_id'))
+                    )
+
+
+class Scheme(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # uid = db.Column(db.Integer, unique=True)
+    name = db.Column(db.String(50), nullable=False)
+    creator = db.Column(db.String(52), nullable=False)
+    approved_states = db.Column(db.String(52), nullable=False)
+    approved_districts = db.Column(db.String(126), nullable=True)
+    feature = db.Column(db.String(512), nullable=True)
+    objective = db.Column(db.String(512), nullable=True)
+    benefits = db.Column(db.String(512), nullable=True)
+    eligibility = db.Column(db.String(256), nullable=True)
+    partner_hospitals = db.relationship('Hospital', secondary=partners, backref=db.backref('Schemes'), lazy='dynamic')
+
+    @classmethod
+    def find_by_scheme_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def __init__(self, name, feature, objective, benefits, eligibility, creator, approved_states,
+                 approved_districts, ):
+        # self.uid = str(uuid4())
+        self.name = name
+        self.feature = feature
+        self.objective = objective
+        self.benefits = benefits
+        self.eligibility = eligibility
+        self.creator = creator
+        self.approved_states = approved_states
+        self.approved_districts = approved_districts
 
 
 class Hospital(db.Model):
@@ -78,19 +125,24 @@ class Hospital(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_hosp_by_name(cls, _name):
-        return cls.query.filter_by(hosp_name=_name)
+    def find_by_name(cls, _name):
+        return cls.query.filter(cls.hosp_name.like('%' + _name + '%'))
+        # return cls.query.filter_by(hosp_name=_name)
 
     @classmethod
-    def find_hosp_by_id(cls, _id):
+    def find_by_addr(cls, _addr):
+        return cls.query.filter(cls.hosp_addr.ilike('%' + _addr + '%'))
+
+    @classmethod
+    def find_by_id(cls, _id):
         return cls.query.filter_by(hosp_id=_id).first()
 
     @classmethod
-    def find_hosp_by_state(cls, _state):
+    def find_by_state(cls, _state):
         return cls.query.filter(cls.hosp_addr.contains(_state))
 
     @classmethod
-    def find_hosp_by_spec_and_state(cls, _spec, _state):
+    def find_by_spec_and_state(cls, _spec, _state):
         return cls.query.filter(cls.hosp_addr.contains(_state), cls.hosp_spec_upgraded.contains(_spec))
 
     def __init__(self, hosp_name, hosp_addr, hosp_spec_empanl, hosp_spec_upgraded, hosp_contact_no,
@@ -103,6 +155,9 @@ class Hospital(db.Model):
         self.hosp_contact_no = hosp_contact_no
         self.hosp_contact_mail = hosp_contact_mail
         self.hosp_type = hosp_type
+
+    def __repr__(self):
+        return str(str(self.hosp_name))
 
 
 class User(db.Model, UserMixin):
@@ -143,12 +198,12 @@ class User(db.Model, UserMixin):
         return users
 
     @classmethod
-    def find_user_by_username(cls, username):
+    def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
     @classmethod
     def reset_password(cls, username, new_password):
-        user = User.find_user_by_username(username=username)
+        user = User.find_by_username(username=username)
         user.password = new_password
         user.save_to_db()
 
@@ -179,11 +234,11 @@ class Role(db.Model):
     name = db.Column(db.String(50), unique=True)
 
     @classmethod
-    def find_role_by_name(cls, name):
+    def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
 
     @classmethod
-    def find_role_by_id(cls, id):
+    def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
 
     def save_to_db(self):
@@ -198,7 +253,12 @@ class Role(db.Model):
         self.name = name
 
 
+def __init__(self, **kwargs):
+    for key, value in kwargs.items():
+        setattr(self, key, value)
+
+
 if __name__ == "__main__":
-    db.create_all()
     # run migrate
-    # manager.run()
+    manager.run()
+    db.create_all()

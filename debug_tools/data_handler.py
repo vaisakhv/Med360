@@ -51,8 +51,35 @@ def addHospitals():
 
 def getCities(state):
     from models import City
-    out = City.find_city_by_state('Kerala')
+    out = City.find_by_state('Kerala')
     return out
+
+
+def load_schemes():
+    file = 'kb/Medical_Scheme_details.txt'
+    return pd.read_csv(open(file, 'r'), delimiter='\t')
+
+
+def add_scheme_by_hosp_id(hosp_id, scheme_id):
+    from models import Hospital, Scheme
+    hosp = Hospital.find_by_id(int(hosp_id))
+    karunya = Scheme.find_by_scheme_id(8)
+    hosp.Schemes.append(karunya)
+    hosp.save_to_db()
+
+
+def add_schemes():
+    from models import Scheme
+    file = 'kb/Medical_Scheme_details.txt'
+    schemes = pd.read_csv(open(file, 'r'), delimiter='\t')
+    for i, row in schemes.iterrows():
+        if i <= 11:
+            new_scheme = Scheme(name=row['SCHEME NAME'], creator=row['GOVT TYPE'],
+                                approved_states=row['STATE'], approved_districts=row['DISTRICT'],
+                                feature=cleanVal(row['FEATURES']), objective=cleanVal(row['OBJECTUVE']),
+                                benefits=cleanVal(row['BENEFIT COVER']), eligibility=cleanVal(row['ELIGIBILITY'])
+                                )
+            new_scheme.save_to_db()
 
 
 if __name__ == '__main__':
