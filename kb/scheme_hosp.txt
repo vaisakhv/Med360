@@ -1,0 +1,55 @@
+hosp_id    hosp_name    if_exists    schemes_available    hosp_type    available_domains    hosp_contact
+17    "Kochin Medical College Hospital, Kalamassery Kochi"    N/A    KARUNYA HEALTH SCHEME    Cooperative hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+54    "KMCT Medical College, Kozhikode"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,Heart related,Cancer"    0495-2293500
+56    "Malabar Medical College Hospital and Research Centre, Kozhikode"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,,Cancer"    0496-2701800 / 2701666
+93    "Kannore Medical College, Ancharakkandi, Kannore"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,"    0497-2855500 / 2852500
+95    "Cooperative medical College Hospital, Pariyaram, Kannur"    N/A    KARUNYA HEALTH SCHEME    Cooperative hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+207    "Karuna Medical College Hospital, Chittor, Palakkad"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,Cancer"    04923-221790 / 91 / 92 / 93
+212    "Christian Mission Hospital, Panthalam, Pathanamthitta"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    04734-252246
+215    "Pushpagiri Medical College, Thiruvalla, Pathanamthitta"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0469-2700755 / 2701044
+217    "St. Thomas Hospital, Malakara, Pathanamthitta"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0468-2317123 / 2317494
+298    "Mother Care hospital, Vattambalam, Palakkad"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,,Cancer"    04924-230200 / 230240
+323    "Regional Cancer centre, Thiruvananthapuram"    N/A    KARUNYA HEALTH SCHEME    Autonomous Hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+330    "The India Hospital trust, Thampanoor, Thriruvananthapuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,"    0471-2333193 / 2331445
+370    "Sree Uthradom Thirunal (SUT) Academy of Medical Sciences, Vattappara, Thiruvananthapuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,Cancer"    0472-22587575
+372    "Sree Chitra Tirunal Institute for Medical Sciences & Technology, Thiruvananthapuram"    N/A    KARUNYA HEALTH SCHEME    Autonomous Hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+373    "Muthoot Medical Centre, Kozhenchery, Pathanamthitta"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,"    0468-2314000 / 2214427
+    "Al Mas Hospital, Kottakkal, Malappuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0483-2809100 / 2809653
+    "Al Shifa Hospital, Perinthalmanna, Malappuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    04933-229815 / 299005
+    All District Hospitals in Kerala    N/A    KARUNYA HEALTH SCHEME    Govt Hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+    All General hospitals in Kerala    N/A    KARUNYA HEALTH SCHEME    Govt Hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+    "Amala Cancer Hospital and Research Centre, Thrissur"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0487-2304073 / 2304000
+    "Assisiya Institute of Medical sciences, Kollam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0474-3069200
+    "Baby Memmorial Hospital, Kozhykkode"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0495-2723271 / 2777777
+    "Bharat Hospital, Kottayam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0481-2582947 / 2581642
+    "Chazhikkattu Hospital, Thodupuzha, Idukki"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0486-2300398 / 2300326
+    "EMS Cooperative Hospital and Research Centre, Perinthalmanna, Malappuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    04933-300000 / 225756
+    "EMS Medical College Hospital, Perinthalmanna, Malappuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    04933-298300 / 258306
+    "Fathima Hospital, Kozhikode"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,"    0495-2766630 / 2766340
+    "Fathima Matha Mission Hospital, Kalpatta"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    04936-204018 / 202454
+    "Holy Family Hospital, Thodupuzha, Idukki"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0486-222231 / 2221061
+    "Jubilee Mission Medical College and Research Institute, Thrissur"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0487-2432200 / 2420361
+    "Karithas Hospital, Thellakam, Kottayam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,Heart related,Cancer"    0481-2790025 / 26 / 27 / 28 / 29 / 2790418
+    "KIMS Pinnacle Cancer Comprehensive Cancer Center, Anayara, Thriruvanathapuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,,Cancer"    0471-3041295 / 3041000
+    "KIMS, Kochi"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,"    0484-3041000
+    "Lakshmi Hospital, Chittor Road, Palakkad"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,Heart related,"    0491-2539999 / 2529999
+    "Lissy Hospital, Ernakulam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,"    0484-2402044 / 2403877
+    "Little Flower Hospital and Research Centre Ankamally, Ernakulam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,"    0484-2456146 / 3096666
+    "Malabar Cancer Centre, Thiruvananthapuram"    N/A    KARUNYA HEALTH SCHEME    Autonomous Hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+    "Malabar Institute of Medical Sciences Ltd., Kottakkal, Malappuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,"    0483-28070000 / 2807829
+    "Malik Dinaar Charitable Hospital, Kasargod"    N/A    KARUNYA HEALTH SCHEME    Private hospital        04994-230306 / 230935
+    "Medical college hospitals in Thruvananthapuram, Alappuzha, Kottayam, Thrissur, Kozhikode districts."    N/A    KARUNYA HEALTH SCHEME    Govt Hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+    "Meditrina Hospital, Pattom, Thiruvananthapuram"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,Heart related,"    0471-3063000
+    "P.K.Das Institute of Medical sciences, Ottappalam, Palakkad"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0466-2344500 / 2344555
+    "Palana Institute of Medical sciences, Palakkad"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,Cancer"    0491-2520901 / 02 / 03 / 2520900
+    "PS Mission Hospital, Maradu, Kochi"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,"    0484-2706620
+    "PVS Hospital, Kozhikkode"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0495-2705045 / 2702044
+    "Raja Charitable Medical Trust, Thrissur"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,"    0487-2502884 / 2502429
+    "Saanthi Hospital, Omassery, Kozhikode"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,"    0495-2281393
+    "Sree Narayana Trust Medical Mission hospital, Kollam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,"    0474-3918400 / 2743845
+    "St. James Hospital, Chalakudy, Thrissur"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0480-2710271 / 2709900
+    "St. Mary's Hospital, Idukki"    N/A    KARUNYA HEALTH SCHEME    Private hospital    " ,Heart related,"    0486-2250304
+    "St. Thomas Hospital, Chethippuzha, Changanassery, Kottayam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0481-2721797 / 2721596
+    Taluk Hospitals in Kerala that has specialty treatments    N/A    KARUNYA HEALTH SCHEME    Govt Hospital    "Cancer,Hemophilia,Kidney diseases,Heart diseases,Palliative"
+    "Tellichery Cooperative Hospital, Thalassery"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,,Cancer"    0490-2341604 / 3059740 / 41 / 42
+    "Tranvancore Medical College, Kollam"    N/A    KARUNYA HEALTH SCHEME    Private hospital    "kidney related ,Heart related,Cancer"    0474-2729393 / 2726161

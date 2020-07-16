@@ -8,14 +8,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" rel="stylesheet">
     <style>
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-    .column {
-      float: left;
-      margin-bottom: 16px;
-      padding: 0 8px;
-    }
+
     body{
       background: #f2f2f2;
       font-family: 'Open Sans', sans-serif;
@@ -47,7 +43,7 @@
     }
 
     .center {
-      padding: 75% 0;
+      padding: 50% 0;
       text-align: center;
     }
 
@@ -80,43 +76,59 @@
         </a>
         <a class="active" href="{{url_for('search_hospital') }}">Search Hospitals</a>
         <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        <div class="dropdown" style="float:right;">
-            <button class="dropbtn">Hi, {{current_user.name}}
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('view_profile') }}">My Profile</a>
-                <a href="{{url_for('logout') }}">Logout</a>
+        <div class="dropdown is-active" style="float:right;">
+            <div class="dropdown-trigger">
+                <button class="button">
+                    <span>Hi, {{current_user.name}}</span>
+                    <span class="icon is-small">
+                        <i aria-hidden="true" class="fa fa-caret-down"></i>
+                    </span>
+                </button>
             </div>
-            <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                    <a class="dropdown-item" href="{{ url_for('view_profile') }}">My Profile</a>
+                    <a class="dropdown-item" href="{{url_for('logout') }}">Logout</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<form action="/search_hospital" class="searchBtn" id="log-form" method="POST" name="log-form" style="margin:auto;max-width:auto;padding:20vw"|>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class="alert">
-            {% for message in messages %}
-            <a class="alert alert-warning">{{ message }}</a>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-            {{form.hidden_tag()}}
-            <div class="container-fluid">
-                <div class="row">
-                    <nobr>
-                        <div class="column" style="width:28%">{{form.state}}</div>
-                        <div class="column" style="width:28%">{{form.city}}</div>
-                        <div class="column" style="width:28%">{{form.spec}}</div>
-                        <div class="col-sm-2">
-                            <button style="width:14%" type="submit">
-                                <i aria-hidden="true" class="fa fa-search fa-lg"></i>
-                            </button>
-                        </div>
-                    </nobr>
+<form action="/search_hospital" class="searchBtn" id="log-form" method="POST" name="log-form"
+      style="margin:auto;max-width:auto;padding:20vw">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="alert">
+        {% for message in messages %}
+        <a class="notification is-danger">{{ message }}</a>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {{form.hidden_tag()}}
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    {{ form.state }}
+                </div>
+                <div class="column">
+                    {{ form.city }}
+                </div>
+                <div class="column">
+                    {{ form.spec }}
+                </div>
+                <div class="column">
+                    {{ form.scheme }}
+                </div>
+                <div class="column">
+                    <button type="submit">
+                        <i aria-hidden="true" class="fa fa-search fa-lg"></i>
+                    </button>
                 </div>
             </div>
+        </div>
+    </section>
 </form>
 <!--<script type="text/javascript">-->
 <!--    window.history.forward();-->
@@ -127,7 +139,7 @@
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
-        state_select.onchange = function(){
+        state_select.onclick= function(){
             state = state_select.value;
             fetch('/city/'+state).then(function(response){
                 response.json().then(function(data){

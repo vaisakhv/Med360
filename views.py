@@ -1,17 +1,25 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, IntegerField, PasswordField, validators, TextAreaField, \
-    SubmitField
+from wtforms import (SelectField,
+                     StringField,
+                     IntegerField,
+                     PasswordField,
+                     validators,
+                     TextAreaField,
+                     SubmitField)
 from wtforms.fields.html5 import DateField
 
-from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles
+from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles, get_all_schemes
 
 
 class SearchHospitalForm(FlaskForm):
     states_in_db = get_all_states()
     spec_codes = spec_code_dict()
+    schemes = get_all_schemes()
+    schemes.insert(0, (0, 'Show All'))
     state = SelectField('state', choices=states_in_db)
-    city = SelectField('city', choices=[], coerce=int)
+    city = SelectField('city', choices=[], coerce=int, validators=[validators.DataRequired])
     spec = SelectField('spec', choices=spec_codes)
+    scheme = SelectField('scheme', choices=schemes, coerce=int)
 
 
 class FindBloodDonorForm(FlaskForm):
@@ -65,7 +73,6 @@ class RegisterForm(FlaskForm):
     conf_passw = PasswordField('conf_passw',
                                [validators.DataRequired('Please re-enter the password'), validators.Length(min=7)],
                                render_kw={'placeholder': 'Confirm Password'})
-    # age = IntegerField('age', [validators.DataRequired('Please enter a valid age')], render_kw={'placeholder': 'Age'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')
     pan = StringField('pan', [validators.DataRequired('Enter your PAN number'), validators.Length(max=10, min=10)],
                       render_kw={'placeholder': 'PAN'})
@@ -100,7 +107,6 @@ class ProfileUpdateForm(FlaskForm):
                        coerce=int)
     pincode = IntegerField('pincode', [validators.DataRequired('Please enter you pincode')],
                            render_kw={'placeholder': 'Pincode'})
-    # age = IntegerField('age', [validators.DataRequired('Please enter a valid age')], render_kw={'placeholder': 'Age'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')
     pan = StringField('pan', [validators.DataRequired('Enter your PAN number'), validators.Length(max=10, min=10)],
                       render_kw={'placeholder': 'PAN'})
@@ -123,3 +129,7 @@ class ContactForm(FlaskForm):
     subject = StringField("Subject", [validators.DataRequired()])
     message = TextAreaField("Message", [validators.DataRequired()])
     submit = SubmitField("Send")
+
+
+class SearchForm(FlaskForm):
+    search = StringField('search', validators=[validators.DataRequired()])

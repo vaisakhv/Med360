@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+{% block page_content %}
+<div class="page-header">
+    <form action="{{ url_for('search') }}" method="post" name="search" style="display: inline;">
+        {{ form.search(size=20) }}
+        <input type="submit" value="Search">
+    </form>
+
+    {% if results %}
+    <h1>Search results for "{{ query }}":</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Hospital Name</th>
+            <th>Address</th>
+            <th>E-Mail</th>
+            <th>Contact Number</th>
+            <th>Schemes</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in results %}
+        <tr>
+            <td>{{ item.hosp_id }}</td>
+            <td>
+                <a href={{url_for('hospital_details',hosp_id=encrypt(item.hosp_id|string()))}}>{{ item.hosp_name }}</a>
+            </td>
+            <td>{{ item.hosp_addr }}</td>
+            <td>{{ item.hosp_contact_mail }}</td>
+            <td>{{ item.hosp_contact_no }}</td>
+
+        </tr>
+        {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock page_content %}
+</body>
+</html>
