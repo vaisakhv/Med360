@@ -63,9 +63,57 @@ def load_schemes():
 def add_scheme_by_hosp_id(hosp_id, scheme_id):
     from models import Hospital, Scheme
     hosp = Hospital.find_by_id(int(hosp_id))
-    karunya = Scheme.find_by_scheme_id(8)
-    hosp.Schemes.append(karunya)
+    scheme = Scheme.find_by_scheme_id(scheme_id)
+    hosp.Schemes.append(scheme)
     hosp.save_to_db()
+
+
+def bulk_update_hospital_schemes():
+    """
+    Updates the schemes fields in hosp objects based on the file specified
+    
+    :return: none
+    :rtype: none
+    """""
+    from models import Scheme, Hospital
+    import pandas as pd
+    new_scheme_file = "kb/Medical_Scheme_details_with_hosp_code.txt"
+    schemes = pd.read_csv(open(new_scheme_file, 'r'), delimiter='\t')
+    for i, row in schemes.iterrows():
+        if type(row.CODE) is str:
+            name_of_scheme = row['AVAILABLE INSURANCE']
+            hosp_id = row.CODE
+            try:
+                names = name_of_scheme.split('\n')
+                for name in names:
+                    if '). ' in name:
+                        name = name.split('). ')[-1].strip()
+                    print("IN : ", name)
+                    print("IN : ", hosp_id)
+                    if "CMCHIS" in name:
+                        name = 'CMCHIS'
+                    scheme = Scheme.find_by_scheme_name(name=name)
+                    if len(scheme.all()) > 0:
+                        if "CMCHIS" in name:
+                            name = 'CMCHIS'
+                        print("OUT : ", scheme.all()[0].name)
+                        if ' ' in hosp_id.strip():
+                            ids = hosp_id.split(' ')
+                            print(ids)
+                            for id in ids:
+                                hosp = Hospital.find_by_id(int(id))
+                                print(scheme.all()[0].id)
+                                hosp.Schemes.append(scheme.all()[0])
+                                hosp.save_to_db
+                                print('done ', hosp.hosp_name)
+                        print('in else')
+                        hosp = Hospital.find_by_id(int(hosp_id))
+                        print(scheme.all()[0].id)
+                        hosp.Schemes.append(scheme.all()[0])
+                        hosp.save_to_db
+                        print('yo ', hosp.hosp_name)
+            except Exception as e:
+                print(str(e))
 
 
 def add_schemes():

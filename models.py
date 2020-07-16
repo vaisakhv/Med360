@@ -85,6 +85,10 @@ class Scheme(db.Model):
     def find_by_scheme_id(cls, id):
         return cls.query.filter_by(id=id).first()
 
+    @classmethod
+    def find_by_scheme_name(cls, name):
+        return cls.query.filter(cls.name.like('%' + name + '%'))
+
     def remove_from_db(self):
         db.session.delete(self)
         db.session.commit()
@@ -127,7 +131,6 @@ class Hospital(db.Model):
     @classmethod
     def find_by_name(cls, _name):
         return cls.query.filter(cls.hosp_name.like('%' + _name + '%'))
-        # return cls.query.filter_by(hosp_name=_name)
 
     @classmethod
     def find_by_addr(cls, _addr):
@@ -147,7 +150,6 @@ class Hospital(db.Model):
 
     def __init__(self, hosp_name, hosp_addr, hosp_spec_empanl, hosp_spec_upgraded, hosp_contact_no,
                  hosp_contact_mail, hosp_type):
-        # self.hosp_id = hosp_id
         self.hosp_name = hosp_name
         self.hosp_addr = hosp_addr
         self.hosp_spec_empanl = hosp_spec_empanl

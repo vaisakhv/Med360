@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" rel="stylesheet">
     <style>
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
     .column {
@@ -74,50 +74,58 @@
 </head>
 <body translate="no">
 <div id="test">
-    <div class="topnav" id="myTopnav">
+    <div class="topnav " id="myTopnav">
         <a href="{{ url_for('index') }}"><a class="navbar-brand active" href="{{ url_for('index') }}">
             <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
         </a>
         <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
         <a class="active" href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        <div class="dropdown" style="float:right;">
-            <button class="dropbtn">Hi, {{current_user.name}}
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('view_profile') }}">My Profile</a>
-                <a href="{{url_for('logout') }}">Logout</a>
+        <div class="dropdown " style="float:right">
+            <div class="dropdown-trigger">
+                <button aria-controls="dropdown-menu" aria-haspopup="true" class="button">Hi, {{current_user.name}}
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a class="dropdown-item" href="{{ url_for('view_profile') }}">My Profile</a>
+                    <a class="dropdown-item" href="{{url_for('logout') }}">Logout</a>
+                </div>
+                <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
             </div>
-            <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
         </div>
     </div>
 </div>
 <form action="/search_blood_donor" class="searchBtn" id="log-form" method="POST" name="log-form"
-      style="margin:auto;max-width:auto;padding:20vw" |>
+      style="margin:auto;max-width:auto;padding:20vw">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul class="alert">
         {% for message in messages %}
-        <a class="alert alert-warning">{{ message }}</a>
+        <a class="notification is-danger">{{ message }}</a>
         {% endfor %}
     </ul>
     {% endif %}
     {% endwith %}
     {{form.hidden_tag()}}
-    <div class="container-fluid">
-        <div class="row">
-            <nobr>
-                <div class="column" style="width:28%">{{form.state}}</div>
-                <div class="column" style="width:28%">{{form.city}}</div>
-                <div class="column" style="width:28%">{{form.bld_grp}}</div>
-                <div class="col-sm-2">
-                    <button style="width:14%" type="submit">
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    {{ form.state }}
+                </div>
+                <div class="column">
+                    {{ form.city }}
+                </div>
+                <div class="column">
+                    {{ form.bld_grp }}
+                </div>
+                <div class="column">
+                    <button type="submit">
                         <i aria-hidden="true" class="fa fa-search fa-lg"></i>
                     </button>
                 </div>
-            </nobr>
+            </div>
         </div>
-    </div>
+    </section>
 </form>
 <!--<script type="text/javascript">-->
 <!--    window.history.forward();-->

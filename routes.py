@@ -3,22 +3,17 @@ from distutils.util import strtobool
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_admin.contrib.sqla import ModelView
 from flask_login import login_required, LoginManager, login_user, current_user, logout_user
-# from flask_mail import Mail
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from med360 import decodeSpecialties, get_age, Security, admin, covid_data
 from models import User, Hospital, City, Role, app, db, Scheme
 from views import (RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm,
-                   ResetPasswordForm, ProfileUpdateForm,
-                   ContactForm, SearchForm)
+                   ResetPasswordForm, ProfileUpdateForm, ContactForm, SearchForm)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-
-# mail = Mail()
-# mail.init_app(app)
 
 def is_auth():
     auth = False
@@ -96,6 +91,7 @@ def check(username):
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
+    login_page_name = "login_2.html"
     if form.validate_on_submit():
         uname = form.uname.data
         passw = form.passw.data
@@ -105,33 +101,29 @@ def login():
         if uname != '' or passw != '':
             if user is not None:
                 if check_password_hash(user.password, passw):
-                    print(user.username)
                     login_user(user)
-                    try:
-                        user_role = Role.find_by_id(user.role)
-                    except Exception as e:
-                        print(str(e))
+                    user_role = Role.find_by_id(user.role)
                     print('role_name=', user_role.name, 'role_id=', user_role.id)
                     if user_role.name == "admin":
                         print("Enabling admin view")
-                        admin.add_view(ModelView(User, db.session))
                         admin.add_view(ModelView(Hospital, db.session))
                         admin.add_view(ModelView(City, db.session))
                         admin.add_view(ModelView(Role, db.session))
-                    next = request.args.get('next')
-                    return redirect(next or url_for('index'))
+                        admin.add_view(ModelView(Scheme, db.session))
+                    next_page = request.args.get('next')
+                    return redirect(next_page or url_for('index'))
                 flash('Invalid password for user ' + user.username)
-                return render_template("login_2.html", form=form)
+                return render_template(login_page_name, form=form)
             flash('Invalid username ')
-            return render_template("login_2.html", form=form)
+            return render_template(login_page_name, form=form)
         flash('Invalid username or/and password')
-        return render_template("login_2.html", form=form)
+        return render_template(login_page_name, form=form)
     elif 'passw' in form.errors.keys():
         flash('Invalid password')
-        return render_template("login_2.html", form=form)
+        return render_template(login_page_name, form=form)
     elif current_user.is_authenticated:
         return redirect(url_for('index'))
-    return render_template("login_2.html", form=form)
+    return render_template(login_page_name, form=form)
 
 
 @app.route('/logout')
@@ -150,7 +142,7 @@ def view_profile():
 
 
 @app.route("/resetpwd", methods=["GET", "POST"])
-def resetPassword():
+def reset_password():
     form = ResetPasswordForm()
     if form.validate_on_submit():
         uname = form.uname.data
@@ -299,7 +291,7 @@ def add_hospital():
 
 
 @app.route('/city/<state>')
-def getDist(state):
+def get_dist(state):
     cities = City.find_by_state(state)
     city_array = []
     for city in cities:
@@ -312,13 +304,13 @@ def getDist(state):
 @login_required
 def search_hospital():
     form = SearchHospitalForm()
-    form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
+    form.city.choices = [(city.id, city.name) for city in City.find_by_state(form.city.data)]
     if form.is_submitted():
         city = City.get_by_id(form.city.data)
         state_name = city.name
         spec = form.spec.data
         scheme_id = form.scheme.data
-        if spec != "None" and state_name is not '' and not state_name.isspace():
+        if spec != "None" and state_name != '' and not state_name.isspace():
             hosps = Hospital.find_by_spec_and_state(_spec=spec, _state=state_name).all()
             if scheme_id != 0:
                 filtered = []
@@ -342,7 +334,7 @@ def search_hospital():
                 print('no hospitals with ', spec)
                 flash("No Hospitals found, why don't you try without the Speciality filter!!")
                 return render_template("search_hospital.html", current_user=current_user, form=form)
-        elif state_name is not '' and not state_name.isspace():
+        elif state_name != '' and not state_name.isspace():
             hosp = Hospital.find_by_state(state_name)
             if len(hosp.all()) > 0:
                 if scheme_id != 0:
@@ -351,7 +343,6 @@ def search_hospital():
                     for a_hosp in hosp:
                         if a_hosp in scheme.partner_hospitals.all():
                             filtered.append(a_hosp)
-                    print(filtered)
                     if len(filtered) <= 0:
                         flash("No Hospitals found, why don't you try without the Scheme filter!!")
                         return render_template("search_hospital.html", current_user=current_user, form=form)
@@ -406,8 +397,17 @@ def search_blood_donor():
     return render_template("search_blood_donor.html", current_user=current_user, form=form)
 
 
+@app.route('/scheme')
+def about_scheme():
+    data = Scheme.find_by_scheme_id(8)
+    return render_template("scheme.html", current_user=current_user, data=data)
+
+
 @app.route('/hosp_by_scheme')
 def search_hosp_by_scheme():
+    """
+    function to be created
+    """
     pass
 
 
@@ -416,12 +416,6 @@ def search_scheme_by_hosp():
     hosp_id = 17
     hosp = Hospital.find_by_id(hosp_id)
     scheme_list = hosp.Schemes
-
-
-def find_hosp_by_scheme():
-    id = 8
-    scheme = Scheme.find_by_scheme_id(id)
-    parter_hosps = scheme.partner_hospitals
 
 
 @app.route('/search', methods=['GET', 'POST'])

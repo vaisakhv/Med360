@@ -76,24 +76,31 @@
         </a>
         <a class="active" href="{{url_for('search_hospital') }}">Search Hospitals</a>
         <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        <div class="dropdown" style="float:right;">
-            <button class="dropbtn">Hi, {{current_user.name}}
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('view_profile') }}">My Profile</a>
-                <a href="{{url_for('logout') }}">Logout</a>
+        <div class="dropdown is-active" style="float:right;">
+            <div class="dropdown-trigger">
+                <button class="button">
+                    <span>Hi, {{current_user.name}}</span>
+                    <span class="icon is-small">
+                        <i aria-hidden="true" class="fa fa-caret-down"></i>
+                    </span>
+                </button>
             </div>
-            <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                    <a class="dropdown-item" href="{{ url_for('view_profile') }}">My Profile</a>
+                    <a class="dropdown-item" href="{{url_for('logout') }}">Logout</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<form action="/search_hospital" class="searchBtn" id="log-form" method="POST" name="log-form" style="margin:auto;max-width:auto;padding:20vw"|>
+<form action="/search_hospital" class="searchBtn" id="log-form" method="POST" name="log-form"
+      style="margin:auto;max-width:auto;padding:20vw">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul class="alert">
         {% for message in messages %}
-        <a class="alert alert-warning">{{ message }}</a>
+        <a class="notification is-danger">{{ message }}</a>
         {% endfor %}
     </ul>
     {% endif %}
@@ -132,7 +139,7 @@
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
-        state_select.onchange = function(){
+        state_select.onclick= function(){
             state = state_select.value;
             fetch('/city/'+state).then(function(response){
                 response.json().then(function(data){
