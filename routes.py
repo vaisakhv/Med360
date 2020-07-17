@@ -92,14 +92,16 @@ def check(username):
 def login():
     form = LoginForm()
     login_page_name = "login_2.html"
+    print(form.validate_on_submit())
+    print(form.errors)
     if form.validate_on_submit():
         uname = form.uname.data
         passw = form.passw.data
         print(uname, passw)
         user = User.find_by_username(username=uname)
-        print('found ', user.username)
         if uname != '' or passw != '':
             if user is not None:
+                print('found ', user.username)
                 if check_password_hash(user.password, passw):
                     login_user(user)
                     user_role = Role.find_by_id(user.role)

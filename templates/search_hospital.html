@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <title>Med360 | Hospital Search</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" rel="stylesheet">
@@ -69,30 +71,65 @@
     </script>
 </head>
 <body translate="no">
-<div id="test">
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('index') }}"><a class="navbar-brand active" href="{{ url_for('index') }}">
-            <img src="{{url_for('static', filename='logo_small.PNG')}}" style="padding:0;"></a>
-        </a>
-        <a class="active" href="{{url_for('search_hospital') }}">Search Hospitals</a>
-        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        <div class="dropdown is-active" style="float:right;">
-            <div class="dropdown-trigger">
-                <button class="button">
-                    <span>Hi, {{current_user.name}}</span>
-                    <span class="icon is-small">
-                        <i aria-hidden="true" class="fa fa-caret-down"></i>
-                    </span>
-                </button>
+<div id="body">
+    <nav aria-label="main navigation" class="navbar" role="navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ url_for('index') }}">
+                <img height="28" src="{{url_for('static', filename='logo_small.PNG')}}" width="112">
+            </a>
+
+            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
+               role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="navbarBasicExample">
+            <div class="navbar-start">
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                    Search Blood Donor
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                <div class="dropdown-content">
-                    <a class="dropdown-item" href="{{ url_for('view_profile') }}">My Profile</a>
-                    <a class="dropdown-item" href="{{url_for('logout') }}">Logout</a>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                            <strong>My Profile</strong>
+                        </a>
+                        <a class="button is-light" href="{{url_for('logout') }}">
+                            Logout
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </nav>
 </div>
 <form action="/search_hospital" class="searchBtn" id="log-form" method="POST" name="log-form"
       style="margin:auto;max-width:auto;padding:20vw">
