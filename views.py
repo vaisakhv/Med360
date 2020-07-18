@@ -83,10 +83,13 @@ class RegisterForm(FlaskForm):
                       choices=[('Male', 'Male'), ('Female', 'Female')])
     bld_grp = SelectField('bld_grp', choices=[('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'), ('O+', 'O+'),
                                               ('O-', 'O-'), ('AB+', 'AB+'), ('AB-', 'AB-')])
-    organ_donation = SelectField('organ_donation', [validators.DataRequired('Please select one')],
-                                 choices=[('True', 'Yes'), ('False', 'No')])
-    bld_donation = SelectField('bld_donation', [validators.DataRequired('Please select one')],
-                               choices=[('True', 'Yes'), ('False', 'No')])
+    donor = SelectField('donor', [validators.DataRequired('Please select one')],
+                        choices=[('blood', 'Blood Donor'), ('organ', 'Organ Donor'), ('none', 'None'),
+                                 ('both', 'Both')])
+    # organ_donation = SelectField('organ_donation', [validators.DataRequired('Please select one')],
+    #                              choices=[('True', 'Yes'), ('False', 'No')])
+    # bld_donation = SelectField('bld_donation', [validators.DataRequired('Please select one')],
+    #                            choices=[('True', 'Yes'), ('False', 'No')])
 
 
 class ProfileUpdateForm(FlaskForm):

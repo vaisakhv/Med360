@@ -81,6 +81,7 @@ def index():
 
 @app.route('/check/<username>')
 def check(username):
+    print(username)
     user = User.find_by_username(username=username)
     if user is None:
         return jsonify(False)
@@ -152,6 +153,7 @@ def reset_password():
         user = User.find_by_username(uname)
         if user is not None:
             print(user.name)
+            print(user.dob)
             passw = form.passw.data
             conf_passw = form.conf_passw.data
             if conf_passw == passw:
@@ -197,8 +199,19 @@ def register():
         po_num = form.pincode.data
         mobile = form.mobile.data
         aadhar = form.aadhar.data
-        organ_donation = bool(strtobool(form.organ_donation.data))
-        bld_donation = bool(strtobool(form.bld_donation.data))
+        donor = form.donor.data
+        organ_donation = False
+        bld_donation = False
+        if donor != 'none':
+            if donor == 'blood':
+                bld_donation = True
+            elif donor == 'organ':
+                organ_donation = True
+            elif donor == 'both':
+                organ_donation = True
+                bld_donation = True
+        # organ_donation = bool(strtobool(form.organ_donation.data))
+        # bld_donation = bool(strtobool(form.bld_donation.data))
         user_role = int(form.role.data)
         print('selected role id is ', user_role)
         r = Role.find_by_id(user_role)
@@ -313,7 +326,7 @@ def search_hospital():
         spec = form.spec.data
         scheme_id = form.scheme.data
         if spec != "None" and state_name != '' and not state_name.isspace():
-            hosps = Hospital.find_by_spec_and_state(_spec=spec, _state=state_name).all()
+            hosps = Hospital.find_by_spec_and_state(_spec=spec, _state=state_name)
             if scheme_id != 0:
                 filtered = []
                 scheme = Scheme.find_by_scheme_id(scheme_id)

@@ -5,8 +5,10 @@
     {% block content %}
     <title>MED360 | Register</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script src='https://use.fontawesome.com/releases/v5.0.10/js/all.js'></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css' rel='stylesheet'>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
     <style>
 		.column {
 			padding-top: 0 !important;
@@ -19,8 +21,9 @@
 			margin: auto;
 			max-width: 740px;
 		}
-
-
+		.control.has-icons-left .icon.is-left, .control.has-icons-right .icon.is-right {
+            color:#666666
+		}
     </style>
     <script>
 	  window.console = window.console || function(t) {};
@@ -51,62 +54,131 @@
         </div>
         {% endif %}
         {% endwith %}
-        <div class="container">
-            <div class="title">Sign Up</div>
-            <div class="subtitle">With Your Email</div>
+        <div class="container login is-9">
+            <div class="columns is-mobile is-centered">
+                <img alt="MED360" src="{{url_for('static', filename='med.png')}}" width="325px"/>
+            </div>
             <form action="" id="register-form" method="POST">
                 {{form.hidden_tag()}}
                 <div class="field">
-                    <label class="label" for="uname">Username</label>
+                    <label class="label">Name</label>
                     <div class="control has-icons-left">
-                        {{form.uname(class_='input')}}
-                        <span class="icon is-left"><i class="fa">user</i></span>
+                        {{form.name(class_='input is-rounded')}}
+                        <span class="icon is-left"><em class="fa">user</em></span>
                     </div>
-                    <label class="label" for="mail">Email</label>
+                    <label class="label">Username</label>
                     <div class="control has-icons-left">
-                        {{form.mail(class_='input')}}
-                        <span class="icon is-left"><i class="fa">envelope-square</i></span>
-                    </div>
-                    <label class="label" for="name">Name</label>
-                    <div class="control has-icons-left">
-                        <input class="input" name="firstName" placeholder="First Name" type="text"/>
+                        {{form.uname(class_='input is-rounded')}}
+                        <span class="icon is-left" id="username_tick"><em class="fa fa-user-circle"></em></span>
                     </div>
                     <div class="columns row-one">
                         <div class="column">
-                            <label class="label" for="password">Password</label>
+                            <label class="label">Email</label>
                             <div class="control has-icons-left">
-                                {{form.passw(class_='input')}}
-                                <span class="icon is-left"><i class="fa">key</i></span>
+                                {{form.mail(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">envelope-square</em></span>
                             </div>
                         </div>
                         <div class="column">
-                            <label class="label" for="conf_passw">Re-Type Password</label>
+                            <label class="label">Mobile</label>
                             <div class="control has-icons-left">
-                                {{form.conf_passw(class_='input')}}
-                                <span class="icon is-left"><i class="fa">lock</i></span>
+                                {{form.mobile(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa fa-phone "></em></span>
                             </div>
                         </div>
                     </div>
                     <div class="columns row-one">
                         <div class="column">
-                            <label class="label" for="firstName">First Name</label>
-                            <div class="control">
-                                <input class="input" name="firstName" placeholder="First Name" type="text"/>
+                            <label class="label">Password</label>
+                            <div class="control has-icons-left">
+                                {{form.passw(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">key</em></span>
                             </div>
                         </div>
                         <div class="column">
-                            <label class="label" for="lastName">Last Name</label>
+                            <label class="label">Confirm Passsword</label>
+                            <div class="control has-icons-left">
+                                {{form.conf_passw(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">lock</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Sex</label>
+                            <div class="control has-icons-right">
+                                {{form.sex(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Blood Group</label>
+                            <div class="control has-icons-right">
+                                {{form.bld_grp(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Date of Birth</label>
                             <div class="control">
-                                <input class="input" name="lastName" placeholder="Last Name" type="text"/>
+                                {{form.dob(class_='input is-rounded', style='background:#D9DDE6')}}
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Donor</label>
+                            <div class="control has-icons-right">
+                                {{form.donor(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="label">Address</label>
+                    <div class="control has-icons-left">
+                        {{form.addr(class_='input is-rounded')}}
+                        <span class="icon is-left"><em class="fa fa-map-marker"></em></span>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">State</label>
+                            <div class="control has-icons-right">
+                                {{form.state(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">City</label>
+                            <div class="control has-icons-right">
+                                {{form.city(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Pincode</label>
+                            <div class="control has-icons-left">
+                                {{form.pincode(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">map-pin</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Aadhaar</label>
+                            <div class="control has-icons-left">
+                                {{form.aadhar(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">id-card</em></span>
                             </div>
                         </div>
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
-                            <button class="button is-medium">Login</button>
+                            <button class="button is-link is-medium is-block is-fullwidth is-rounded">Login</button>
                         </div>
                         <div class="control">
-                            <button class="button is-primary is-medium" type="submit">Register</button>
+                            <button class="button is-primary is-medium is-block is-fullwidth is-rounded" type="submit">
+                                Register
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -115,7 +187,7 @@
     </div>
 </div>
 {% endblock %}
-<script src='https://use.fontawesome.com/releases/v5.0.10/js/all.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
@@ -132,19 +204,24 @@
             });
         }
 
-       let input = document.querySelector('input[name=uname]');
-       var message = document.getElementById('error-nwl-usr');
+       let input = document.getElementById('uname');
+       let fa_icon = document.getElementById('username_tick');
         var goodColor = "#66cc66";
         var badColor = "#ff6666";
        input.onkeyup = function() {
+            fetch('/check/'+input.value).then(function(response){
+                response.json().then(function(data){
+                    if (data == false){
+                        fa_icon.style.color = goodColor;
+                        fa_icon.innerHTML = "<i class='fa fa-user-circle'>"
+                    }else{
+                        fa_icon.style.color = badColor;
+                        fa_icon.innerHTML = "<i class='fa fa-times-circle'>"
+                    }
+                });
+            });
             $.get('/check/' + input.value, function(data) {
-                if (data == false){
-                    message.style.color = goodColor;
-                    message.innerHTML = "Username is available!"
-                }else{
-                    message.style.color = badColor;
-                    message.innerHTML = "Username is not available!"
-                }
+
             });
         };
 
