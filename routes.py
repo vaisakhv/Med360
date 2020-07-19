@@ -319,59 +319,67 @@ def get_dist(state):
 @login_required
 def search_hospital():
     form = SearchHospitalForm()
-    form.city.choices = [(city.id, city.name) for city in City.find_by_state(form.city.data)]
+    if form.state != "None":
+        form.city.choices = [(city.id, city.name) for city in City.find_by_state(form.city.data)]
     if form.is_submitted():
-        city = City.get_by_id(form.city.data)
-        state_name = city.name
-        spec = form.spec.data
-        scheme_id = form.scheme.data
-        if spec != "None" and state_name != '' and not state_name.isspace():
-            hosps = Hospital.find_by_spec_and_state(_spec=spec, _state=state_name)
-            if scheme_id != 0:
-                filtered = []
-                scheme = Scheme.find_by_scheme_id(scheme_id)
-                print(scheme.name)
-                print(scheme.partner_hospitals)
-                for a_hosp in hosps:
-                    if a_hosp in scheme.partner_hospitals.all():
-                        filtered.append(a_hosp)
-                print(filtered)
-                if len(filtered) <= 0:
-                    flash("No Hospitals found, why don't you try without the Scheme filter!!")
-                    return render_template("search_hospital.html", current_user=current_user, form=form)
-                return render_template('searchResult.html', data=filtered, current_user=current_user, auth=is_auth(),
-                                       searchterm=state_name, encrypt=Security.encrypt)
-            print("results form spec for ", decodeSpecialties(spec)[0])
-            if len(hosps.all()) > 0:
-                return render_template('searchResult.html', data=hosps, current_user=current_user, auth=is_auth(),
-                                       searchterm=state_name, encrypt=Security.encrypt)
-            else:
-                print('no hospitals with ', spec)
-                flash("No Hospitals found, why don't you try without the Speciality filter!!")
-                return render_template("search_hospital.html", current_user=current_user, form=form)
-        elif state_name != '' and not state_name.isspace():
-            hosp = Hospital.find_by_state(state_name)
-            if len(hosp.all()) > 0:
+        if form.city != "None" or form.state != "None":
+            city = City.get_by_id(form.city.data)
+            state_name = city.name
+            spec = form.spec.data
+            scheme_id = form.scheme.data
+            if spec != "None" and state_name != "" and not state_name.isspace():
+                hosps = Hospital.find_by_spec_and_state(_spec=spec, _state=state_name)
+                print("scheme id is ", scheme_id)
                 if scheme_id != 0:
-                    scheme = Scheme.find_by_scheme_id(scheme_id)
                     filtered = []
-                    for a_hosp in hosp:
+                    scheme = Scheme.find_by_scheme_id(scheme_id)
+                    print(scheme.name)
+                    print(scheme.partner_hospitals)
+                    for a_hosp in hosps:
                         if a_hosp in scheme.partner_hospitals.all():
                             filtered.append(a_hosp)
+                    print(filtered)
                     if len(filtered) <= 0:
                         flash("No Hospitals found, why don't you try without the Scheme filter!!")
                         return render_template("search_hospital.html", current_user=current_user, form=form)
                     return render_template('searchResult.html', data=filtered, current_user=current_user,
                                            auth=is_auth(),
                                            searchterm=state_name, encrypt=Security.encrypt)
-                return render_template('searchResult.html', data=hosp, current_user=current_user, searchterm=state_name,
-                                       encrypt=Security.encrypt, auth=is_auth())
+                print("results form spec for ", decodeSpecialties(spec)[0])
+                if len(hosps.all()) > 0:
+                    return render_template('searchResult.html', data=hosps, current_user=current_user, auth=is_auth(),
+                                           searchterm=state_name, encrypt=Security.encrypt)
+                else:
+                    print('no hospitals with ', spec)
+                    flash("No Hospitals found, why don't you try without the Speciality filter!!")
+                    return render_template("search_hospital.html", current_user=current_user, form=form)
+            elif state_name != '' and not state_name.isspace():
+                hosp = Hospital.find_by_state(state_name)
+                if len(hosp.all()) > 0:
+                    print("scheme id is ", scheme_id)
+                    if scheme_id != 0:
+                        scheme = Scheme.find_by_scheme_id(scheme_id)
+                        filtered = []
+                        for a_hosp in hosp:
+                            if a_hosp in scheme.partner_hospitals.all():
+                                filtered.append(a_hosp)
+                        if len(filtered) <= 0:
+                            flash("No Hospitals found, why don't you try without the Scheme filter!!")
+                            return render_template("search_hospital.html", current_user=current_user, form=form)
+                        return render_template('searchResult.html', data=filtered, current_user=current_user,
+                                               auth=is_auth(),
+                                               searchterm=state_name, encrypt=Security.encrypt)
+                    return render_template('searchResult.html', data=hosp, current_user=current_user,
+                                           searchterm=state_name,
+                                           encrypt=Security.encrypt, auth=is_auth())
+                else:
+                    flash('No Hospitals found!!')
+                    return render_template("search_hospital.html", current_user=current_user, form=form)
             else:
-                flash('No Hospitals found!!')
+                flash("Enter a valid query")
                 return render_template("search_hospital.html", current_user=current_user, form=form)
-        else:
-            flash("Enter a valid query")
-            return render_template("search_hospital.html", current_user=current_user, form=form)
+        flash("State and City are Mandatory Fields")
+        return render_template("search_hospital.html", current_user=current_user, form=form)
     return render_template("search_hospital.html", current_user=current_user, form=form)
 
 
@@ -414,23 +422,10 @@ def search_blood_donor():
 
 @app.route('/scheme')
 def about_scheme():
-    data = Scheme.find_by_scheme_id(8)
-    return render_template("scheme.html", current_user=current_user, data=data)
-
-
-@app.route('/hosp_by_scheme')
-def search_hosp_by_scheme():
-    """
-    function to be created
-    """
-    pass
-
-
-@app.route('/scheme_by_hosp')
-def search_scheme_by_hosp():
-    hosp_id = 17
-    hosp = Hospital.find_by_id(hosp_id)
-    scheme_list = hosp.Schemes
+    selected_id = request.args.get('sch_id')
+    data = Scheme.find_by_scheme_id(int(selected_id))
+    if data:
+        return render_template("scheme.html", current_user=current_user, scheme=data)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -438,11 +433,18 @@ def search():
     form = SearchForm()
     if form.is_submitted():
         search_term = form.search.data
-        results = Hospital.find_by_name(_name=search_term)
+        results1 = Hospital.find_by_name(_name=search_term).all()
+        results2 = Hospital.find_by_addr(_addr=search_term).all()
+        # results3 = Scheme.find_by_scheme_name(name=search_term).all()
+        results = results1 + results2
+        print(results1, results2)
         print(results)
-        return render_template('keyword_search.html', form=form, results=results, encrypt=Security.encrypt,
-                               query=search_term)
-    return render_template('keyword_search.html', form=form)
+        if len(results) > 0:
+            return render_template('keyword_search.html', data=results, current_user=current_user,
+                                   searchterm=search_term,
+                                   encrypt=Security.encrypt, auth=is_auth(), first_visit=False, form=form)
+        flash(message="No results found!!")
+    return render_template('keyword_search.html', form=form, first_visit=True)
 
 
 def __init__(self, **kwargs):

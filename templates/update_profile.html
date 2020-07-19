@@ -5,10 +5,12 @@
     {% block content %}
     <title>MED360 | Update Profile</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <script src='https://use.fontawesome.com/releases/v5.0.10/js/all.js'></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css' rel='stylesheet'>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
     <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <style>
 		.column {
 			padding-top: 0 !important;
@@ -76,9 +78,9 @@
 
     </script>
 </head>
-<body translate="no">
-<div id="body">
-    <nav aria-label="main navigation" class="hero-navbar login level" role="navigation">
+<body class="hero is-widescreen" translate="no">
+<section id="body">
+    <nav aria-label="main navigation" class="iis-fullheight hero-navbar login level" role="navigation">
         <div class="navbar-brand level-left">
             <a class="navbar-item level-item" href="{{ url_for('index') }}">
                 <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
@@ -93,8 +95,11 @@
 
         <div class="navbar-menu level-right" id="navbarBasicExample">
             <div class="navbar-start level-item">
-                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                <a class="navbar-item" href="{{url_for('search') }}">
                     Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
                 </a>
                 <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
                     Search Blood Donor
@@ -133,11 +138,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
+</section>
 <div id="app">
-    <div class="section">
+    <section class="section">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div class="container is-fluid">
@@ -280,7 +285,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </section>
 </div>
 {% endblock %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

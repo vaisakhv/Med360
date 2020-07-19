@@ -5,10 +5,11 @@
     {% block content %}
     <title>MED360 | Register</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <script src='https://use.fontawesome.com/releases/v5.0.10/js/all.js'></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css' rel='stylesheet'>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
     <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <style>
 		.column {
 			padding-top: 0 !important;
@@ -17,7 +18,7 @@
 		.row-one {
 			padding-top: 13px;
 		}
-		form .field {
+        form .field {
 			margin: auto;
 			max-width: 740px;
 		}
@@ -39,7 +40,7 @@
     </script>
 </head>
 <body translate="no">
-<div id="app">
+<section class="hero is-fullheight body" id="app">
     <div class="section">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -185,7 +186,7 @@
             </form>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>

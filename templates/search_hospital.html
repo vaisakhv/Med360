@@ -7,10 +7,11 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     {% block content %}
     <title>MED360 | Seach Hospital</title>
-    <script src='https://use.fontawesome.com/releases/v5.0.10/js/all.js'></script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/bulma@0.8.2/css/bulma.min.css" rel="stylesheet"/>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
     <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 </head>
 <style>
     .control.has-icons-left .icon.is-left, .control.has-icons-right .icon.is-right {
@@ -19,7 +20,7 @@
     html, body {margin: 0; height: 100%; overflow: hidden}
 
 </style>
-<body>
+<body class="hero is-widescreen">
 <div id="body">
     <nav aria-label="main navigation" class="hero-navbar login level" role="navigation">
         <div class="navbar-brand level-left">
@@ -36,8 +37,11 @@
 
         <div class="navbar-menu level-right" id="navbarBasicExample">
             <div class="navbar-start level-item">
-                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                <a class="navbar-item" href="{{url_for('search') }}">
                     Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
                 </a>
                 <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
                     Search Blood Donor
@@ -144,7 +148,7 @@
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
-        state_select.onclick= function(){
+        state_select.onchange= function(){
             state = state_select.value;
             fetch('/city/'+state).then(function(response){
                 response.json().then(function(data){
@@ -156,12 +160,18 @@
                 });
             });
         }
+        window.onload = function(){
+            state = state_select.value;
+                    let optionHTML = '';
+                    optionHTML += '<option value="None">Districts</option>';
+                    city_select.innerHTML = optionHTML;
+        }
 		document.addEventListener('DOMContentLoaded', () => {
 		  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
 			$notification = $delete.parentNode;
-
 			$delete.addEventListener('click', () => {
 			  $notification.parentNode.removeChild($notification);
+			  location = location
 			});
 		  });
 		});

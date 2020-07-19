@@ -15,7 +15,7 @@ class SearchHospitalForm(FlaskForm):
     states_in_db = get_all_states()
     spec_codes = spec_code_dict()
     schemes = get_all_schemes()
-    schemes.insert(0, (0, 'Show All'))
+    schemes.append((0, "Schemes"))
     state = SelectField('state', choices=states_in_db)
     city = SelectField('city', choices=[], coerce=int, validators=[validators.DataRequired])
     spec = SelectField('spec', choices=spec_codes)

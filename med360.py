@@ -20,7 +20,9 @@ def get_all_states_for_donors():
 
 
 def get_all_states():
-    return [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
+    states = [(r[0], r[0]) for r in db.session.query(City.state).distinct()]
+    states.append(("None", "States"))
+    return states
 
 
 def get_all_roles():
@@ -39,7 +41,7 @@ def spec_code_dict():
     code_dict = []
     for i, j in codes.iterrows():
         if len(code_dict) == 0:
-            code_dict.append(('None', 'Show all'))
+            code_dict.append(('None', 'Specialities'))
         code_dict.append((j.name, j.spec))
     return code_dict
 
