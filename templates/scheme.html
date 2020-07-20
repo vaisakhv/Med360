@@ -215,7 +215,13 @@
         </div>
         <div class="columns tile is-child box tile_neo" style="display:block">
             <div class="is-size-5">Approved Hospitals</div>
-            <div class="dip column">{{scheme.partner_hospitals.all()}}</div>
+            <div class="dip column">
+                <ul>
+                    {% for item in scheme.partner_hospitals.all() %}
+                    <li><a href="{{url_for('hospital_details',hosp_id=item.uuid)}}">{{item.hosp_name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
     <div class="columns is-8 tile is-parent is-fluid is-vertical">

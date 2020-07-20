@@ -1,11 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import (SelectField,
-                     StringField,
-                     IntegerField,
-                     PasswordField,
-                     validators,
-                     TextAreaField,
-                     SubmitField)
+from wtforms import (SelectField, StringField, IntegerField, PasswordField,
+                     validators, TextAreaField, SubmitField, RadioField)
 from wtforms.fields.html5 import DateField
 
 from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles, get_all_schemes
@@ -136,3 +131,5 @@ class ContactForm(FlaskForm):
 
 class SearchForm(FlaskForm):
     search = StringField('search', validators=[validators.DataRequired()])
+    search_hospital = RadioField("search_hospital", choices=[('True', 'Search Hospital'), ('False', 'Search Schemes')],
+                                 default='True', validators=[validators.DataRequired()])

@@ -221,7 +221,7 @@
                 <div class="column dip is-size-5 has-icons-left">
                     <div class="icon is-left"><i aria-hidden="true" class="fa">university</i></div>
                     {% for scheme in data.Schemes %}
-                    <span>{{scheme.name}}</span>
+                    <a href="{{url_for('about_scheme',sch_id=scheme.uuid)}}">{{scheme.name}}</a>
                     {% endfor %}
                 </div>
             </div>

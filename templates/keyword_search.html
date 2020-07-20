@@ -106,15 +106,33 @@
         {% else %}
         html, body {
             margin: 0;
-            height: 120%;
+            height: 100%;
         }
         {% endif %}
 
+       .search_all{
+            position: -webkit-sticky;
+            position: sticky;
 
+        }
+       .search_all_btn{
+            position: -webkit-sticky;
+            position: sticky;
+
+        }
+
+       .search_all_result{
+            position: inherit;
+            top: 15;
+            left: 16%;
+            z-index: 999;
+            width: 50%;
+            height: 5%;
+        }
 </style>
-<body class="hero is-widescreen">
+<body class="hero is-widescreen ">
 <div id="body">
-    <nav aria-label="main navigation" class="tile_neo  level" role="navigation">
+    <nav aria-label="main navigation" class="tile_neo level" role="navigation">
         <div class="navbar-brand level-left">
             <a class="navbar-item level-item" href="{{ url_for('index') }}">
                 <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
@@ -127,7 +145,7 @@
             </a>
         </div>
 
-        <div class="navbar-menu level-right" id="navbarBasicExample">
+        <div class="navbar-menu level-right" id="navMenu">
             <div class="navbar-start level-item">
                 <a class="navbar-item" href="{{url_for('search') }}">
                     Search Hospitals
@@ -203,6 +221,7 @@
                         </div>
                     </div>
                     <div class="column buttons">
+                        {{form.search_hospital}}
                         <button class="button is-primary is-medium is-fullwidth" type="submit">
                             <strong>Search</strong>
                         </button>
@@ -218,22 +237,29 @@
         <br>
     </div>
     {% else %}
-    <section class="container hero-body is-fullheight body">
+    <section class="container hero-body body">
         <form action="" method="POST">
             {{form.hidden_tag()}}
-            <div class="level control has-text-centered has-icons-left is-vcentered">
-                {{ form.search(class_="input dip is-rounded is-four-fifths", style='background:#D9DDE6') }}
-                <span class="icon is-left"><em class="fa">search</em></span>
-                <button class="level-item button is-primary is-rounded" type="submit">
-                    Search
-                </button>
+            <div class="level control has-text-centered is-vcentered has-icons-left ">
+                <div class="field has-addons">
+                    <div class="control">
+                        {{ form.search(class_="input dip is-rounded is-four-fifths", style='background:#D9DDE6') }}
+                        <span class="icon is-left"><em class="fa">search</em></span>
+                    </div>
+                    <div class="control">
+                        <button class="button tile_neo is-info" type="submit">
+                            Search
+                        </button>
+                    </div>
+                </div>
             </div>
         </form>
     </section>
-    <section class="hero-body is-fullheight body">
+    <section class="hero-body is-fullheight body ">
         <div class=" is-fullheight">
-            <table class="table is-striped is-hoverable is-fullwidth hero-shadow">
+            <table class="table is-striped is-hoverable is-fullwidth hero-shadow ">
                 <thead class="thead">
+                {% if is_hosp%}
                 <tr class="tr is-selected">
                     <th class="th">Hospital Name</th>
                     <th class="th">Address</th>
@@ -245,7 +271,7 @@
                 {% for item in data %}
                 <tr class="tr">
                     <td class="td">
-                        <a href={{url_for('hospital_details',hosp_id=encrypt(item.hosp_id|string()))}}>{{ item.hosp_name
+                        <a href={{url_for('hospital_details',hosp_id=item.uuid)}}>{{ item.hosp_name
                             }}</a>
                     </td>
                     <td class="td">{{ item.hosp_addr }}</td>
@@ -253,6 +279,25 @@
                 </tr>
                 {% endfor %}
                 </tbody>
+                {% else %}
+                <tr class="tr is-selected">
+                    <th class="th">Scheme Name</th>
+                    <th class="th">Created By</th>
+                </tr>
+                </thead>
+
+                <tbody class="tbody">
+                {% for item in data %}
+                <tr class="tr">
+                    <td class="td">
+                        <a href={{url_for('about_scheme',sch_id=item.uuid)}}>{{ item.name
+                            }}</a>
+                    </td>
+                    <td class="td">{{ item.creator }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% endif %}
             </table>
         </div>
     </section>
@@ -264,14 +309,11 @@
     document.addEventListener('DOMContentLoaded', () => {
       (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
         $notification = $delete.parentNode;
-
         $delete.addEventListener('click', () => {
           $notification.parentNode.removeChild($notification);
           location = location
-
         });
       });
     });
-
 </script>
 </html>

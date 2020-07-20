@@ -68,6 +68,12 @@ def add_scheme_by_hosp_id(hosp_id, scheme_id):
     hosp.save_to_db()
 
 
+def conver_to_uuid(id):
+    from models import Hospital
+    hosp = Hospital.query.filter_by(hosp_id=id).first()
+    return hosp.uuid
+
+
 def bulk_update_hospital_schemes():
     """
     Updates the schemes fields in hosp objects based on the file specified
@@ -88,29 +94,25 @@ def bulk_update_hospital_schemes():
                 for name in names:
                     if '). ' in name:
                         name = name.split('). ')[-1].strip()
-                    print("IN : ", name)
-                    print("IN : ", hosp_id)
                     if "CMCHIS" in name:
                         name = 'CMCHIS'
                     scheme = Scheme.find_by_scheme_name(name=name)
                     if len(scheme.all()) > 0:
                         if "CMCHIS" in name:
                             name = 'CMCHIS'
-                        print("OUT : ", scheme.all()[0].name)
                         if ' ' in hosp_id.strip():
                             ids = hosp_id.split(' ')
-                            print(ids)
                             for id in ids:
-                                hosp = Hospital.find_by_id(int(id))
-                                print(scheme.all()[0].id)
+                                hosp = Hospital.find_by_id(conver_to_uuid(id=int(id)))
                                 hosp.Schemes.append(scheme.all()[0])
-                                hosp.save_to_db
+                                hosp.save_to_db()
+                                print(scheme.all()[0])
                                 print('done ', hosp.hosp_name)
                         print('in else')
-                        hosp = Hospital.find_by_id(int(hosp_id))
-                        print(scheme.all()[0].id)
+                        hosp = Hospital.find_by_id(conver_to_uuid(int(hosp_id)))
                         hosp.Schemes.append(scheme.all()[0])
-                        hosp.save_to_db
+                        hosp.save_to_db()
+                        print(scheme.all()[0])
                         print('yo ', hosp.hosp_name)
             except Exception as e:
                 print(str(e))

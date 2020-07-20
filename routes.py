@@ -5,7 +5,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import login_required, LoginManager, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from med360 import decodeSpecialties, get_age, Security, admin, covid_data
+from med360 import decodeSpecialties, get_age, admin, covid_data
 from models import User, Hospital, City, Role, app, db, Scheme
 from views import (RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm,
                    ResetPasswordForm, ProfileUpdateForm, ContactForm, SearchForm)
@@ -24,7 +24,7 @@ def is_auth():
 
 @login_manager.user_loader
 def user_loader(uid):
-    return User.query.get(int(uid))
+    return User.query.get(uid)
 
 
 @login_manager.unauthorized_handler
@@ -106,7 +106,7 @@ def login():
                 if check_password_hash(user.password, passw):
                     login_user(user)
                     user_role = Role.find_by_id(user.role)
-                    print('role_name=', user_role.name, 'role_id=', user_role.id)
+                    print('role_name=', user_role.name, 'role_id=', user_role.uuid)
                     if user_role.name == "admin":
                         print("Enabling admin view")
                         admin.add_view(ModelView(Hospital, db.session))
@@ -178,7 +178,7 @@ def reset_password():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
-    form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
+    form.city.choices = [(city.uuid, city.name) for city in City.find_by_state('Kerala')]
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     print(form.validate_on_submit())
@@ -240,9 +240,10 @@ def register():
 def update_profile():
     user = User.find_by_username(username=current_user.username)
     city = City.get_id_by_name(_name=current_user.city)
-    form = ProfileUpdateForm(city=city.id, bld_grp=user.bld_grp, sex=user.sex, organ_donation=bool(user.organ_donation),
+    form = ProfileUpdateForm(city=city.uuid, bld_grp=user.bld_grp, sex=user.sex,
+                             organ_donation=bool(user.organ_donation),
                              bld_donation=bool(user.bld_donation))
-    form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
+    form.city.choices = [(city.uuid, city.name) for city in City.find_by_state('Kerala')]
 
     role = Role.find_by_id(current_user.role)
     print('user role is ', role.name)
@@ -271,8 +272,8 @@ def update_profile():
         role = Role.find_by_id(user_role)
         user.role = role.id
         user.save_to_db()
-        print('user_id=', user.id, 'selected_role_id=', role.id, 'selected_role_name=', role.name)
-        print('user_id=', user.id, 'role_id_db=', user.role, )
+        print('user_id=', user.uuid, 'selected_role_id=', role.uuid, 'selected_role_name=', role.name)
+        print('user_id=', user.uuid, 'role_id_db=', user.role, )
         return redirect(url_for("view_profile"))
     return render_template("update_profile.html", form=form, role=role.name)
 
@@ -310,7 +311,7 @@ def get_dist(state):
     cities = City.find_by_state(state)
     city_array = []
     for city in cities:
-        city_obj = {'id': city.id, 'name': city.name}
+        city_obj = {'id': city.uuid, 'name': city.name}
         city_array.append(city_obj)
     return jsonify({'cities': city_array})
 
@@ -320,7 +321,7 @@ def get_dist(state):
 def search_hospital():
     form = SearchHospitalForm()
     if form.state != "None":
-        form.city.choices = [(city.id, city.name) for city in City.find_by_state(form.city.data)]
+        form.city.choices = [(city.uuid, city.name) for city in City.find_by_state(form.city.data)]
     if form.is_submitted():
         if form.city != "None" or form.state != "None":
             city = City.get_by_id(form.city.data)
@@ -344,11 +345,11 @@ def search_hospital():
                         return render_template("search_hospital.html", current_user=current_user, form=form)
                     return render_template('searchResult.html', data=filtered, current_user=current_user,
                                            auth=is_auth(),
-                                           searchterm=state_name, encrypt=Security.encrypt)
+                                           searchterm=state_name)
                 print("results form spec for ", decodeSpecialties(spec)[0])
                 if len(hosps.all()) > 0:
                     return render_template('searchResult.html', data=hosps, current_user=current_user, auth=is_auth(),
-                                           searchterm=state_name, encrypt=Security.encrypt)
+                                           searchterm=state_name)
                 else:
                     print('no hospitals with ', spec)
                     flash("No Hospitals found, why don't you try without the Speciality filter!!")
@@ -368,10 +369,9 @@ def search_hospital():
                             return render_template("search_hospital.html", current_user=current_user, form=form)
                         return render_template('searchResult.html', data=filtered, current_user=current_user,
                                                auth=is_auth(),
-                                               searchterm=state_name, encrypt=Security.encrypt)
+                                               searchterm=state_name)
                     return render_template('searchResult.html', data=hosp, current_user=current_user,
-                                           searchterm=state_name,
-                                           encrypt=Security.encrypt, auth=is_auth())
+                                           searchterm=state_name, auth=is_auth())
                 else:
                     flash('No Hospitals found!!')
                     return render_template("search_hospital.html", current_user=current_user, form=form)
@@ -386,8 +386,8 @@ def search_hospital():
 @app.route("/hospitalDetails", methods=["GET", "POST"])
 @login_required
 def hospital_details():
-    selected_id = Security.decrypt(str(request.args.get('hosp_id')))
-    hosp = Hospital.find_by_id(int(selected_id))
+    selected_id = str(request.args.get('hosp_id'))
+    hosp = Hospital.find_by_id(selected_id)
     specs_up = hosp.hosp_spec_upgraded
     specs_emp = hosp.hosp_spec_empanl
     dec_specs_up = decodeSpecialties(specs_up)
@@ -423,7 +423,7 @@ def search_blood_donor():
 @app.route('/scheme')
 def about_scheme():
     selected_id = request.args.get('sch_id')
-    data = Scheme.find_by_scheme_id(int(selected_id))
+    data = Scheme.find_by_scheme_id(selected_id)
     if data:
         return render_template("scheme.html", current_user=current_user, scheme=data)
 
@@ -431,19 +431,29 @@ def about_scheme():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     form = SearchForm()
-    if form.is_submitted():
+    if form.validate_on_submit():
         search_term = form.search.data
-        results1 = Hospital.find_by_name(_name=search_term).all()
-        results2 = Hospital.find_by_addr(_addr=search_term).all()
-        # results3 = Scheme.find_by_scheme_name(name=search_term).all()
-        results = results1 + results2
-        print(results1, results2)
-        print(results)
-        if len(results) > 0:
-            return render_template('keyword_search.html', data=results, current_user=current_user,
-                                   searchterm=search_term,
-                                   encrypt=Security.encrypt, auth=is_auth(), first_visit=False, form=form)
-        flash(message="No results found!!")
+        if form.search_hospital.data == 'True':
+            results1 = Hospital.find_by_name(_name=search_term).all()
+            results2 = Hospital.find_by_addr(_addr=search_term).all()
+            results = results1 + results2
+            results = list(set(results))
+            if len(results) > 0:
+                return render_template('keyword_search.html', data=results, current_user=current_user,
+                                       searchterm=search_term,
+                                       auth=is_auth(), first_visit=False, form=form, is_hosp=True)
+            flash(message="No results found!!")
+        else:
+            results_keyword = Scheme.find_by_keyword(search_term)
+            results_keyword = [list2 for list1 in results_keyword for list2 in list1]
+            from med360 import distinct
+            results_keyword = distinct(results_keyword)
+            if len(results_keyword) > 0:
+                return render_template('keyword_search.html', data=results_keyword, current_user=current_user,
+                                       searchterm=search_term,
+                                       auth=is_auth(), first_visit=False, form=form, is_hosp=False)
+            flash('No results found for ' + search_term)
+            return render_template('keyword_search.html', form=form, first_visit=True)
     return render_template('keyword_search.html', form=form, first_visit=True)
 
 

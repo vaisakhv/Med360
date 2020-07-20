@@ -80,7 +80,7 @@
             </a>
         </div>
 
-        <div class="navbar-menu level-right" id="navbarBasicExample">
+        <div class="navbar-menu level-right" id="navMenu">
             <div class="navbar-start level-item">
                 <a class="navbar-item" href="{{url_for('search') }}">
                     Search Hospitals
@@ -143,7 +143,7 @@
             {% for item in data %}
             <tr class="tr">
                 <td class="td">
-                    <a href={{url_for('hospital_details',hosp_id=encrypt(item.hosp_id|string()))}}>{{ item.hosp_name
+                    <a href={{url_for('hospital_details',hosp_id=item.uuid)}}>{{ item.hosp_name
                         }}</a>
                 </td>
                 <td class="td">{{ item.hosp_addr }}</td>
@@ -164,8 +164,17 @@
     x.className = "topnav";
   }
 }
+    document.addEventListener('DOMContentLoaded', () => {
+      (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        $notification = $delete.parentNode;
 
+        $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification);
+          location = location
 
+        });
+      });
+    });
 
 </script>
 </html>

@@ -1,7 +1,6 @@
 from datetime import date
 
 import requests
-from cryptography.fernet import Fernet
 from flask_admin import Admin
 
 from models import db, app, User, City, Role, Scheme
@@ -86,18 +85,30 @@ def covid_data():
     return india_val, global_val
 
 
-class Security:
-    __key = b'aT_s_1b8FBAD_mGTxAkJ3RvUlfrSJCQ1ewYHqFV58Vg='
+def distinct(input_list):
+    if not isinstance(input_list, list):
+        raise TypeError('Input has to be set to list type')
+    seen_uuid = []
+    final_out = []
+    ids = [i.uuid for i in input_list]
+    for obj in input_list:
+        if ids.count(obj.uuid) == 1 or obj.uuid not in seen_uuid:
+            final_out.append(obj)
+            seen_uuid.append(obj.uuid)
+    return final_out
 
-    @classmethod
-    def encrypt(cls, plain):
-        f = Fernet(cls.__key)
-        return f.encrypt(plain.encode("utf-8")).decode("utf-8")
-
-    @classmethod
-    def decrypt(cls, encrypted):
-        f = Fernet(cls.__key)
-        return f.decrypt(encrypted.encode("utf-8")).decode("utf-8")
-
-    def __init__(self, __key):
-        self.__key = __key
+# class Security:
+#     __key = b'aT_s_1b8FBAD_mGTxAkJ3RvUlfrSJCQ1ewYHqFV58Vg='
+#
+#     @classmethod
+#     def encrypt(cls, plain):
+#         f = Fernet(cls.__key)
+#         return f.encrypt(plain.encode("utf-8")).decode("utf-8")
+#
+#     @classmethod
+#     def decrypt(cls, encrypted):
+#         f = Fernet(cls.__key)
+#         return f.decrypt(encrypted.encode("utf-8")).decode("utf-8")
+#
+#     def __init__(self, __key):
+#         self.__key = __key
