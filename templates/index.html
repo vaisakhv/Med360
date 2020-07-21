@@ -4,7 +4,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>MED360 | Home</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" rel="stylesheet">
     <style>
     body {margin:0;font-family:Arial}
 /*logo as watermark*/
@@ -101,24 +101,35 @@
     font-size:100px;
     text-align-last:center;
 }
-.grad1 {
-    width:100%;
-    background-color: #1fc8db; /* For browsers that do not support gradients */
-    background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
-    color:white;
-    opacity:0.95;
-}
+
     {%if auth%}
+    .is-rounded{
+        border-radius: 35px;
+    }
+    .tile_neo{
+    border-radius: 35px;
+    background: #b88acc;
+    box-shadow: inset -5px -5px 5px #a279b4,
+            inset 5px 5px 5px #ce9be4;
+    }
     .mainContainer {
         background-image: url("{{url_for('static', filename='banner.jpg')}}");
         background-size: cover;
         background-repeat: no-repeat;
         height: 720px;
         }
+        html, body {margin: 0; height: 100%; overflow: hidden}
     {% else %}
     /*disable scroll*/
     html, body {margin: 0; height: 100%; overflow: hidden}
     {% endif %}
+    .grad1 {
+    width:100%;
+    background-color: #1fc8db; /* For browsers that do not support gradients */
+    background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    color:white;
+    opacity:0.95;
+}
    /* Coronavirus */
     /* The grid: Three equal columns that floats next to each other */
     .column_corona {
@@ -155,38 +166,91 @@
       font-size: 35px;
       cursor: pointer;
     }
+
     </style>
 </head>
+
+{% if auth %}
+<body class="hero is-widescreen ">
 <div id="body">
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
-            <img src="{{url_for('static', filename='logo_small.PNG')}}" style="padding:0px"></a>
-        </a>
-        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
-        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        {% if auth %}
-        <div class="dropdown w3-dropdown-hover" style="float:right;">
-            <button class="dropbtn" style="float:right;">Hi, {{current_user.name}}
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('view_profile') }}">My Profile</a>
-                <a href="{{url_for('logout') }}">Logout</a>
-            </div>
-        </div>
-        {%else%}
-        <div class="dropdown w3-dropdown-hover" style="float:right;">
-            <button class="dropbtn">Hi, Guest
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{url_for('register') }}">Register</a>
-            </div>
-        </div>
-        <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
-    </div>
-    {% endif %}
+    <nav aria-label="main navigation" class="hero-navbar  level " role="navigation">
+        <div class="navbar-brand level-left">
+            {% else %}
+            <body>
+            <div id="body">
+                <nav aria-label="main navigation" class="hero-navbar login  level " role="navigation"
+                     style="background:white">
+                    <div class="navbar-brand level-left" style="background:white">
+                        {% endif %}
+                        <a class="navbar-item level-item" href="{{ url_for('index') }}">
+                            <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+                        </a>
+                        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger"
+                           data-target="navbarBasicExample"
+                           role="button">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>
+                    </div>
+
+                    <div class="navbar-menu level-right" id="navbarBasicExample">
+                        <div class="navbar-start level-item">
+                            <a class="navbar-item" href="{{url_for('search') }}">
+                                Search Hospitals
+                            </a>
+                            <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                                Advanced Search Hospitals
+                            </a>
+                            <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                                Search Blood Donor
+                            </a>
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">
+                                    More
+                                </a>
+
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item">
+                                        About
+                                    </a>
+                                    <a class="navbar-item">
+                                        Jobs
+                                    </a>
+                                    <a class="navbar-item">
+                                        Contact
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item">
+                                        Report an issue
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="navbar-end">
+                            <div class="navbar-item is-vertical">
+                                <div class="buttons ">
+                                    {% if auth %}
+                                    <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                                        <strong>My Profile</strong>
+                                    </a>
+                                    <a class="button is-danger" href="{{url_for('logout') }}">
+                                        <strong>Logout</strong>
+                                    </a>
+                                    {% else %}
+                                    <a class="button is-primary" href="{{ url_for('register') }}">
+                                        <strong>Sign Up</strong>
+                                    </a>
+                                    <a class="button is-danger" href="{{url_for('login') }}">
+                                        <strong>Login</strong>
+                                    </a>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
 </div>
 <div>
     <div class="mainContainer">
@@ -194,26 +258,30 @@
         <div>
             <div class="w3-bar">
                 <br><br><br>
-                <img src="{{url_for('static', filename='med.png')}}" style="width:25%;float:left">
-                <marquee style="float:right;font-family:verdana;font-size:20px;color:red;" width="375px">Latest News
+                <img src="{{url_for('static', filename='med.png')}}" style="width:25%;float:left;padding:5px">
+                <marquee style="float:right;font-family:verdana;font-size:30px;color:black;" width="375px">
+                    Latest News | Stay Home <i class="fa fa-home"></i> Stay Safe <i class="fa fa-smile-o "></i> |
                 </marquee>
                 <div>
                     <br><br>
-                    <div style="background: linear-gradient(to top left, #993333 0%, #cc6600 77%);;width:27.5%;float:right;padding:2px;text-align:center;">
-                        <h3 style="font-family:verdana;">Covid-19</h3>
+                    <div class="tile_neo" style="height:42px;width:27.5%;float:right;padding:6px;text-align:center;">
+                        <h3 class="is-vcentered has-text-centered" style="font-family:verdana;">Covid-19 Statistics</h3>
                     </div>
-                    <br><br>&nbsp;<br><br>
+                    <br>
+                    <br>
                     <!-- Two columns -->
                     <div class="row_corona">
-                        <div class="column_corona" onclick="openTab('b1');" style="background:green;">
-                            India
-                        </div>
-                        <div class="column_corona" onclick="openTab('b2');" style="background:blue;">
-                            World
+                        <div class="tile_neo">
+                            <div class="column_corona tile_neo" onclick="openTab('b1');">
+                                India
+                            </div>
+                            <div class="column_corona tile_neo" onclick="openTab('b2');">
+                                World
+                            </div>
                         </div>
                     </div>
                     <!-- Full-width columns: (hidden by default) -->
-                    <div class="containerTab grad1" id="b1" style="display:none;">
+                    <div class="containerTab grad1 is-rounded" id="b1" style="display:none;">
                         <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
                         <h2>India</h2>
                         <p style="text-align:justify">Total Recovered: {{india[0]["recovered"]}}</p>
@@ -221,8 +289,8 @@
                         <p style="text-align:justify">Total Deaths: {{india[0]["deaths"]}}</p>
                     </div>
 
-                    <div class="containerTab" id="b2"
-                         style="display:none;background: linear-gradient(to top left, #9999ff 0%, #0099ff 100%);">
+                    <div class="containerTab grad1 is-rounded" id="b2"
+                         style="display:none;">
                         <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
                         <h2>World</h2>
                         <p style="text-align:justify">Total Confirmed: {{world['Global']['TotalConfirmed']}}</p>
@@ -231,12 +299,14 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <br>
             <div class="row_card">
                 <div class="column_card">
-                    <div class="card_card grad1">
+                    <div class="card_card grad1 is-rounded">
                         <div class="fa_icon_card"><a href="{{url_for('about')}}" style="text-decoration: none;"><i
                                 aria-hidden="true" class="fa fa-info-circle fa-10x"></i></a></div>
-                        <div class="container_card">
+                        <div class="container_card ">
                             <h2>About Us</h2>
                             <p class="title_card">We care for you</p>
                             <p>We provide innovative healthcare services under a single platform.Find out more about
@@ -246,7 +316,7 @@
                 </div>
 
                 <div class="column_card">
-                    <div class="card_card grad1">
+                    <div class="card_card grad1 is-rounded">
                         <div class="fa_icon_card"><a href="{{url_for('contact')}}" style="text-decoration: none;"><i
                                 aria-hidden="true" class="fa fa-phone fa-10x"></i></a></div>
                         <div class="container_card">
@@ -254,13 +324,13 @@
                             <p class="title_card">How can we help?</p>
                             <p>We are here to help and answer any questions you might have.We Look forward to hear from
                                 you.</p>
-
+                            <p>&nbsp;</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="column_card">
-                    <div class="card_card grad1">
+                    <div class="card_card grad1 is-rounded">
                         <div class="fa_icon_card"><a href="{{url_for('services')}}" style="text-decoration: none;"><i
                                 aria-hidden="true" class="fa fa-cogs fa-10x "></i></a></div>
                         <div class="container_card">
@@ -268,6 +338,7 @@
                             <p class="title_card">You are in safe hands</p>
                             <p>Make your life easier with our services like finding blood donor, healthcare schemes,
                                 hospitals, etc.</p>
+                            <p>&nbsp;</p>
                         </div>
                     </div>
                 </div>
@@ -276,9 +347,8 @@
     </div>
 </div>
 {% else %}
-</div>
 <div>
-    <video autoplay id="myVideo" loop muted>
+    <video autoplay id="myVideo" loop muted width="auto">
         <source src="https://regionalonehealth-valeoonlinemarke.netdna-ssl.com/wp-content/uploads/2019/01/Hype-Cut-1-3kbps.m4v?x26039"
                 type="video/mp4">
         Your browser does not support HTML5 video.
@@ -292,10 +362,10 @@
         <button class="myBtn" onclick="window.location.href='{{url_for('register') }}'">Sign Up</button>
         <button class="myBtn" onclick="window.location.href='{{url_for('about') }}'">About Us</button>
     </div>
-    <img class="split right_bottom img" src="{{url_for('static', filename='med.png')}}">
+    <img class="image is-3by1" src="{{url_for('static', filename='med.png')}}"
+         style="float:right; padding-right: 20px;">
     {% endif %}
 </div>
-</body>
 <script>
  function openTab(tabName) {
    var i, x;
@@ -318,18 +388,43 @@ function pause() {
   }
 }
 
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Get all "navbar-burger" elements
+  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+  // Check if there are any navbar burgers
+  if ($navbarBurgers.length > 0) {
+
+    // Add a click event on each of them
+    $navbarBurgers.forEach( el => {
+      el.addEventListener('click', () => {
+
+        // Get the target from the "data-target" attribute
+        const target = el.dataset.target;
+        const $target = document.getElementById(target);
+
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        el.classList.toggle('is-active');
+        $target.classList.toggle('is-active');
+
+      });
+    });
   }
-}
 
+});
 
+$(document).ready(function() {
 
+  // Check for click events on the navbar burger icon
+  $(".navbar-burger").click(function() {
+
+      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+      $(".navbar-burger").toggleClass("is-active");
+      $(".navbar-menu").toggleClass("is-active");
+
+  });
+});
 </script>
-
 </body>
 </html>

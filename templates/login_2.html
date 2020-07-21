@@ -1,207 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
-{% block content %}
+<html>
+
 <head>
-	<title>MED360 | Login</title>
-	<meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1" name="viewport">
-    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-	<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-	<style>
-.alert {
-  padding: 5px;
-  background-color: #f44336;
-  color: white;
-}
-<!--	show password-->
-.first-example , .second-example, .third-example{
-  margin-bottom: 10px;
-}
-body {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-
-
-.fa{
-  color:black;
-  font-size:17px;
-  margin-left:0px;
-  float: right;
-  max-width: 75px;
-  margin:50px 0px 0px;
-  padding: 7px 10px 10.9px;
-  background: #f2f2f2;
-}
-
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-<!-- -->
-		@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-
-.login-page {
-  width: 360px;
-  padding: 8% 0 0;
-  margin: auto;
-}
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-   overflow: hidden;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-.form input {
-  clear: both;
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 109%;
-  border: 0;
-  margin: 0 10px 15px;
-  padding: 0 0 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-  float:left;
-}
-.form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
-}
-.form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
-}
-.form .message a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-.form .register-form {
-  display: none;
-}
-.container {
-  position: relative;
-  z-index: 1;
-  max-width: 300px;
-  margin: 0 auto;
-}
-.container:before, .container:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-.container .info {
-  margin: 50px auto;
-  text-align: center;
-}
-.container .info h1 {
-  margin: 0 0 15px;
-  padding: 0;
-  font-size: 36px;
-  font-weight: 300;
-  color: #1a1a1a;
-}
-.container .info span {
-  color: #4d4d4d;
-  font-size: 12px;
-}
-.container .info span a {
-  color: #000000;
-  text-decoration: none;
-}
-.container .info span .fa {
-  color: #EF3B3A;
-}
-
-/*background*/
-    .mainContainer {
-        background-image: url("{{url_for('static', filename='health_bg.jpg')}}");
-        background-size: cover;
-        background-repeat: no-repeat;
-        height: 720px;
-        font-family: "Roboto", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        }
-	</style>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    {% block content %}
+    <title>MED360 | Login</title>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 </head>
-<body class="mainContainer">
-<div class="login-page">
-  <div class="form">
-     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class="alert">
+
+<body class="hero is-widescreen">
+<section class="hero is-fullheight">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="container is-fluid">
+        <br>
+        <div class="notification is-danger is-pulled-right" style="width:25%;">
+            <button class="delete"></button>
             {% for message in messages %}
-            <a class="alert ">{{ message }}</a>
+            <strong>{{ message }}</strong>
             {% endfor %}
-        </ul>
-        {% endif %}
+        </div>
+    </div>
+    {% endif %}
     {% endwith %}
-    <form action="" class="login-form"  method="POST">
-         <div class="container">
-          <div style="float:left">
-            {{form.hidden_tag()}}
-            {{form.uname}}
-            {{form.passw}}
-          </div>
-              <div class="first-example">
-                     <i aria-hidden="true" class="fa fa-eye" id="pass-status" onClick="viewPassword()"></i>
-              </div>
-         </div>
-      <button type="submit">login</button>
-      <p class="message">Forgot <a href="{{url_for('reset_password') }}">Password</a></p>
-      <p class="message">Not registered? <a href="{{url_for('register') }}">Create an account</a></p>
-    </form>
-  </div>
-</div>
+    <div class="container hero-body has-text-centered">
+        <div class="login">
+            <img src="{{url_for('static', filename='med.png')}}" width="325px"/>
+            <form action="" method="POST">
+                {{form.hidden_tag()}}
+                <div class="field">
+                    <div class="control">
+                        {{form.uname(class_="input is-medium is-rounded")}}
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        {{form.passw(class_="input is-medium is-rounded")}}
+                    </div>
+                </div>
+                <div class="showpassw level" style="float:left">
+                    <i aria-hidden="true" class="fa fa-eye" id="pass-status" onClick="viewPassword()">
+                        <a style="text-decoration:none;color:black">Show Password</a>
+                    </i>
+                </div>
+                <br><br>
+                <button class="button is-block is-fullwidth is-primary is-medium is-rounded" type="submit">
+                    Login
+                </button>
+            </form>
+            <br>
+            <nav class="level">
+
+                <div class="level-item has-text-centered">
+                    <div>
+                        <a href="{{url_for('reset_password') }}">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <a href="{{url_for('register') }}">Create an Account</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</section>
 {% endblock %}
 </body>
 <script>
-$('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-	});
-</script>
-<script>
-function viewPassword()
-{
-  var passwordInput = document.getElementById('passw');
-  var passStatus = document.getElementById('pass-status');
+		function viewPassword()
+		{
+		  var passwordInput = document.getElementById('passw');
+		  var passStatus = document.getElementById('pass-status');
 
-  if (passwordInput.type == 'password'){
-    passwordInput.type='text';
-    passStatus.className='fa fa-eye-slash';
+		  if (passwordInput.type == 'password'){
+			passwordInput.type='text';
+			passStatus.className='fa fa-eye-slash';
 
-  }
-  else{
-    passwordInput.type='password';
-    passStatus.className='fa fa-eye';
-  }
-}
+		  }
+		  else{
+			passwordInput.type='password';
+			passStatus.className='fa fa-eye';
+		  }
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+		  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+			$notification = $delete.parentNode;
+
+			$delete.addEventListener('click', () => {
+			  $notification.parentNode.removeChild($notification);
+			});
+		  });
+		});
+
 </script>
 </html>

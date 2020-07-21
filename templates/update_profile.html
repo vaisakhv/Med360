@@ -1,239 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
-{% block content %}
 <head>
-	<title>MED360 | Login</title>
-	<meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1" name="viewport">
-		<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
-
+    <meta charset="UTF-8">
+    {% block content %}
+    <title>MED360 | Update Profile</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <style>
-		@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-.login-page {
-  width: 360px;
-  padding: 8% 0 0;
-  margin: auto;
-}
-.login-form label{
-text-align: left;
-float: left;
-}
-.login-form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-   overflow: hidden;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-.login-form input {
-  float: right;
-  clear: both;
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-.login-form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.login-form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
-}
-.login-form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
-}
+		.column {
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+		}
+		.row-one {
+			padding-top: 13px;
+		}
+		form .field {
+			margin: auto;
+			max-width: 740px;
+		}
+		.control.has-icons-left .icon.is-left, .control.has-icons-right .icon.is-right {
+            color:#666666
+		}
+		        .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
 
-.login-form .message a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-.login-form .register-form {
-  display: none;
-}
-.login-form .container {
-  position: relative;
-  z-index: 1;
-  max-width: 300px;
-  margin: 0 auto;
-}
-.container:before, .container:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-.container .info {
-  margin: 50px auto;
-  text-align: center;
-}
-.container .info h1 {
-  margin: 0 0 15px;
-  padding: 0;
-  font-size: 36px;
-  font-weight: 300;
-  color: #1a1a1a;
-}
-.container .info span {
-  color: #4d4d4d;
-  font-size: 12px;
-}
-.container .info span a {
-  color: #000000;
-  text-decoration: none;
-}
-.container .info span .fa {
-  color: #EF3B3A;
-}
-body {
-  background: #76b852; /* fallback for old browsers */
-  background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-  background: -moz-linear-gradient(right, #76b852, #8DC26F);
-  background: -o-linear-gradient(right, #76b852, #8DC26F);
-  background: linear-gradient(to left, #76b852, #8DC26F);
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+    </style>
+    <script>
+	  window.console = window.console || function(t) {};
 
-    .login-page .center {
-      padding: 75% 0;
-      text-align: center;
-    }
-    body {
-      background-image: url("{{url_for('static', filename='search_bg.jpg')}}");
-      background-size: cover;
-      background-repeat: no-repeat;
-      height: 720px;
-      }
-	</style>
-	<style>
+    </script>
+    <script>
+	  if (document.location.search.match(/type=embed/gi)) {
+		window.parent.postMessage("resize", "*");
+	  }
 
-	input[type=radio]:checked ~ .check {
-	  border: 5px solid #0DFF92;
-	}
-
-	input[type=radio]:checked ~ .check::before{
-	  background: #0DFF92;
-	}
-
-	<!--input[type=radio]:checked ~ label{-->
-	<!--  color: #0DFF92;-->
-	<!--}-->
-
-	</style>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script>
-	$(function() {
-		$( ".dtpick" ).datepicker();
-	});
-	</script>
+    </script>
 </head>
-<body>
-<div class="login-page">
-    <div id="body">
-        <div class="topnav" id="myTopnav">
-            <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
-                <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
+<body class="hero is-widescreen" translate="no">
+<section id="body">
+    <nav aria-label="main navigation" class="iis-fullheight hero-navbar login level" role="navigation">
+        <div class="navbar-brand level-left">
+            <a class="navbar-item level-item" href="{{ url_for('index') }}">
+                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
             </a>
-            <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
-            <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-            {% if auth %}
-            <div class="dropdown w3-dropdown-hover">
-                <button class="dropbtn" style="float:right;">Hi, {{current_user.name}}
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="{{ url_for('view_profile') }}">My Profile</a>
-                    <a href="{{url_for('logout') }}">Logout</a>
-                </div>
-            </div>
-            {%else%}
-            <div class="dropdown w3-dropdown-hover">
-                <button class="dropbtn" style="float:right;">Hi, Guest
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="{{ url_for('login') }}">Login</a>
-                    <a href="{{url_for('register') }}">Register</a>
-                </div>
-            </div>
-            <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
+               role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
-        {% endif %}
-    </div>
-    <div class="form">
+
+        <div class="navbar-menu level-right" id="navbarBasicExample">
+            <div class="navbar-start level-item">
+                <a class="navbar-item" href="{{url_for('search') }}">
+                    Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                    Search Blood Donor
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                About
+                            </a>
+                            <a class="navbar-item">
+                                Jobs
+                            </a>
+                            <a class="navbar-item">
+                                Contact
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                                Report an issue
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                                <strong>My Profile</strong>
+                            </a>
+                            <a class="button is-light" href="{{url_for('logout') }}">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </nav>
+</section>
+<div id="app">
+    <section class="section">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul class="alert">
-            {% for message in messages %}
-            <a class="alert alert-warning">{{ message }}</a>
-            {% endfor %}
-        </ul>
+        <div class="container is-fluid">
+            <br>
+            <div class="notification is-danger is-pulled-right" style="width:25%;">
+                <button class="delete"></button>
+                {% for message in messages %}
+                <strong>{{ message }}</strong>
+                {% endfor %}
+            </div>
+        </div>
         {% endif %}
         {% endwith %}
-        <form action="" class="login-form" method="POST">
-            {{form.hidden_tag()}}
-        {{form.role(class_='form-control')}}
-        {{form.uname(value=current_user.username)}}
-        {{form.name(value=current_user.name)}}
-        {{form.mail(value=current_user.email)}}
-        {{form.mobile(value=current_user.mobile)}}
-        {{form.addr(value=current_user.addr)}}
-        {{form.pincode(value=current_user.po_num)}}
-        <label>Date Of Brth :&nbsp</label>
-        {{form.dob(value=current_user.dob)}}<br/>
-        {{form.pan(value=current_user.pan)}}<br/>
-        {{form.aadhar(value=current_user.aadhar)}}<br/>
-        <label>State :&nbsp</label>
-        {{form.state(class_='form-control')}}<br>
-        <label>city :&nbsp</label>
-        {{form.city(class_='form-control')}}<br>
-        <label>Sex :&nbsp</label>
-        {{form.sex(class_='form-control')}}<br><br>
-        <label>Blood Group :&nbsp</label>
-		{{form.bld_grp(class_='form-control')}}<br/>
-		<label>Are you willing to be a blood donor ?&nbsp</label>
-		{{form.bld_donation(class_='form-control')}}<br/>
-		<label>Are you willing to be a organ donor ?&nbsp</label>
-		{{form.organ_donation(class_='form-control')}}<br/>
-      <button type="submit">Update</button>
-    </form>
-  </div>
+        <div class="container login is-9">
+            <div class="columns is-mobile is-centered">
+                <img alt="MED360" src="{{url_for('static', filename='med.png')}}" width="325px"/>
+            </div>
+            <form action="" id="register-form" method="POST">
+                {{form.hidden_tag()}}
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control has-icons-left">
+                        {{form.name(value=current_user.name, class_='input is-rounded')}}
+                        <span class="icon is-left"><em class="fa">user</em></span>
+                    </div>
+                    <label class="label">Username</label>
+                    <div class="control has-icons-left">
+                        {{form.uname(value=current_user.username, class_='input is-rounded')}}
+                        <span class="icon is-left" id="username_tick"><em class="fa fa-user-circle"></em></span>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Email</label>
+                            <div class="control has-icons-left">
+                                {{form.mail(value=current_user.email, class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">envelope-square</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Mobile</label>
+                            <div class="control has-icons-left">
+                                {{form.mobile(value=current_user.mobile, class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa fa-phone "></em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Sex</label>
+                            <div class="control has-icons-right">
+                                {{form.sex(value=current_user.sex, class_='input is-rounded',
+                                style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Blood Group</label>
+                            <div class="control has-icons-right">
+                                {{form.bld_grp(value=current_user.bld_grp, class_='input is-rounded',
+                                style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Date of Birth</label>
+                            <div class="control">
+                                {{form.dob(value=current_user.dob, class_='input is-rounded',
+                                style='background:#D9DDE6')}}
+                            </div>
+                        </div>
+                    </div>
+                    <label class="label">Address</label>
+                    <div class="control has-icons-left">
+                        {{form.addr(value=current_user.addr, class_='input is-rounded')}}
+                        <span class="icon is-left"><em class="fa fa-map-marker"></em></span>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">State</label>
+                            <div class="control has-icons-right">
+                                {{form.state(value=current_user.addr, class_='input is-rounded',
+                                style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">City</label>
+                            <div class="control has-icons-right">
+                                {{form.city(value=current_user.city, class_='input is-rounded',
+                                style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Pincode</label>
+                            <div class="control has-icons-left">
+                                {{form.pincode(value=current_user.po_num, class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">map-pin</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Aadhaar</label>
+                            <div class="control has-icons-left">
+                                {{form.aadhar(value=current_user.aadhar, class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">id-card</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Organ Donor</label>
+                            <div class="control has-icons-left has-icons-right">
+                                {{form.organ_donation(value=current_user.organ_donation, class_='input is-rounded',
+                                style='background:#D9DDE6')}}
+                                <span class="icon is-left"><em class="fa">heartbeat</em></span>
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Blood Donor</label>
+                            <div class="control has-icons-left has-icons-right">
+                                {{form.bld_donation(value=current_user.bld_donation, class_='input is-rounded',
+                                style='background:#D9DDE6')}}
+                                <span class="icon is-left"><em class="fa">tint</em></span>
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="is-medium is-centered">
+                        <div class="control">
+                            <button class="button is-link is-medium is-block is-fullwidth is-rounded" type="submit">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
 </div>
 {% endblock %}
-</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
@@ -250,35 +305,63 @@ body {
             });
         }
 
-       let input = document.querySelector('input[name=uname]');
-       var message = document.getElementById('error-nwl-usr');
+       let input = document.getElementById('uname');
+       let fa_icon = document.getElementById('username_tick');
         var goodColor = "#66cc66";
         var badColor = "#ff6666";
        input.onkeyup = function() {
+            fetch('/check/'+input.value).then(function(response){
+                response.json().then(function(data){
+                    if (data == false){
+                        fa_icon.style.color = goodColor;
+                        fa_icon.innerHTML = "<i class='fa fa-user-circle'>"
+                    }else{
+                        fa_icon.style.color = badColor;
+                        fa_icon.innerHTML = "<i class='fa fa-times-circle'>"
+                    }
+                });
+            });
             $.get('/check/' + input.value, function(data) {
-                if (data == false){
-                    message.style.color = goodColor;
-                    message.innerHTML = "Username is available!"
-                }else{
-                    message.style.color = badColor;
-                    message.innerHTML = "Username is not available!"
-                }
+
             });
         };
-    </script>
-<script crossorigin="anonymous" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script>
-    function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
 
+		$('#conf_passw').on('keyup', function ()
+		{
+			var pass1 = document.getElementById('passw');
+			var pass2 = document.getElementById('conf_passw');
+			var message = document.getElementById('error-nwl');
+			var goodColor = "#66cc66";
+			var badColor = "#ff6666";
 
+			if(pass1.value.length > 5)
+			{
+				pass1.style.backgroundColor = goodColor;
+				message.style.color = goodColor;
+				message.innerHTML = "character number ok!"
+			}
+			else
+			{
+				pass1.style.backgroundColor = badColor;
+				message.style.color = badColor;
+				message.innerHTML = " you have to enter at least 6 digit!"
+				return;
+			}
+
+			if(pass1.value == pass2.value)
+			{
+				pass2.style.backgroundColor = goodColor;
+				message.style.color = goodColor;
+				message.innerHTML = "ok!"
+			}
+			else
+			{
+				pass2.style.backgroundColor = badColor;
+				message.style.color = badColor;
+				message.innerHTML = " These passwords don't match"
+			}
+		});
 
 </script>
+</body>
 </html>

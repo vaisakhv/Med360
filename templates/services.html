@@ -1,125 +1,289 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta content="width=device-width, initial-scale=1" name="viewport">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
-<!-- Latest compiled and minified CSS -->
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-<style>
-body {
-  font-family: Arial;
-}
-.profile {
-      background-color: #6495ED;
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    {% block content %}
+    <title>MED360 | Services</title>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        .dip{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow: inset 6px 6px 18px #b9bdc4,
+                        inset -6px -6px 18px #ffffff;
+            }
+        .dp{
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f4f9ff, #cdd2da);
+            box-shadow:  34px 34px 58px #a4a8ae,
+                         -34px -34px 58px #ffffff;
+        }
+        .tile_neo{
+            border-radius: 35px;
+background: #d5f4e6;
+box-shadow:  -5px -5px 13px #55625c,
+             5px 5px 13px #ffffff;
+        }
+        .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+        .top {
+          position: fixed;
+          top: 80px;
+          left: 0;
+          z-index: 999;
+          width: 100%;
+          height: 23px;
+        }
+                /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+    </style>
+    <script>
+      window.console = window.console || function(t) {};
+
+    </script>
+    <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
       }
 
-.split {
-  height: 100%;
-  width: 50%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-.bg_image{
-  background-size: cover;
-  filter: blur(8px);
-  -webkit-filter: blur(8px);
-}
-.bg_icon{
-  filter: blur(4px);
-  -webkit-filter: blur(4px);
-}
-.left {
-  left: 0;
-  height:50%;
-
-}
-.left_bottom {
-  left: 0;
-  height:50%;
-  top:50%;
-
-}
-
-.right {
-  right: 0;
-  height:50%;
-}
-.right_bottom {
-  right: 0;
-  height:50%;
-  top:50%;
-}
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.centered img {
-  width: 350px;
-  border-radius: 50%;
-}
-
-/*fa style*/
-.fa_icon{
-    font-size:50px;
-    text-align-last:center;
-}
-</style>
+    </script>
 </head>
-<body>
-<img class="split left bg_image "  src="{{url_for('static', filename='grad_left.jpg')}}" style="top:-20px;">
 
-<div class="split left" onclick="window.location.href='{{url_for('search_hospital') }}'" style="cursor: pointer;">
-  <div class="centered">
-    <h2>Find Hospitals</h2>
-    <p>Based on location & Specialities</p>
-  </div>
-</div>
+<body class="hero is-fullhd is-mobile" style="background:#d5f4e6">
+<div id="body">
+    <nav aria-label="main navigation" class="tile_neo  level" role="navigation">
+        <div class="navbar-brand level-left">
+            <a class="navbar-item level-item" href="{{ url_for('index') }}">
+                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+            </a>
+            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
+               role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
 
-<img class="split right bg_image" src="{{url_for('static', filename='gradient2.jpg')}}" style="top:-15px">
-<div class="split right"  onclick="window.location.href='{{url_for('search_blood_donor') }}'" style="cursor: pointer;">
-  <div class="centered">
-    <h2>Find Blood Donors</h2>
-    <p>Based on Blood Group and Location</p>
-  </div>
-</div>
+        <div class="navbar-menu level-right" id="navbarBasicExample">
+            <div class="navbar-start level-item">
+                <a class="navbar-item" href="{{url_for('search') }}">
+                    Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                    Search Blood Donor
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
 
-<img class="split left_bottom bg_image" src="{{url_for('static', filename='pastel.jpg')}}" >
-<div class="split left_bottom">
-  <div class="centered">
-    <h2>Healthcare Schemes</h2>
-    <p>Based on your eligibility</p>
-  </div>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item is-vertical">
+                    <div class="buttons ">
+                        {% if auth %}
+                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                            <strong>My Profile</strong>
+                        </a>
+                        <a class="button is-danger" href="{{url_for('logout') }}">
+                            <strong>Logout</strong>
+                        </a>
+                        {% else %}
+                        <a class="button is-primary" href="{{ url_for('register') }}">
+                            <strong>Register</strong>
+                        </a>
+                        <a class="button is-danger" href="{{url_for('login') }}">
+                            <strong>Login</strong>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
-
-<img class="split right_bottom bg_image" src="{{url_for('static', filename='gradient.png')}}">
-<div class="split right_bottom">
-  <div class="centered">
-    <h2>Find Organ Donors</h2>
-    <p>Based on compatibility </p>
-  </div>
-</div>
+<section class="hero is-fullheight body top" id="app">
+    <div class="section">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="container is-fluid">
+            <br>
+            <div class="notification is-danger is-pulled-right" style="width:25%;">
+                <button class="delete"></button>
+                {% for message in messages %}
+                <strong>{{ message }}</strong>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% endwith %}
+        <div class="container tile_neo is-fluid is-16">
+            <p class="pb pb-2">&nbsp;</p>
+            <div class="field is-vcentered tile is-ancestor">
+                <div class="columns tile is-parent">
+                    <div class="column tile is-child box tile_neo pr pr-2 "
+                         onclick="window.location.href='{{url_for('search_hospital') }}'" style="cursor: pointer;">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Find Hospitals</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis nibh ac velit cursus,
+                            a accumsan lacus ultrices. Proin euismod risus non consectetur fringilla. Integer hendrerit
+                            massa et neque luctus, non scelerisque augue euismod. Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Mauris laoreet enim non tortor congue porta. Nunc congue quam
+                            eget velit lobortis sodales. Sed quis sapien a tellus tincidunt gravida quis non massa. Sed
+                            placerat lobortis elit, ac vestibulum sem pretium non. Sed vestibulum eros ac tincidunt
+                            rhoncus.
+                        </p>
+                    </div>
+                    <div>
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </div>
+                    <div class="column tile is-child box tile_neo"
+                         onclick="window.location.href='{{url_for('search_blood_donor') }}'" style="cursor: pointer;">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Find Blood Donors</p>
+                        <p>Vivamus vitae egestas dui. Pellentesque sit amet sem sit amet erat auctor aliquam. Nullam sed
+                            arcu ac velit volutpat tincidunt id at quam. Vestibulum ante ipsum primis in faucibus orci
+                            luctus et ultrices posuere cubilia curae; Ut ut cursus odio. Suspendisse aliquet, tortor sed
+                            porta varius, tellus ligula faucibus tellus, vel euismod augue leo ac purus. Lorem ipsum
+                            dolor sit amet, consectetur adipiscing elit. Praesent egestas ac ante eget semper.
+                            Vestibulum maximus nunc sed ex hendrerit convallis a eu nisl. Sed ornare nulla a nibh
+                            fermentum blandit.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="pb pb-2">&nbsp;</p>
+            <div class="field is-vcentered tile is-ancestor">
+                <div class="columns tile is-parent">
+                    <div class="column tile is-child box tile_neo"
+                         onclick="window.location.href='{{url_for('search') }}'" style="cursor: pointer;">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Healthcare Schemes</p>
+                        <p>Quisque quis massa vitae lacus tincidunt elementum. Curabitur egestas gravida rhoncus.
+                            Quisque ut augue ac leo sodales lacinia. Mauris diam magna, volutpat eu mattis at, gravida
+                            vel nibh. Nulla consectetur quam metus, sit amet viverra nibh bibendum tristique.
+                            Fusce dictum id magna sit amet lobortis. Curabitur vehicula tempus lobortis. In hac
+                            habitasse platea dictumst. Vivamus imperdiet ex id mattis rutrum. Aliquam et neque
+                            pulvinar, vehicula orci at, mattis orci. Cras tristique varius arcu ut euismod.
+                        </p>
+                    </div>
+                    <div>
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </div>
+                    <div class="column tile is-child box tile_neo ">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Find Organ Donors</p>
+                        <p>Proin dapibus fermentum commodo. Phasellus maximus vitae metus et elementum. Sed sed mi ut
+                            sem varius elementum. Praesent urna libero, ultricies eget libero at, auctor congue nulla.
+                            Vestibulum efficitur tortor vel ipsum pharetra elementum at ut enim. Curabitur vel quam
+                            condimentum eros aliquet pretium. Sed rhoncus neque lorem, id rhoncus nulla blandit et.
+                            Integer sodales tellus justo, vel viverra purus posuere ut. Nullam pellentesque viverra
+                            faucibus. Duis sodales sagittis lectus.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div style="height:3px">&nbsp;</div>
+        </div>
+    </div>
+</section>
+{% endblock %}
 </body>
 <script>
-    function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
+		document.addEventListener('DOMContentLoaded', () => {
+		  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+			$notification = $delete.parentNode;
 
-
-
+			$delete.addEventListener('click', () => {
+			  $notification.parentNode.removeChild($notification);
+			  location=location
+			});
+		  });
+		});
 </script>
 </html>

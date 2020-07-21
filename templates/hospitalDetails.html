@@ -2,91 +2,102 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Med360 | Hospital Deatails</title>
-    <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css' rel='stylesheet'>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
-    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
-
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Med360 | {{current_user.username}}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma_0_6_2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.css') }}" rel="stylesheet" type="text/css">
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
     <style>
-	  .profile {
-		background-color: #6495ED;
-		}
-		.active {
-		background-color: #4CAF50;
-		}
-        body {
-          font-family: 'Lato', sans-serif;
+        html, body{
+          margin:0;
+            height: 150%;
         }
-        .main_body_div{
-          padding: 10;
-          margin: 5;
+        .dip{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow: inset 6px 6px 18px #b9bdc4,
+                        inset -6px -6px 18px #ffffff;
+            }
+        .dp{
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f4f9ff, #cdd2da);
+            box-shadow:  34px 34px 58px #a4a8ae,
+                         -34px -34px 58px #ffffff;
         }
-        .hosp-profile .card {
-          border-radius: 10px;
+        .tile_neo{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow:  6px 6px 18px #b9bdc4,
+                        -6px -6px 18px #ffffff;
+        }
+        .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+        .long_str {
+            width:70%;
+            word-wrap:break-word; display:inline-block;
+        }
+        /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
         }
 
-        .hosp-profile .card .card-header .profile_img {
-          width: 150px;
-          height: 150px;
-          object-fit: cover;
-          margin: 10px auto;
-          border: 10px solid #ccc;
-          border-radius: 50%;
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
         }
 
-        .hosp-profile .card h3 {
-          font-size: 20px;
-          font-weight: 700;
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
         }
 
-        .hosp-profile .card p {
-          font-size: 16px;
-          color: #000;
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
         }
 
-        .hosp-profile .table th,
-        .hosp-profile .table td {
-          font-size: 14px;
-          padding: 5px 10px;
-          color: #000;
-        }
-
-
-/* Set a style for all buttons */
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 93.25%;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
     </style>
-    <style>
-		.active {
-		background-color: #4CAF50;
-		}
-		html, body {margin: 0; height: 100%; }
-	</style>
     <script>
       window.console = window.console || function(t) {};
 
@@ -95,102 +106,190 @@ button:hover {
       if (document.location.search.match(/type=embed/gi)) {
         window.parent.postMessage("resize", "*");
       }
+
     </script>
 </head>
-<body translate="no">
+<body class="hero is-widescreen is-mobile" translate="no">
 <div id="body">
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
-            <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
-        </a>
-        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
-        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        {% if auth %}
-        <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn" style="float:right;">Hi, {{current_user.name}}
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('view_profile') }}">My Profile</a>
-                <a href="{{url_for('logout') }}">Logout</a>
-            </div>
+    <nav aria-label="main navigation" class="hero-navbar login level" role="navigation">
+        <div class="navbar-brand level-left">
+            <a class="navbar-item level-item" href="{{ url_for('index') }}">
+                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+            </a>
+            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
+               role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
-        {%else%}
-        <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn" style="float:right;">Hi, Guest
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{url_for('register') }}">Register</a>
-            </div>
-        </div>
-        <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
-    </div>
-    {% endif %}
-</div>
-<div class="main_body_div">
-    <div class="hosp-profile py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-transparent text-center">
-                            <img class="profile_img" height="480" src="{{url_for('static', filename='logo.jpg')}}"
-                                 width="640">
-                            <h3>{{data.hosp_name}}</h3>
-                        </div>
-                        <div class="card-body">
-                            <p class="mb-0"><strong class="pr-1">Address:</strong>{{data.hosp_addr}}</p>
-                            <p class="mb-0"><strong class="pr-1">E-Mail:</strong>{{data.hosp_contact_mail}}</p>
-                            <p class="mb-0"><strong class="pr-1">Contact Number:</strong>{{data.hosp_contact_no}}</p>
-                        </div>
+
+        <div class="navbar-menu level-right" id="navbarBasicExample">
+            <div class="navbar-start level-item">
+                <a class="navbar-item" href="{{url_for('search') }}">
+                    Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                    Search Blood Donor
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
                     </div>
                 </div>
-                <div class="col-lg-8">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-transparent border-0">
-                            <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
-                        </div>
-                        <div class="card-body pt-0">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th width="30%">Type</th>
-                                    <td>{{data.hosp_type}}</td>
-                                </tr>
-                                <tr>
-                                    <th width="30%">Specialities Upgraded</th>
-                                    <td>
-                                        {% for item in specs_up %}
-                                        <li>{{item}}</li>
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th width="30%">Specialities Empanelled</th>
-                                    <td>
-                                        {% for item in specs_emp %}
-                                        <li>{{item}}</li>
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th width="30%">Schemes Available</th>
-                                    <td>
-                                        {% for scheme in data.Schemes %}
-                                        <li>{{scheme.name}}</li>
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item is-vertical">
+                    <div class="buttons ">
+                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                            <strong>My Profile</strong>
+                        </a>
+                        <a class="button is-danger" href="{{url_for('logout') }}">
+                            <strong>Logout</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<section class="section">
+    <div class="container is-fluid is-widescreen ">
+        <div class="level is-mobile">
+            <div class="level-left">
+                <div class="level-left">
+                    <figure class="image is-128x128">
+                        <img alt="dp" class="level-item  dp" height="480"
+                             src="{{url_for('static', filename='logo.jpg')}}" width="640">
+                    </figure>
+                </div>
+                <div class="title column level-item">
+                    <div class=" row ">
+                        <span class="long_str is-2">{{data.hosp_name}}</span>
+                    </div>
+                    <div class="subtitle row">
+                        <span class=" is-3 long_str">{{data.hosp_addr}}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+<section class="section tile is-ancestor">
+    <div class="columns is-4 tile is-parent is-fluid is-vertical container">
+        <div class="columns tile is-child box tile_neo">
+            <div class="column field  is-vcentered">
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left"><em class="fa">envelope-square</em></div>
+                    {{data.hosp_contact_mail}}
+                </div>
+                <p class="pb pb-2">&nbsp;</p>
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left">
+                        <div class="fa">mobile</div>
+                    </div>
+                    {{data.hosp_contact_no}}
+                </div>
+            </div>
+        </div>
+        <div class="columns tile is-child box tile_neo">
+            <div class="column field  ">
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left"><em class="fa">h-square</em></div>
+                    {{data.hosp_type}}
+                </div>
+                <p class="pb pb2">&nbsp;</p>
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left"><i aria-hidden="true" class="fa">university</i></div>
+                    {% for scheme in data.Schemes %}
+                    <a href="{{url_for('about_scheme',sch_id=scheme.uuid)}}">{{scheme.name}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="columns tile is-child box dip is-vcentered">
+            <div class="column field  ">
+                <div class="column buttons">
+                    <a class="button is-primary is-medium is-fullwidth" href="#">
+                        <strong>Make An Appointment</strong>
+                    </a>
+                </div>
+                <div class="column buttons">
+                    <a class="button is-danger is-medium is-fullwidth" href="#">
+                        <strong>Show Doctors</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns is-5 tile is-parent is-fluid">
+        <div class="column tile_neo is-size-5 has-icons-left tile is-child">
+            <div class="dip is-size-5">
+                <div class="column field ">
+                    <div class="has-icons-left">
+                        <div class="icon is-left fa fa-angle-double-up"></div>
+                        <span>Specialities Upgraded</span>
+                    </div>
+                    <p class="is-size-7">&nbsp;</p>
+                    {% for item in specs_emp %}
+                    {{item}},
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="pb-6">&nbsp;</div>
+            <div class="dip is-size-5 ">
+                <div class="column field">
+                    <div class="has-icons-left">
+                        <div class="icon is-left fa fa-angle-up"></div>
+                        <span>Specialities Empanelled</span>
+                    </div>
+                    <p class="is-size-7">&nbsp;</p>
+                    {% for item in specs_emp %}
+                    {{item}},
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
+<script>
+	// Get the modal
+	var modal = document.getElementById('id01');
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+	if(document.getElementById("uname").value=="{{current_user.username}}") {
+		document.attrib('$submit_btn').disabled = false;
+	}
+	else{
+		document.attrib('$submit_btn').disabled = true;
+	}
+
+</script>
 <script>
     function myFunction() {
   var x = document.getElementById("myTopnav");
