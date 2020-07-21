@@ -5,7 +5,7 @@ from flask_admin import Admin
 
 from models import db, app, User, City, Role, Scheme
 
-admin = Admin(app)
+admin = Admin(app, name='Med360')
 
 
 def get_scheme_data():

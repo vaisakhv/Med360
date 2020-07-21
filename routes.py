@@ -27,10 +27,12 @@ def user_loader(uid):
     return User.query.get(uid)
 
 
-@login_manager.unauthorized_handler
-def unauthorized():
-    return render_template("403.html")
-
+#
+# @login_manager.unauthorized_handler
+# def unauthorized():
+#     # return render_template("403.html")
+#     return redirect(url_for('login'))
+#
 
 @app.errorhandler(404)
 def not_found(e):
@@ -109,11 +111,12 @@ def login():
                     print('role_name=', user_role.name, 'role_id=', user_role.uuid)
                     if user_role.name == "admin":
                         print("Enabling admin view")
-                        admin.add_view(ModelView(Hospital, db.session))
+                        # admin.add_view(ModelView(Hospital, db.session))
                         admin.add_view(ModelView(City, db.session))
                         admin.add_view(ModelView(Role, db.session))
                         admin.add_view(ModelView(Scheme, db.session))
                     next_page = request.args.get('next')
+                    print(next_page)
                     return redirect(next_page or url_for('index'))
                 flash('Invalid password for user ' + user.username)
                 return render_template(login_page_name, form=form)
@@ -421,11 +424,12 @@ def search_blood_donor():
 
 
 @app.route('/scheme')
+@login_required
 def about_scheme():
     selected_id = request.args.get('sch_id')
     data = Scheme.find_by_scheme_id(selected_id)
     if data:
-        return render_template("scheme.html", current_user=current_user, scheme=data)
+        return render_template("scheme.html", current_user=current_user, scheme=data, auth=is_auth())
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -453,8 +457,8 @@ def search():
                                        searchterm=search_term,
                                        auth=is_auth(), first_visit=False, form=form, is_hosp=False)
             flash('No results found for ' + search_term)
-            return render_template('keyword_search.html', form=form, first_visit=True)
-    return render_template('keyword_search.html', form=form, first_visit=True)
+            return render_template('keyword_search.html', form=form, first_visit=True, auth=is_auth())
+    return render_template('keyword_search.html', form=form, first_visit=True, auth=is_auth())
 
 
 def __init__(self, **kwargs):

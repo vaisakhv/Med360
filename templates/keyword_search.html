@@ -181,12 +181,21 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
+                        {% if auth %}
                         <a class="button is-primary" href="{{ url_for('view_profile') }}">
                             <strong>My Profile</strong>
                         </a>
                         <a class="button is-light" href="{{url_for('logout') }}">
                             Logout
                         </a>
+                        {% else %}
+                        <a class="button is-primary" href="{{ url_for('register') }}">
+                            <strong>Register</strong>
+                        </a>
+                        <a class="button is-light" href="{{url_for('login') }}">
+                            Login
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@ class SearchHospitalForm(FlaskForm):
     states_in_db = get_all_states()
     spec_codes = spec_code_dict()
     schemes = get_all_schemes()
-    schemes.append((0, "Schemes"))
+    schemes.insert(0, (0, "Schemes"))
     state = SelectField('state', choices=states_in_db)
     city = SelectField('city', choices=[], coerce=int, validators=[validators.DataRequired])
     spec = SelectField('spec', choices=spec_codes)
@@ -59,8 +59,7 @@ class RegisterForm(FlaskForm):
     addr = StringField('addr', [validators.DataRequired('Please enter you Address')],
                        render_kw={'placeholder': 'Address'})
     state = SelectField('state', [validators.DataRequired('Please select you state')], choices=states_in_db)
-    city = SelectField('city', [validators.DataRequired('Please select your current residing city')], choices=[],
-                       coerce=int)
+    city = SelectField('city', [validators.DataRequired('Please select your current residing city')], choices=[])
     pincode = IntegerField('pincode', [validators.DataRequired('Please enter you pincode')],
                            render_kw={'placeholder': 'Pincode'})
     passw = PasswordField('passw', [validators.DataRequired('Please enter a valid password'), validators.Length(min=7)],
