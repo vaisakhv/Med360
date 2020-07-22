@@ -52,13 +52,14 @@ class City(db.Model):
 
     @classmethod
     def get_by_id(cls, _id):
-        return cls.query.filter_by(id=_id).first()
+        return cls.query.filter_by(uuid=_id).first()
 
     @classmethod
     def get_id_by_name(cls, _name):
         return cls.query.filter_by(name=_name).first()
 
     def __init__(self, _id, _name, _state):
+        self.uuid = uuid4()
         self.id = _id
         self.name = _name
         self.state = _state
@@ -227,14 +228,13 @@ class User(db.Model, UserMixin):
         user.password = new_password
         user.save_to_db()
 
-    def __init__(self, username, email, password, pan, name, sex, dob, bld_grp, addr, state, po_num, mobile, aadhar,
+    def __init__(self, username, email, password, name, sex, dob, bld_grp, addr, state, po_num, mobile, aadhar,
                  organ_donation, bld_donaton, city, age, role):
         self.uuid = str(uuid4())
         self.username = username
         self.email = email
         self.password = password
         self.age = age
-        self.pan = pan
         self.name = name
         self.sex = sex
         self.dob = dob

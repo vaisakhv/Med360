@@ -294,7 +294,7 @@
             fa_icon.innerHTML = "<i class='fa'>"
             fetch('/check/'+input.value).then(function(response){
                 response.json().then(function(data){
-                    if (data == false){
+                    if (data == false && input.value.length > 3){
                         fa_icon.style.color = goodColor;
                         fa_icon.innerHTML = "<i class='fa fa-check'>"
                     }else{

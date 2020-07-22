@@ -191,7 +191,6 @@ def register():
         mail = form.mail.data
         passw = form.passw.data
         conf_passw = form.conf_passw.data
-        pan = form.pan.data
         name = form.name.data
         sex = form.sex.data
         dob = form.dob.data
@@ -199,6 +198,7 @@ def register():
         addr = form.addr.data
         state = form.state.data
         city = City.get_by_id(form.city.data)
+        print(city, form.city.data)
         po_num = form.pincode.data
         mobile = form.mobile.data
         aadhar = form.aadhar.data
@@ -215,15 +215,15 @@ def register():
                 bld_donation = True
         # organ_donation = bool(strtobool(form.organ_donation.data))
         # bld_donation = bool(strtobool(form.bld_donation.data))
-        user_role = int(form.role.data)
+        user_role = 'ef7bbd83-6bac-4700-9e26-4d33491aa8ea'
         print('selected role id is ', user_role)
         r = Role.find_by_id(user_role)
         print('selected role name is ', r.name)
-        existing_user = User.query.filter_by(mobile=mobile, email=mail, username=uname, aadhar=aadhar, pan=pan).first()
+        existing_user = User.query.filter_by(mobile=mobile, email=mail, username=uname, aadhar=aadhar).first()
         if existing_user is None:
             if conf_passw == passw:
                 new_user = User(username=uname, email=mail, password=generate_password_hash(passw, method='sha256'),
-                                pan=pan, city=city.name, age=get_age(dob),
+                                city=city.name, age=get_age(dob),
                                 name=name, sex=sex, dob=dob,
                                 bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
                                 organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation), role=user_role)

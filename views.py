@@ -26,7 +26,7 @@ class FindBloodDonorForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    uname = StringField('uname', [validators.DataRequired("Please enter your username"), validators.Length(min=7)],
+    uname = StringField('uname', [validators.DataRequired("Please enter your username"), validators.Length(min=4)],
                         render_kw={'placeholder': 'Username'})
     passw = PasswordField('passw', [validators.DataRequired("Please enter you password"), validators.Length(min=7)],
                           render_kw={'placeholder': '*************'})
@@ -46,8 +46,7 @@ class ResetPasswordForm(FlaskForm):
 class RegisterForm(FlaskForm):
     states_in_db = get_all_states()
     roles_from_db = get_all_roles()
-    role = SelectField(choices=roles_from_db)
-    uname = StringField('uname', [validators.DataRequired('Please enter a valid Username'), validators.Length(min=7)],
+    uname = StringField('uname', [validators.DataRequired('Please enter a valid Username'), validators.Length(min=4)],
                         render_kw={'placeholder': 'Username'})
     name = StringField('name', [validators.DataRequired('Please enter you name')],
                        render_kw={'placeholder': 'Name'})
@@ -67,8 +66,6 @@ class RegisterForm(FlaskForm):
                                [validators.DataRequired('Please re-enter the password'), validators.Length(min=7)],
                                render_kw={'placeholder': 'Confirm Password'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')
-    pan = StringField('pan', [validators.Length(max=10, min=10)],
-                      render_kw={'placeholder': 'PAN'})
     aadhar = StringField('aadhar',
                          [validators.DataRequired('Please enter you Aadhar number'), validators.Length(max=14)],
                          render_kw={'placeholder': 'Aadhaar'})
