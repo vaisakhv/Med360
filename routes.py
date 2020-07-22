@@ -367,6 +367,7 @@ def search_hospital():
                     print("scheme id is ", scheme_id)
                     if scheme_id != 0:
                         scheme = Scheme.find_by_scheme_id(scheme_id)
+                        print(scheme.name)
                         filtered = []
                         for a_hosp in hosp:
                             if a_hosp in scheme.partner_hospitals.all():

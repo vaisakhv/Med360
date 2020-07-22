@@ -73,3 +73,5 @@ I
 migrations/script.py.mako,2\2\2271d770709026da8abd2dc327625dceb8d32bb5
 K
 templates/searchResult.html,1\f\1fed6b1d9592e8fc93b0315deb319e281678ffce
+V
+&templates/donor_search_result_new.html,7\4\7498ee96ca1f5b442faa6361845bce9dfc95b69c

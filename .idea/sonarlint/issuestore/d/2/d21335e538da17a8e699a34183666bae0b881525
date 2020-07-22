@@ -1,9 +1,9 @@
 
-opython:S15424"RRename function "getCities" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ºª‹çøÿÿÿÿ
-ipython:S1542"QRename function "cleanVal" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¿™’Þ
-rpython:S1542"URename function "addHospitals" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¾á¨éýÿÿÿÿ
-Bpython:S1481"%Remove the unused local variable "e".(¼–¯¸ÿÿÿÿÿ
-spython:S3776M"TRefactor this function to reduce its Cognitive Complexity from 37 to the 15 allowed.(«Ðµµ8­¨Ö±µ.
 jpython:S1542"RRename function "addCities" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÖœÎ‰
+spython:S3776M"TRefactor this function to reduce its Cognitive Complexity from 37 to the 15 allowed.(«Ðµµ8­¨Ö±µ.
+rpython:S1542"URename function "addHospitals" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¾á¨éýÿÿÿÿ
+opython:S15424"RRename function "getCities" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ºª‹çøÿÿÿÿ
 @python:S1481'"(Remove the unused local variable "cols".(ÍŒÉ÷
+ipython:S1542"QRename function "cleanVal" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¿™’Þ
 Cpython:S125ˆ"Remove this commented out code.(¯ã—‰øÿÿÿÿ8—œæ›µ.
+Bpython:S1481"%Remove the unused local variable "e".(¼–¯¸ÿÿÿÿÿ

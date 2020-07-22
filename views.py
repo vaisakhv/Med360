@@ -12,9 +12,9 @@ class SearchHospitalForm(FlaskForm):
     schemes = get_all_schemes()
     schemes.insert(0, (0, "Schemes"))
     state = SelectField('state', choices=states_in_db)
-    city = SelectField('city', choices=[], coerce=int, validators=[validators.DataRequired])
+    city = SelectField('city', choices=[], validators=[validators.DataRequired])
     spec = SelectField('spec', choices=spec_codes)
-    scheme = SelectField('scheme', choices=schemes, coerce=int)
+    scheme = SelectField('scheme', choices=schemes)
 
 
 class FindBloodDonorForm(FlaskForm):
