@@ -179,9 +179,10 @@
                         </div>
                         <div class="column">
                             <label class="label">Confirm Passsword</label>
-                            <div class="control has-icons-left">
+                            <div class="control has-icons-left has-icons-right">
                                 {{form.conf_passw(class_='input is-rounded')}}
                                 <span class="icon is-left"><em class="fa">lock</em></span>
+                                <span class="icon is-right" id="psw_tick"><em class="fa fa-check "></em></span>
                             </div>
                         </div>
                     </div>
@@ -311,7 +312,7 @@
 		{
 			var pass1 = document.getElementById('passw');
 			var pass2 = document.getElementById('conf_passw');
-			var message = document.getElementById('error-nwl');
+			var message = document.getElementById('psw_tick');
 			var goodColor = "#66cc66";
 			var badColor = "#ff6666";
 
@@ -325,7 +326,7 @@
 			{
 				pass1.style.backgroundColor = badColor;
 				message.style.color = badColor;
-				message.innerHTML = " you have to enter at least 6 digit!"
+				message.innerHTML = "<em class='fa fa-times'></em>"
 				return;
 			}
 
@@ -333,13 +334,13 @@
 			{
 				pass2.style.backgroundColor = goodColor;
 				message.style.color = goodColor;
-				message.innerHTML = "ok!"
+				message.innerHTML = "<em class='fa fa-check'></em>"
 			}
 			else
 			{
 				pass2.style.backgroundColor = badColor;
 				message.style.color = badColor;
-				message.innerHTML = " These passwords don't match"
+				message.innerHTML = "<em class='fa fa-times'></em>"
 			}
 		});
 
