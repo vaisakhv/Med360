@@ -84,9 +84,8 @@ class RegisterForm(FlaskForm):
 
 class ProfileUpdateForm(FlaskForm):
     states_in_db = get_all_states()
-    roles_from_db = get_all_roles()
-    role = SelectField('role', [validators.DataRequired('Please enter a valid Role')], choices=roles_from_db,
-                       coerce=int)
+    # roles_from_db = get_all_roles()
+    # role = SelectField('role', [validators.DataRequired('Please enter a valid Role')], choices=roles_from_db)
     uname = StringField('uname', render_kw={'disabled': 'disabled'})
     name = StringField('name')
     mail = StringField('mail', [validators.DataRequired('Please enter a valid email'),
@@ -96,8 +95,7 @@ class ProfileUpdateForm(FlaskForm):
     addr = StringField('addr', [validators.DataRequired('Please enter you Address')],
                        render_kw={'placeholder': 'Address'})
     state = SelectField('state', [validators.DataRequired('Please select you state')], choices=states_in_db)
-    city = SelectField('city', [validators.DataRequired('Please select your current residing city')], choices=[],
-                       coerce=int)
+    city = SelectField('city', [validators.DataRequired('Please select your current residing city')], choices=[])
     pincode = IntegerField('pincode', [validators.DataRequired('Please enter you pincode')],
                            render_kw={'placeholder': 'Pincode'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')

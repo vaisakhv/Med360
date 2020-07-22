@@ -113,6 +113,7 @@ def login():
                         print("Enabling admin view")
                         # admin.add_view(ModelView(Hospital, db.session))
                         admin.add_view(ModelView(City, db.session))
+                        admin.add_view(ModelView(User, db.session))
                         admin.add_view(ModelView(Role, db.session))
                         admin.add_view(ModelView(Scheme, db.session))
                     next_page = request.args.get('next')
@@ -224,7 +225,7 @@ def register():
             if conf_passw == passw:
                 new_user = User(username=uname, email=mail, password=generate_password_hash(passw, method='sha256'),
                                 city=city.name, age=get_age(dob),
-                                name=name, sex=sex, dob=dob,
+                                name=name, sex=sex, dob=dob, pan='null',
                                 bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
                                 organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation), role=user_role)
                 new_user.save_to_db()
@@ -243,7 +244,7 @@ def register():
 def update_profile():
     user = User.find_by_username(username=current_user.username)
     city = City.get_id_by_name(_name=current_user.city)
-    form = ProfileUpdateForm(city=city.uuid, bld_grp=user.bld_grp, sex=user.sex,
+    form = ProfileUpdateForm(city=city.uuid, bld_grp=user.bld_grp, sex=user.sex, pan=user.pan,
                              organ_donation=bool(user.organ_donation),
                              bld_donation=bool(user.bld_donation))
     form.city.choices = [(city.uuid, city.name) for city in City.find_by_state('Kerala')]
@@ -252,6 +253,9 @@ def update_profile():
     print('user role is ', role.name)
     print(form.validate_on_submit())
     print(form.errors)
+    if 'pan' in form.errors:
+        flash("PAN is a mandatory field \n PAN will always be a of 10 characters length")
+        return render_template("update_profile.html", form=form, role=role.name)
     print('log')
     if form.validate_on_submit():
         user.uname = form.uname.data
@@ -273,7 +277,7 @@ def update_profile():
         user.organ_donation = bool(strtobool(form.organ_donation.data))
         user.bld_donation = bool(strtobool(form.bld_donation.data))
         role = Role.find_by_id(user_role)
-        user.role = role.id
+        user.role = role.uuid
         user.save_to_db()
         print('user_id=', user.uuid, 'selected_role_id=', role.uuid, 'selected_role_name=', role.name)
         print('user_id=', user.uuid, 'role_id_db=', user.role, )

@@ -229,7 +229,7 @@ class User(db.Model, UserMixin):
         user.save_to_db()
 
     def __init__(self, username, email, password, name, sex, dob, bld_grp, addr, state, po_num, mobile, aadhar,
-                 organ_donation, bld_donaton, city, age, role):
+                 organ_donation, bld_donaton, city, age, role, pan):
         self.uuid = str(uuid4())
         self.username = username
         self.email = email
@@ -248,7 +248,10 @@ class User(db.Model, UserMixin):
         self.organ_donation = organ_donation
         self.bld_donation = bld_donaton
         self.role = role
-
+        if pan == 'null':
+            self.pan = 0000000000
+        else:
+            self.pan = pan
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)

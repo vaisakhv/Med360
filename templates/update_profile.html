@@ -65,7 +65,27 @@
           box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
           color: #79e3b6;
         }
+                /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
 
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+         html, body {margin: 0; height: 140%;}
     </style>
     <script>
 	  window.console = window.console || function(t) {};
@@ -156,6 +176,8 @@
         </div>
         {% endif %}
         {% endwith %}
+    </section>
+    <section class="section">
         <div class="container login is-9">
             <div class="columns is-mobile is-centered">
                 <img alt="MED360" src="{{url_for('static', filename='med.png')}}" width="325px"/>
@@ -213,6 +235,13 @@
                             <div class="control">
                                 {{form.dob(value=current_user.dob, class_='input is-rounded',
                                 style='background:#D9DDE6')}}
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">PAN Number</label>
+                            <div class="control has-icons-left">
+                                {{form.pan(value=current_user.pan, class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa fa-credit-card"></em></span>
                             </div>
                         </div>
                     </div>
@@ -278,7 +307,7 @@
                     <div class="is-medium is-centered">
                         <div class="control">
                             <button class="button is-link is-medium is-block is-fullwidth is-rounded" type="submit">
-                                Login
+                                Update
                             </button>
                         </div>
                     </div>
@@ -361,7 +390,16 @@
 				message.innerHTML = " These passwords don't match"
 			}
 		});
+		document.addEventListener('DOMContentLoaded', () => {
+		  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+			$notification = $delete.parentNode;
 
+			$delete.addEventListener('click', () => {
+			  $notification.parentNode.removeChild($notification);
+			  location=location
+			});
+		  });
+		});
 </script>
 </body>
 </html>
