@@ -399,6 +399,17 @@ def hospital_details():
     specs_emp = hosp.hosp_spec_empanl
     dec_specs_up = decodeSpecialties(specs_up)
     dec_specs_emp = decodeSpecialties(specs_emp)
+    # from views import AddScheme
+    # form = AddScheme()
+    # if form.is_submitted():
+    #     sch_id = form.sch.data
+    #     print(sch_id)
+    #     scheme = Scheme.find_by_scheme_id(sch_id)
+    #     print(scheme.name)
+    #     hosp.Schemes.append(scheme)
+    #     hosp.save_to_db()
+    #     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
+    #                        specs_emp=dec_specs_emp, auth=is_auth())
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
                            specs_emp=dec_specs_emp, auth=is_auth())
 
@@ -436,33 +447,42 @@ def about_scheme():
         return render_template("scheme.html", current_user=current_user, scheme=data, auth=is_auth())
 
 
+def serach_for_hosp(search_term):
+    results1 = Hospital.find_by_name(_name=search_term).all()
+    results2 = Hospital.find_by_addr(_addr=search_term).all()
+    results = results1 + results2
+    return list(set(results))
+
+
+def search_for_scheme(search_term):
+    results_keyword = Scheme.find_by_keyword(search_term)
+    results_keyword = [list2 for list1 in results_keyword for list2 in list1]
+    from med360 import distinct
+    return distinct(results_keyword)
+
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     form = SearchForm()
     if form.validate_on_submit():
         search_term = form.search.data
         if form.search_hospital.data == 'True':
-            results1 = Hospital.find_by_name(_name=search_term).all()
-            results2 = Hospital.find_by_addr(_addr=search_term).all()
-            results = results1 + results2
-            results = list(set(results))
+            results = serach_for_hosp(search_term=search_term)
             if len(results) > 0:
                 return render_template('keyword_search.html', data=results, current_user=current_user,
                                        searchterm=search_term,
                                        auth=is_auth(), first_visit=False, form=form, is_hosp=True)
             flash(message="No results found!!")
         else:
-            results_keyword = Scheme.find_by_keyword(search_term)
-            results_keyword = [list2 for list1 in results_keyword for list2 in list1]
-            from med360 import distinct
-            results_keyword = distinct(results_keyword)
+            results_keyword = search_for_scheme(search_term=search_term)
+            is_hosp = False
             if len(results_keyword) > 0:
                 return render_template('keyword_search.html', data=results_keyword, current_user=current_user,
                                        searchterm=search_term,
                                        auth=is_auth(), first_visit=False, form=form, is_hosp=False)
             flash('No results found for ' + search_term)
             return render_template('keyword_search.html', form=form, first_visit=True, auth=is_auth())
-    return render_template('keyword_search.html', form=form, first_visit=True, auth=is_auth())
+    return render_template('keyword_search.html', form=form, first_visit=True, auth=is_auth(), is_hosp=True)
 
 
 def __init__(self, **kwargs):

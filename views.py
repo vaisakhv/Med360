@@ -126,3 +126,7 @@ class SearchForm(FlaskForm):
     search = StringField('search', validators=[validators.DataRequired()])
     search_hospital = RadioField("search_hospital", choices=[('True', 'Search Hospital'), ('False', 'Search Schemes')],
                                  default='True', validators=[validators.DataRequired()])
+
+
+class AddScheme(FlaskForm):
+    sch = SelectField("scheme", choices=get_all_schemes())

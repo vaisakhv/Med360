@@ -29,7 +29,7 @@ def get_all_roles():
 
 
 def get_all_schemes():
-    return [(r[0], r[1]) for r in db.session.query(Scheme.id, Scheme.name).distinct()]
+    return [(r[0], r[1]) for r in db.session.query(Scheme.uuid, Scheme.name).distinct()]
 
 
 def spec_code_dict():
