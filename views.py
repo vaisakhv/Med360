@@ -46,8 +46,7 @@ class ResetPasswordForm(FlaskForm):
 class RegisterForm(FlaskForm):
     states_in_db = get_all_states()
     roles_from_db = get_all_roles()
-    role = SelectField('role', [validators.DataRequired('Please enter a valid Role')], choices=roles_from_db,
-                       coerce=int)
+    role = SelectField(choices=roles_from_db)
     uname = StringField('uname', [validators.DataRequired('Please enter a valid Username'), validators.Length(min=7)],
                         render_kw={'placeholder': 'Username'})
     name = StringField('name', [validators.DataRequired('Please enter you name')],
@@ -68,7 +67,7 @@ class RegisterForm(FlaskForm):
                                [validators.DataRequired('Please re-enter the password'), validators.Length(min=7)],
                                render_kw={'placeholder': 'Confirm Password'})
     dob = DateField('dob', [validators.DataRequired('select a valid date')], format='%Y-%m-%d')
-    pan = StringField('pan', [validators.DataRequired('Enter your PAN number'), validators.Length(max=10, min=10)],
+    pan = StringField('pan', [validators.Length(max=10, min=10)],
                       render_kw={'placeholder': 'PAN'})
     aadhar = StringField('aadhar',
                          [validators.DataRequired('Please enter you Aadhar number'), validators.Length(max=14)],
