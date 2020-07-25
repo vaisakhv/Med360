@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta
 from uuid import uuid4
 
@@ -9,12 +10,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TESTING'] = False
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
     app.config.from_object(__name__)
-    app.config['SECRET_KEY'] = 'kUwY%@tWnNXpigScMbSk7RYBZ#3BpVF3WG^u9oFje2Q$8h#e!^X4'
+    app.config['SECRET_KEY'] = "kUwY%@tWnNXpigScMbSk7RYBZ#3BpVF3WG^u9oFje2Q$8h#e!^X4"
     Bootstrap(app)
     return app
 
