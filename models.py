@@ -1,5 +1,3 @@
-import os
-import psycopg2
 from datetime import timedelta
 from uuid import uuid4
 
@@ -11,8 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 def create_app():
     app = Flask(__name__)
-    DATABASE_URL = os.environ['DATABASE_URL']
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     app.config['DATABASE_URL'] = 'sqlite:///database.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TESTING'] = False
