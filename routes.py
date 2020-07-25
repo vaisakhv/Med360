@@ -282,7 +282,7 @@ def update_profile():
         print('user_id=', user.uuid, 'selected_role_id=', role.uuid, 'selected_role_name=', role.name)
         print('user_id=', user.uuid, 'role_id_db=', user.role, )
         return redirect(url_for("view_profile"))
-    return render_template("update_profile.html", form=form, role=role.name)
+    return render_template("update_profile.html", form=form, role=role.name, auth=is_auth())
 
 
 @app.route('/remove_acnt', methods=['POST', 'GET'])
@@ -360,7 +360,7 @@ def search_hospital():
                 else:
                     print('no hospitals with ', spec)
                     flash("No Hospitals found, why don't you try without the Speciality filter!!")
-                    return render_template("search_hospital.html", current_user=current_user, form=form)
+                    return render_template("search_hospital.html", current_user=current_user, form=form, auth=is_auth())
             elif state_name != '' and not state_name.isspace():
                 hosp = Hospital.find_by_state(state_name)
                 if len(hosp.all()) > 0:
@@ -374,7 +374,8 @@ def search_hospital():
                                 filtered.append(a_hosp)
                         if len(filtered) <= 0:
                             flash("No Hospitals found, why don't you try without the Scheme filter!!")
-                            return render_template("search_hospital.html", current_user=current_user, form=form)
+                            return render_template("search_hospital.html", current_user=current_user, form=form,
+                                                   auth=is_auth())
                         return render_template('searchResult.html', data=filtered, current_user=current_user,
                                                auth=is_auth(),
                                                searchterm=state_name)
@@ -382,13 +383,13 @@ def search_hospital():
                                            searchterm=state_name, auth=is_auth())
                 else:
                     flash('No Hospitals found!!')
-                    return render_template("search_hospital.html", current_user=current_user, form=form)
+                    return render_template("search_hospital.html", current_user=current_user, form=form, auth=is_auth())
             else:
                 flash("Enter a valid query")
-                return render_template("search_hospital.html", current_user=current_user, form=form)
+                return render_template("search_hospital.html", current_user=current_user, form=form, auth=is_auth())
         flash("State and City are Mandatory Fields")
-        return render_template("search_hospital.html", current_user=current_user, form=form)
-    return render_template("search_hospital.html", current_user=current_user, form=form)
+        return render_template("search_hospital.html", current_user=current_user, form=form, auth=is_auth())
+    return render_template("search_hospital.html", current_user=current_user, form=form, auth=is_auth())
 
 
 @app.route("/hospitalDetails", methods=["GET", "POST"])
@@ -432,11 +433,12 @@ def search_blood_donor():
             print('found ', current_user.username, ' in donors list. removing it!')
             len_of_donors = len_of_donors - 1
         if len_of_donors > 0:
-            return render_template('donor_search_result.html', data=donors, current_user=current_user, bld_grp=bld_grp)
+            return render_template('donor_search_result.html', data=donors, current_user=current_user, bld_grp=bld_grp,
+                                   auth=is_auth())
         print('no donors with ', bld_grp)
         flash(message="No donors found!!")
-        render_template("search_blood_donor.html", current_user=current_user, form=form)
-    return render_template("search_blood_donor.html", current_user=current_user, form=form)
+        render_template("search_blood_donor.html", current_user=current_user, form=form, auth=is_auth())
+    return render_template("search_blood_donor.html", current_user=current_user, form=form, auth=is_auth())
 
 
 @app.route('/scheme')

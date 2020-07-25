@@ -30,52 +30,7 @@
             box-shadow:  34px 34px 58px #a4a8ae,
                          -34px -34px 58px #ffffff;
         }
-        .tile_neo{
-            border-radius: 35px;
-            background: #E4E9F2;
-            box-shadow:  6px 6px 18px #b9bdc4,
-                        -6px -6px 18px #ffffff;
-        }
-        .button {
-          position: relative;
-          background: #f3f0f1;
-          margin-bottom: 25px;
-          border-radius: 32px;
-          text-align: center;
-          cursor: pointer;
-          transition: all 0.1s ease-in-out;
-        }
-         .button span {
-          line-height: 100px;
-          font-family: "Montserrat", sans-serif;
-          font-size: 32px;
-          font-weight: semibold;
-        }
-         .button:nth-child(1) {
-          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
-        }
-         .button:nth-child(1):hover {
-          opacity: 0.3;
-          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
-        }
-         .button:nth-child(2) {
-          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
-        }
-         .button:nth-child(2):hover {
-          opacity: 0.3;
-          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
-        }
-         .button:nth-child(1):active {
-          opacity: 1;
-          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
-          color: #79e3b6;
-        }
-         .button:nth-child(2):active {
-          opacity: 1;
-          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
-          color: #79e3b6;
-        }
-                /* width */
+     /* width */
         ::-webkit-scrollbar {
           width: 4px;
         }
@@ -131,77 +86,7 @@
         }
 </style>
 <body class="hero is-widescreen ">
-<div id="body">
-    <nav aria-label="main navigation" class="tile_neo level" role="navigation">
-        <div class="navbar-brand level-left">
-            <a class="navbar-item level-item" href="{{ url_for('index') }}">
-                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
-            </a>
-            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
-               role="button">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-
-        <div class="navbar-menu level-right" id="navMenu">
-            <div class="navbar-start level-item">
-                <a class="navbar-item" href="{{url_for('search') }}">
-                    Search Hospitals
-                </a>
-                <a class="navbar-item" href="{{url_for('search_hospital') }}">
-                    Advanced Search Hospitals
-                </a>
-                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
-                    Search Blood Donor
-                </a>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            About
-                        </a>
-                        <a class="navbar-item">
-                            Jobs
-                        </a>
-                        <a class="navbar-item">
-                            Contact
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            Report an issue
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        {% if auth %}
-                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
-                            <strong>My Profile</strong>
-                        </a>
-                        <a class="button is-light" href="{{url_for('logout') }}">
-                            Logout
-                        </a>
-                        {% else %}
-                        <a class="button is-primary" href="{{ url_for('register') }}">
-                            <strong>Register</strong>
-                        </a>
-                        <a class="button is-light" href="{{url_for('login') }}">
-                            Login
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-</div>
+{% include "includes/navbar.html" %}
 <section class="hero is-fullheight  is-widescreen">
     {% with messages = get_flashed_messages() %}
     {% if messages %}

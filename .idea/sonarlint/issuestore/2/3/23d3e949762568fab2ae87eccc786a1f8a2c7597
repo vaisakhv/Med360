@@ -1,6 +1,6 @@
 
-=python:S125W"Remove this commented out code.(š»ÃÈ8­äâ¬·.
-qpython:S1192L"RDefine a constant instead of duplicating this literal 'Please select one' 3 times.(‰öØ8İ³ºëµ.
 spython:S1192+"TDefine a constant instead of duplicating this literal 'select a valid date' 3 times.(È‹å8ŸÕ®Ãµ.
-hpython:S1192+"IDefine a constant instead of duplicating this literal '%Y-%m-%d' 3 times.(È‹å8ŸÕ®Ãµ.
 Bpython:S125O"Remove this commented out code.(ŒÑ¹øıÿÿÿÿ8»™ºëµ.
+=python:S125W"Remove this commented out code.(š»ÃÈ8­äâ¬·.
+hpython:S1192+"IDefine a constant instead of duplicating this literal '%Y-%m-%d' 3 times.(È‹å8ŸÕ®Ãµ.
+qpython:S1192L"RDefine a constant instead of duplicating this literal 'Please select one' 3 times.(‰öØ8İ³ºëµ.

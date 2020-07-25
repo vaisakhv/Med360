@@ -1,12 +1,12 @@
 
-=python:S125’"Remove this commented out code.(›ûÿt8þú‘±·.
-ypython:S3776È"TRefactor this function to reduce its Cognitive Complexity from 66 to the 15 allowed.(‚œÇ¨þÿÿÿÿ8ßÒ®Ãµ.
+npython:S1192«"NDefine a constant instead of duplicating this literal "resetpwd.html" 5 times.(ùÏ”¯8ßÒ®Ãµ.
+Kpython:S1481ß"+Remove the unused local variable "is_hosp".(†é®Ò8…îÄ±·.
+rpython:S1192á"RDefine a constant instead of duplicating this literal 'searchResult.html' 4 times.(§™ü¯8ßÒ®Ãµ.
 spython:S1192ë"NDefine a constant instead of duplicating this literal "register.html" 4 times.(ó˜¡Ûùÿÿÿÿ8ßÒ®Ãµ.
 upython:S1192à"UDefine a constant instead of duplicating this literal "search_hospital.html" 7 times.(ëäªÇ8ßÒ®Ãµ.
-tpython:S1192Ø"TDefine a constant instead of duplicating this literal 'keyword_search.html' 4 times.(¼À²ì8ÅåÓ—·.
+ypython:S3776È"TRefactor this function to reduce its Cognitive Complexity from 66 to the 15 allowed.(‚œÇ¨þÿÿÿÿ8ßÒ®Ãµ.
 >python:S125Ù"Remove this commented out code.(¬Â­Ü8ö¦”¯¶.
-npython:S1192«"NDefine a constant instead of duplicating this literal "resetpwd.html" 5 times.(ùÏ”¯8ßÒ®Ãµ.
-rpython:S1192á"RDefine a constant instead of duplicating this literal 'searchResult.html' 4 times.(§™ü¯8ßÒ®Ãµ.
-=python:S125"Remove this commented out code.(ÆÔœ¦8˜ã†€·.
-Kpython:S1481Þ"+Remove the unused local variable "is_hosp".(†é®Ò8…îÄ±·.
 xpython:S3776_"TRefactor this function to reduce its Cognitive Complexity from 19 to the 15 allowed.(õçî—þÿÿÿÿ8ßÒ®Ãµ.
+tpython:S1192Ù"TDefine a constant instead of duplicating this literal 'keyword_search.html' 4 times.(¼À²ì8ÅåÓ—·.
+=python:S125“"Remove this commented out code.(›ûÿt8þú‘±·.
+=python:S125"Remove this commented out code.(ÆÔœ¦8˜ã†€·.

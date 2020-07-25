@@ -74,14 +74,7 @@
             margin: 0;
             height: 100%;
         }
-        .top {
-          position: fixed;
-          top: 80px;
-          left: 0;
-          z-index: 999;
-          width: 100%;
-          height: 23px;
-        }
+
                 /* width */
         ::-webkit-scrollbar {
           width: 4px;
@@ -115,79 +108,9 @@
     </script>
 </head>
 
-<body class="hero is-fullhd is-mobile">
-<div id="body">
-    <nav aria-label="main navigation" class="hero-navbar login level" role="navigation">
-        <div class="navbar-brand level-left">
-            <a class="navbar-item level-item" href="{{ url_for('index') }}">
-                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
-            </a>
-            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
-               role="button">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-
-        <div class="navbar-menu level-right" id="navbarBasicExample">
-            <div class="navbar-start level-item">
-                <a class="navbar-item" href="{{url_for('search') }}">
-                    Search Hospitals
-                </a>
-                <a class="navbar-item" href="{{url_for('search_hospital') }}">
-                    Advanced Search Hospitals
-                </a>
-                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
-                    Search Blood Donor
-                </a>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            About
-                        </a>
-                        <a class="navbar-item">
-                            Jobs
-                        </a>
-                        <a class="navbar-item">
-                            Contact
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            Report an issue
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item is-vertical">
-                    <div class="buttons ">
-                        {% if auth %}
-                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
-                            <strong>My Profile</strong>
-                        </a>
-                        <a class="button is-danger" href="{{url_for('logout') }}">
-                            <strong>Logout</strong>
-                        </a>
-                        {% else %}
-                        <a class="button is-primary" href="{{ url_for('register') }}">
-                            <strong>Register</strong>
-                        </a>
-                        <a class="button is-danger" href="{{url_for('login') }}">
-                            <strong>Login</strong>
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-</div>
-<section class="hero is-fullheight body top" id="app">
+<body class="hero is-fullhd is-mobile is-fullheight">
+{% include "includes/navbar.html" %}
+<section class="hero is-fullheight body top is-vcentered" id="app">
     <div class="section">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -202,19 +125,20 @@
         </div>
         {% endif %}
         {% endwith %}
-        <div class="container tile_neo is-fluid is-16">
+        <div class="container tile_neo is-fluid is-16 is-vcentered">
+            <p class="pb pb-2">&nbsp;</p>
+            <div class="columns is-mobile is-centered">
+                <img alt="MED360" src="{{url_for('static', filename='med.png')}}" width="325px"/>
+            </div>
             <p class="pb pb-2">&nbsp;</p>
             <div class="field is-vcentered tile is-ancestor">
                 <div class="columns tile is-parent">
                     <div class="column tile is-child box tile_neo pr pr-2">
                         <p class="is-size-4 has-text-centered has-text-weight-bold">Our Vision</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis nibh ac velit cursus,
-                            a accumsan lacus ultrices. Proin euismod risus non consectetur fringilla. Integer hendrerit
-                            massa et neque luctus, non scelerisque augue euismod. Lorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Mauris laoreet enim non tortor congue porta. Nunc congue quam
-                            eget velit lobortis sodales. Sed quis sapien a tellus tincidunt gravida quis non massa. Sed
-                            placerat lobortis elit, ac vestibulum sem pretium non. Sed vestibulum eros ac tincidunt
-                            rhoncus.
+                        <p>The vision of M Care is to ensure that the medical services and scheme benefits reach up to
+                            every citizen of our nation, despite their social and economic status , and to cover every
+                            possible health service all under one roof to achieve improved and effective health
+                            outcomes.
                         </p>
                     </div>
                     <div>
@@ -224,13 +148,8 @@
                     </div>
                     <div class="column tile is-child box tile_neo">
                         <p class="is-size-4 has-text-centered has-text-weight-bold">Our Mission</p>
-                        <p>Vivamus vitae egestas dui. Pellentesque sit amet sem sit amet erat auctor aliquam. Nullam sed
-                            arcu ac velit volutpat tincidunt id at quam. Vestibulum ante ipsum primis in faucibus orci
-                            luctus et ultrices posuere cubilia curae; Ut ut cursus odio. Suspendisse aliquet, tortor sed
-                            porta varius, tellus ligula faucibus tellus, vel euismod augue leo ac purus. Lorem ipsum
-                            dolor sit amet, consectetur adipiscing elit. Praesent egestas ac ante eget semper.
-                            Vestibulum maximus nunc sed ex hendrerit convallis a eu nisl. Sed ornare nulla a nibh
-                            fermentum blandit.
+                        <p>M Care works with the mission of guiding users, a quick and easy medium to find the cost
+                            effective health-care services that can be readily accessed.
                         </p>
                     </div>
                 </div>
@@ -240,12 +159,8 @@
                 <div class="columns tile is-parent">
                     <div class="column tile is-child box tile_neo">
                         <p class="is-size-4 has-text-centered has-text-weight-bold">Our Promise</p>
-                        <p>Quisque quis massa vitae lacus tincidunt elementum. Curabitur egestas gravida rhoncus.
-                            Quisque ut augue ac leo sodales lacinia. Mauris diam magna, volutpat eu mattis at, gravida
-                            vel nibh. Nulla consectetur quam metus, sit amet viverra nibh bibendum tristique.
-                            Fusce dictum id magna sit amet lobortis. Curabitur vehicula tempus lobortis. In hac
-                            habitasse platea dictumst. Vivamus imperdiet ex id mattis rutrum. Aliquam et neque
-                            pulvinar, vehicula orci at, mattis orci. Cras tristique varius arcu ut euismod.
+                        <p>We at M Care, promise our users a breath of relief at times of struggle to find the
+                            appropriate health-care provider nearest to you.
                         </p>
                     </div>
                     <div>
@@ -255,12 +170,9 @@
                     </div>
                     <div class="column tile is-child box tile_neo ">
                         <p class="is-size-4 has-text-centered has-text-weight-bold">Our Vibe</p>
-                        <p>Proin dapibus fermentum commodo. Phasellus maximus vitae metus et elementum. Sed sed mi ut
-                            sem varius elementum. Praesent urna libero, ultricies eget libero at, auctor congue nulla.
-                            Vestibulum efficitur tortor vel ipsum pharetra elementum at ut enim. Curabitur vel quam
-                            condimentum eros aliquet pretium. Sed rhoncus neque lorem, id rhoncus nulla blandit et.
-                            Integer sodales tellus justo, vel viverra purus posuere ut. Nullam pellentesque viverra
-                            faucibus. Duis sodales sagittis lectus.
+                        <p>Relax!
+                            M Care is here to help you. Experience a user friendly search for all your health-care
+                            needs.
                         </p>
                     </div>
                 </div>
