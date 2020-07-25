@@ -2,6 +2,8 @@ import os
 from datetime import timedelta
 from uuid import uuid4
 
+# noinspection PyUnresolvedReferences
+import psycopg2
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import UserMixin
