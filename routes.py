@@ -273,10 +273,10 @@ def update_profile():
         user.po_num = form.pincode.data
         user.mobile = form.mobile.data
         user.aadhar = form.aadhar.data
-        user_role = int(form.role.data)
+        # user_role = form.role.data
         user.organ_donation = bool(strtobool(form.organ_donation.data))
         user.bld_donation = bool(strtobool(form.bld_donation.data))
-        role = Role.find_by_id(user_role)
+        # role = Role.find_by_id(user_role)
         user.role = role.uuid
         user.save_to_db()
         print('user_id=', user.uuid, 'selected_role_id=', role.uuid, 'selected_role_name=', role.name)
