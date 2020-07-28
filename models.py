@@ -1,4 +1,5 @@
 from datetime import timedelta
+from uuid import uuid4
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -26,13 +27,14 @@ db.init_app(app)
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
+migrate = Migrate(app, db)
 manager = Manager(app)
-migrate = Migrate(app, db, render_as_batch=True)
 manager.add_command('db', MigrateCommand)
 
 
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    uuid = db.Column(db.String(40), unique=True)
     state = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), unique=True, nullable=False)
 
@@ -63,14 +65,14 @@ class City(db.Model):
 
 
 partners = db.Table('partners',
-                    db.Column('id', db.Integer, db.ForeignKey('scheme.id')),
-                    db.Column('hosp_id', db.Integer, db.ForeignKey('hospital.hosp_id'))
+                    db.Column('uuid', db.String, db.ForeignKey('scheme.uuid')),
+                    db.Column('hosp_id', db.String, db.ForeignKey('hospital.uuid'))
                     )
 
 
 class Scheme(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # uid = db.Column(db.Integer, unique=True)
+    uuid = db.Column(db.String(40), unique=True)
     name = db.Column(db.String(50), nullable=False)
     creator = db.Column(db.String(52), nullable=False)
     approved_states = db.Column(db.String(52), nullable=False)
@@ -83,23 +85,35 @@ class Scheme(db.Model):
 
     @classmethod
     def find_by_scheme_id(cls, id):
-        return cls.query.filter_by(id=id).first()
+        return cls.query.filter_by(uuid=id).first()
 
     @classmethod
     def find_by_scheme_name(cls, name):
         return cls.query.filter(cls.name.like('%' + name + '%'))
 
+    @classmethod
+    def find_by_keyword(cls, keyword):
+        columns = [column.key for column in Scheme.__table__.columns]
+        results = []
+        for col in columns:
+            out = cls.query.filter(getattr(cls, col).like('%' + keyword + '%')).all()
+            if len(out) > 0:
+                results.append(out)
+        return results
+
     def remove_from_db(self):
         db.session.delete(self)
         db.session.commit()
+        return 'rm successful'
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+        return 'commit successful'
 
     def __init__(self, name, feature, objective, benefits, eligibility, creator, approved_states,
                  approved_districts, ):
-        # self.uid = str(uuid4())
+        self.uuid = str(uuid4())
         self.name = name
         self.feature = feature
         self.objective = objective
@@ -111,6 +125,7 @@ class Scheme(db.Model):
 
 
 class Hospital(db.Model):
+    uuid = db.Column(db.String(40), unique=True)
     hosp_id = db.Column(db.Integer, primary_key=True)
     hosp_name = db.Column(db.String(100), unique=True, nullable=False)
     hosp_addr = db.Column(db.String(200), nullable=False)
@@ -123,6 +138,7 @@ class Hospital(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+        return 'commit successful'
 
     def remove_from_db(self):
         db.session.delete(self)
@@ -138,7 +154,7 @@ class Hospital(db.Model):
 
     @classmethod
     def find_by_id(cls, _id):
-        return cls.query.filter_by(hosp_id=_id).first()
+        return cls.query.filter_by(uuid=_id).first()
 
     @classmethod
     def find_by_state(cls, _state):
@@ -150,6 +166,7 @@ class Hospital(db.Model):
 
     def __init__(self, hosp_name, hosp_addr, hosp_spec_empanl, hosp_spec_upgraded, hosp_contact_no,
                  hosp_contact_mail, hosp_type):
+        self.uuid = str(uuid4())
         self.hosp_name = hosp_name
         self.hosp_addr = hosp_addr
         self.hosp_spec_empanl = hosp_spec_empanl
@@ -163,7 +180,8 @@ class Hospital(db.Model):
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    uuid = db.Column(db.String(40), unique=True)
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
@@ -211,6 +229,7 @@ class User(db.Model, UserMixin):
 
     def __init__(self, username, email, password, pan, name, sex, dob, bld_grp, addr, state, po_num, mobile, aadhar,
                  organ_donation, bld_donaton, city, age, role):
+        self.uuid = str(uuid4())
         self.username = username
         self.email = email
         self.password = password
@@ -233,6 +252,7 @@ class User(db.Model, UserMixin):
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    uuid = db.Column(db.String(40), unique=True)
     name = db.Column(db.String(50), unique=True)
 
     @classmethod
@@ -241,7 +261,7 @@ class Role(db.Model):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
+        return cls.query.filter_by(uuid=id).first()
 
     def save_to_db(self):
         db.session.add(self)
@@ -252,6 +272,7 @@ class Role(db.Model):
         db.session.commit()
 
     def __init__(self, name):
+        self.uuid = str(uuid4())
         self.name = name
 
 
@@ -262,5 +283,5 @@ def __init__(self, **kwargs):
 
 if __name__ == "__main__":
     # run migrate
-    manager.run()
+    # manager.run()
     db.create_all()

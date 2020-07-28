@@ -1,18 +1,0 @@
-
-k%Web:ItemTagNotWithinContainerTagCheck"<Surround this <li> item tag by a <ul> or <ol> container one.(ä‰¡
-j Web:TableHeaderHasIdOrScopeCheck";Add either an 'id' or a 'scope' attribute to this <th> tag.(ö¼Îøÿÿÿÿ
-EWeb:ImgWithoutAltCheck"%Add an "alt" attribute to this image.(Ÿ¾ì’
-FWeb:BoldAndItalicTagsCheck"Replace this <i> tag by <em>.(ş×¤Ëÿÿÿÿÿ
-j Web:TableHeaderHasIdOrScopeCheck";Add either an 'id' or a 'scope' attribute to this <th> tag.(ş¥¤Íıÿÿÿÿ
-p%Web:ItemTagNotWithinContainerTagCheck"<Surround this <li> item tag by a <ul> or <ol> container one.(ü¼‘æøÿÿÿÿ
-A	Web:S1827")Remove this deprecated "width" attribute.(ş¥¤Íıÿÿÿÿ
-A	Web:S1827")Remove this deprecated "width" attribute.(ö¼Îøÿÿÿÿ
-FWeb:BoldAndItalicTagsCheck"Replace this <i> tag by <em>.(ş×¤Ëÿÿÿÿÿ
-JWeb:ImgWithoutAltCheck"%Add an "alt" attribute to this image.(ßØ­•ùÿÿÿÿ
-KWeb:TableWithoutCaptionCheck" Add a description to this table.(Ó÷®Œûÿÿÿÿ
-e Web:TableHeaderHasIdOrScopeCheck";Add either an 'id' or a 'scope' attribute to this <th> tag.(ŒˆÿÓ
-k%Web:ItemTagNotWithinContainerTagCheck"<Surround this <li> item tag by a <ul> or <ol> container one.(ä‰¡
-FWeb:BoldAndItalicTagsCheck"Replace this <i> tag by <em>.(¹ÉªÖøÿÿÿÿ
-<	Web:S1827")Remove this deprecated "width" attribute.(š•—Ç
-e Web:TableHeaderHasIdOrScopeCheck";Add either an 'id' or a 'scope' attribute to this <th> tag.(š•—Ç
-<	Web:S1827")Remove this deprecated "width" attribute.(ŒˆÿÓ

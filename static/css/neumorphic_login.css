@@ -1,0 +1,66 @@
+* {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+:root {
+  --shadowDark: #D9DDE6;
+  --background: #E4E9F2;
+  --shadowLight: #EFF5FE;
+}
+
+body {
+  background: var(--background);
+}
+
+.hero-body {
+  justify-content: center;
+}
+
+.hero-navbar{
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    padding: 1.5rem;
+    box-shadow:  6px 6px 18px #b9bdc4,
+                -6px -6px 18px #ffffff;
+}
+.dip{
+    border-radius: 48px;
+    background: #E4E9F2;
+    box-shadow: inset 24px 24px 48px #a9acb3,
+                inset -24px -24px 48px #ffffff;
+}
+.login {
+  border-radius: 25px;
+  padding: 1.5rem;
+  box-shadow: 8px 8px 15px var(--shadowDark), -8px -8px 15px var(--shadowLight);
+}
+input{
+    background: var(--shadowDark) !important;
+}
+a {
+  font-weight: 600;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #f3f0f1;
+}
+
+

@@ -1,194 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
-{% block content %}
 <head>
-	<title>MED360 | Register</title>
-	<meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1" name="viewport">
-		<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
-	<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <meta charset="UTF-8">
+    {% block content %}
+    <title>MED360 | Register</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+		.column {
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+		}
+		.row-one {
+			padding-top: 13px;
+		}
+        form .field {
+			margin: auto;
+			max-width: 740px;
+		}
+		.control.has-icons-left .icon.is-left, .control.has-icons-right .icon.is-right {
+            color:#666666
+		}
+		    .control.has-icons-left .icon.is-left, .control.has-icons-right .icon.is-right {
+        color:#666666
+    }
+    html, body {margin: 0; height: 127%;}
+        .dip{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow: inset 6px 6px 18px #b9bdc4,
+                        inset -6px -6px 18px #ffffff;
+            }
+        .dp{
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f4f9ff, #cdd2da);
+            box-shadow:  34px 34px 58px #a4a8ae,
+                         -34px -34px 58px #ffffff;
+        }
+        .tile_neo{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow:  6px 6px 18px #b9bdc4,
+                        -6px -6px 18px #ffffff;
+        }
+        .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+                /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
 
-	<style>
-		@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-.login-page {
-  width: 360px;
-  padding: 8% 0 0;
-  margin: auto;
-}
-.form label{
-text-align: left;
-float: left;
-}
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-   overflow: hidden;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-.form input {
-  float: right;
-  clear: both;
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-.form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
-}
-.form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
-}
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
 
-.form .message a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-.form .register-form {
-  display: none;
-}
-.container {
-  position: relative;
-  z-index: 1;
-  max-width: 300px;
-  margin: 0 auto;
-}
-.container:before, .container:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-.container .info {
-  margin: 50px auto;
-  text-align: center;
-}
-.container .info h1 {
-  margin: 0 0 15px;
-  padding: 0;
-  font-size: 36px;
-  font-weight: 300;
-  color: #1a1a1a;
-}
-.container .info span {
-  color: #4d4d4d;
-  font-size: 12px;
-}
-.container .info span a {
-  color: #000000;
-  text-decoration: none;
-}
-.container .info span .fa {
-  color: #EF3B3A;
-}
-body {
-	background-image: url("{{url_for('static', filename='health_bg.jpg')}}");
-	background-size: cover;
-	background-repeat: no-repeat;
-	height: 720px;
-	font-family: "Roboto", sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
 
-}
-	</style>
-	<style>
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+    </style>
+    <script>
+	  window.console = window.console || function(t) {};
 
-	input[type=radio]:checked ~ .check {
-	  border: 5px solid #0DFF92;
-	}
 
-	input[type=radio]:checked ~ .check::before{
-	  background: #0DFF92;
-	}
+    </script>
+    <script>
+	  if (document.location.search.match(/type=embed/gi)) {
+		window.parent.postMessage("resize", "*");
+	  }
 
-	<!--input[type=radio]:checked ~ label{-->
-	<!--  color: #0DFF92;-->
-	<!--}-->
 
-	</style>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script>
-	$(function() {
-		$( ".dtpick" ).datepicker();
-	});
-	</script>
+    </script>
 </head>
-<body>
-<div class="login-page">
-  <div class="form">
-     {% with messages = get_flashed_messages() %}
+<body translate="no">
+<section class="hero is-fullheight body" id="app">
+    <div class="section">
+        {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul class="alert">
-            {% for message in messages %}
-            <a class="alert alert-warning">{{ message }}</a>
-            {% endfor %}
-        </ul>
+        <div class="container is-fluid">
+            <br>
+            <div class="notification is-danger is-pulled-right" style="width:25%;">
+                <button class="delete"></button>
+                {% for message in messages %}
+                <strong>{{ message }}</strong>
+                {% endfor %}
+            </div>
+        </div>
         {% endif %}
-    {% endwith %}
-    <form action="" class="login-form" method="POST">
-		{{form.hidden_tag()}}
-		<label>Role :&nbsp</label>
-		{{form.role(class_='form-control')}}<br>
-		{{form.uname(class_='form-control')}}
-		{{form.name(class_='form-control')}}
-		{{form.mail(class_='form-control')}}
-		{{form.mobile(class_='form-control')}}
-		{{form.addr(class_='form-control')}}
-		{{form.pincode(class_='form-control')}}
-		{{form.passw(class_='form-control')}}
-		{{form.conf_passw(class_='form-control')}}
-		<div id="error-nwl"></div>
-		<label>Date Of Brth :&nbsp</label>
-		{{form.dob(class_='form-control')}}<br/>
-		{{form.pan(class_='form-control')}}<br/>
-		{{form.aadhar(class_='form-control')}}<br/>
-		<label>State :&nbsp</label>
-		{{form.state(class_='form-control')}}<br>
-		<label>city :&nbsp</label>
-		{{form.city(class_='form-control')}}<br>
-		<label>Sex :&nbsp</label>
-		{{form.sex(class_='form-control')}}<br><br>
-		<label>Blood Group :&nbsp</label>
-		{{form.bld_grp(class_='form-control')}}<br/>
-		<label>Are you willing to be a blood donor ?&nbsp</label>
-		{{form.bld_donation(class_='form-control')}}<br/>
-		<label>Are you willing to be a organ donor ?&nbsp</label>
-		{{form.organ_donation(class_='form-control')}}<br/>
-      <button type="submit">Register</button>
-      <p class="message">Already has an account? <a href="{{url_for('login') }}">Login</a></p>
-    </form>
-  </div>
-</div>
+        {% endwith %}
+        <div class="container login is-9">
+            <div class="columns is-mobile is-centered">
+                <img alt="MED360" src="{{url_for('static', filename='med.png')}}" width="325px"/>
+            </div>
+            <form action="" id="register-form" method="POST">
+                {{form.hidden_tag()}}
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control has-icons-left">
+                        {{form.name(class_='input is-rounded')}}
+                        <span class="icon is-left"><em class="fa">user</em></span>
+                    </div>
+                    <label class="label">Username</label>
+                    <div class="control has-icons-right has-icons-left">
+                        {{form.uname(class_='input is-rounded')}}
+                        <span class="icon is-left"><em class="fa fa-user-circle"></em></span>
+                        <span class="icon is-right" id="username_tick"><em class="fa fa-user-circle"></em></span>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Email</label>
+                            <div class="control has-icons-left">
+                                {{form.mail(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">envelope-square</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Mobile</label>
+                            <div class="control has-icons-left">
+                                {{form.mobile(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa fa-phone "></em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Password</label>
+                            <div class="control has-icons-left">
+                                {{form.passw(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">key</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Confirm Passsword</label>
+                            <div class="control has-icons-left has-icons-right">
+                                {{form.conf_passw(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">lock</em></span>
+                                <span class="icon is-right" id="psw_tick"><em class="fa fa-check "></em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Sex</label>
+                            <div class="control has-icons-right">
+                                {{form.sex(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Blood Group</label>
+                            <div class="control has-icons-right">
+                                {{form.bld_grp(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Date of Birth</label>
+                            <div class="control">
+                                {{form.dob(class_='input is-rounded', style='background:#D9DDE6')}}
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Donor</label>
+                            <div class="control has-icons-right">
+                                {{form.donor(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="label">Address</label>
+                    <div class="control has-icons-left">
+                        {{form.addr(class_='input is-rounded')}}
+                        <span class="icon is-left"><em class="fa fa-map-marker"></em></span>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">State</label>
+                            <div class="control has-icons-right">
+                                {{form.state(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">City</label>
+                            <div class="control has-icons-right">
+                                {{form.city(class_='input is-rounded', style='background:#D9DDE6')}}
+                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns row-one">
+                        <div class="column">
+                            <label class="label">Pincode</label>
+                            <div class="control has-icons-left">
+                                {{form.pincode(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">map-pin</em></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label class="label">Aadhaar</label>
+                            <div class="control has-icons-left">
+                                {{form.aadhar(class_='input is-rounded')}}
+                                <span class="icon is-left"><em class="fa">id-card</em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-primary tile_neo is-medium is-block is-fullwidth is-rounded"
+                                    type="submit">
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock %}
-</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
         let state_select = document.getElementById('state')
         let city_select = document.getElementById('city')
@@ -205,60 +285,66 @@ body {
             });
         }
 
-       let input = document.querySelector('input[name=uname]');
-       var message = document.getElementById('error-nwl-usr');
+       let input = document.getElementById('uname');
+       let fa_icon = document.getElementById('username_tick');
         var goodColor = "#66cc66";
         var badColor = "#ff6666";
+        fa_icon.innerHTML = "<i class='fa'>"
        input.onkeyup = function() {
+            fa_icon.innerHTML = "<i class='fa'>"
+            fetch('/check/'+input.value).then(function(response){
+                response.json().then(function(data){
+                    if (data == false){
+                        fa_icon.style.color = goodColor;
+                        fa_icon.innerHTML = "<i class='fa fa-check'>"
+                    }else{
+                        fa_icon.style.color = badColor;
+                        fa_icon.innerHTML = "<i class='fa fa-times-circle'>"
+                    }
+                });
+            });
             $.get('/check/' + input.value, function(data) {
-                if (data == false){
-                    message.style.color = goodColor;
-                    message.innerHTML = "Username is available!"
-                }else{
-                    message.style.color = badColor;
-                    message.innerHTML = "Username is not available!"
-                }
+
             });
         };
-    </script>
-<script>
-$('#conf_passw').on('keyup', function ()
-{
-    var pass1 = document.getElementById('passw');
-    var pass2 = document.getElementById('conf_passw');
-    var message = document.getElementById('error-nwl');
-    var goodColor = "#66cc66";
-    var badColor = "#ff6666";
 
-    if(pass1.value.length > 5)
-    {
-        pass1.style.backgroundColor = goodColor;
-        message.style.color = goodColor;
-        message.innerHTML = "character number ok!"
-    }
-    else
-    {
-        pass1.style.backgroundColor = badColor;
-        message.style.color = badColor;
-        message.innerHTML = " you have to enter at least 6 digit!"
-        return;
-    }
+		$('#conf_passw').on('keyup', function ()
+		{
+			var pass1 = document.getElementById('passw');
+			var pass2 = document.getElementById('conf_passw');
+			var message = document.getElementById('psw_tick');
+			var goodColor = "#66cc66";
+			var badColor = "#ff6666";
 
-    if(pass1.value == pass2.value)
-    {
-        pass2.style.backgroundColor = goodColor;
-        message.style.color = goodColor;
-        message.innerHTML = "ok!"
-    }
-	else
-    {
-        pass2.style.backgroundColor = badColor;
-        message.style.color = badColor;
-        message.innerHTML = " These passwords don't match"
-    }
-});
+			if(pass1.value.length > 5)
+			{
+				pass1.style.backgroundColor = goodColor;
+				message.style.color = goodColor;
+				message.innerHTML = "character number ok!"
+			}
+			else
+			{
+				pass1.style.backgroundColor = badColor;
+				message.style.color = badColor;
+				message.innerHTML = "<em class='fa fa-times'></em>"
+				return;
+			}
+
+			if(pass1.value == pass2.value)
+			{
+				pass2.style.backgroundColor = goodColor;
+				message.style.color = goodColor;
+				message.innerHTML = "<em class='fa fa-check'></em>"
+			}
+			else
+			{
+				pass2.style.backgroundColor = badColor;
+				message.style.color = badColor;
+				message.innerHTML = "<em class='fa fa-times'></em>"
+			}
+		});
+
+
 </script>
-<script crossorigin="anonymous" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+</body>
 </html>

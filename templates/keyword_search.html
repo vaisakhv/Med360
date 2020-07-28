@@ -1,46 +1,328 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Search</title>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    {% block content %}
+    <title>MED360 | Seach Hospital</title>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 </head>
-<body>
-{% block page_content %}
-<div class="page-header">
-    <form action="{{ url_for('search') }}" method="post" name="search" style="display: inline;">
-        {{ form.search(size=20) }}
-        <input type="submit" value="Search">
-    </form>
+<style>
+    .control.has-icons-left .icon.is-left, .control.has-icons-right .icon.is-right {
+        color:#666666
+    }
+    html, body {margin: 0; height: 100%;}
+        .dip{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow: inset 6px 6px 18px #b9bdc4,
+                        inset -6px -6px 18px #ffffff;
+            }
+        .dp{
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f4f9ff, #cdd2da);
+            box-shadow:  34px 34px 58px #a4a8ae,
+                         -34px -34px 58px #ffffff;
+        }
+        .tile_neo{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow:  6px 6px 18px #b9bdc4,
+                        -6px -6px 18px #ffffff;
+        }
+        .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+                /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
 
-    {% if results %}
-    <h1>Search results for "{{ query }}":</h1>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Hospital Name</th>
-            <th>Address</th>
-            <th>E-Mail</th>
-            <th>Contact Number</th>
-            <th>Schemes</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in results %}
-        <tr>
-            <td>{{ item.hosp_id }}</td>
-            <td>
-                <a href={{url_for('hospital_details',hosp_id=encrypt(item.hosp_id|string()))}}>{{ item.hosp_name }}</a>
-            </td>
-            <td>{{ item.hosp_addr }}</td>
-            <td>{{ item.hosp_contact_mail }}</td>
-            <td>{{ item.hosp_contact_no }}</td>
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
 
-        </tr>
-        {% endfor %}
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+        {%if first_visit%}
+        .nav{
+            padding:10px;
+        }
+        html, body {
+            margin: 0;
+            height: 105%;
+            overflow:hidden;
+        }
+        {% else %}
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
         {% endif %}
-        </tbody>
-    </table>
+
+       .search_all{
+            position: -webkit-sticky;
+            position: sticky;
+
+        }
+       .search_all_btn{
+            position: -webkit-sticky;
+            position: sticky;
+
+        }
+
+       .search_all_result{
+            position: inherit;
+            top: 15;
+            left: 16%;
+            z-index: 999;
+            width: 50%;
+            height: 5%;
+        }
+</style>
+<body class="hero is-widescreen ">
+<div id="body">
+    <nav aria-label="main navigation" class="tile_neo level" role="navigation">
+        <div class="navbar-brand level-left">
+            <a class="navbar-item level-item" href="{{ url_for('index') }}">
+                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+            </a>
+            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
+               role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu level-right" id="navMenu">
+            <div class="navbar-start level-item">
+                <a class="navbar-item" href="{{url_for('search') }}">
+                    Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                    Search Blood Donor
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        {% if auth %}
+                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                            <strong>My Profile</strong>
+                        </a>
+                        <a class="button is-light" href="{{url_for('logout') }}">
+                            Logout
+                        </a>
+                        {% else %}
+                        <a class="button is-primary" href="{{ url_for('register') }}">
+                            <strong>Register</strong>
+                        </a>
+                        <a class="button is-light" href="{{url_for('login') }}">
+                            Login
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
-{% endblock page_content %}
+<section class="hero is-fullheight  is-widescreen">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="container is-fluid">
+        <br>
+        <div class="notification is-danger is-pulled-right" style="width:25%;">
+            <button class="delete"></button>
+            {% for message in messages %}
+            <strong>{{ message }}</strong>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% endwith %}
+    {% if first_visit %}
+    <div class="container tile_neo hero-body has-text-centered column is-half is-vcentered" style="margin-top: 5%;">
+        <form action="" method="POST">
+            {{form.hidden_tag()}}
+            <div class="columns  is-full">
+                <div class="column field ">
+                    <p class="is-size-4">Global Search</p>
+                    <div class="column field has-addons has-addons-left">
+                        <div class="control has-icons-left ">
+                            {{ form.search(class_="input is-rounded dip") }}
+                            <span class="icon is-left"><em class="fa">search</em></span>
+                        </div>
+                    </div>
+                    <div class="column buttons">
+                        {{form.search_hospital}}
+                        <button class="button is-primary is-medium is-fullwidth" type="submit">
+                            <strong>Search</strong>
+                        </button>
+                    </div>
+                    <div class="column buttons">
+                        <a class="button is-danger is-medium is-fullwidth" href="{{ url_for('search_hospital') }}">
+                            <strong>Goto Advanced Search</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br>
+    </div>
+    {% else %}
+    <section class="container hero-body body">
+        <form action="" method="POST">
+            {{form.hidden_tag()}}
+            <div class="level control has-text-centered is-vcentered has-icons-left ">
+                <div class="field has-addons">
+                    <div class="control">
+                        {{ form.search(class_="input dip is-rounded is-four-fifths", style='background:#D9DDE6') }}
+                        <span class="icon is-left"><em class="fa">search</em></span>
+                    </div>
+                    <div class="control">
+                        <button class="button tile_neo is-info" type="submit">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <section class="hero-body is-fullheight body ">
+        <div class=" is-fullheight">
+            <table class="table is-striped is-hoverable is-fullwidth hero-shadow ">
+                <thead class="thead">
+                {% if is_hosp%}
+                <tr class="tr is-selected">
+                    <th class="th">Hospital Name</th>
+                    <th class="th">Address</th>
+                    <th class="th">Contact Number</th>
+                </tr>
+                </thead>
+
+                <tbody class="tbody">
+                {% for item in data %}
+                <tr class="tr">
+                    <td class="td">
+                        <a href={{url_for('hospital_details',hosp_id=item.uuid)}}>{{ item.hosp_name
+                            }}</a>
+                    </td>
+                    <td class="td">{{ item.hosp_addr }}</td>
+                    <td class="td">{{ item.hosp_contact_no }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tr class="tr is-selected">
+                    <th class="th">Scheme Name</th>
+                    <th class="th">Created By</th>
+                </tr>
+                </thead>
+
+                <tbody class="tbody">
+                {% for item in data %}
+                <tr class="tr">
+                    <td class="td">
+                        <a href={{url_for('about_scheme',sch_id=item.uuid)}}>{{ item.name
+                            }}</a>
+                    </td>
+                    <td class="td">{{ item.creator }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </section>
+    {% endif %}
+</section>
+{% endblock %}
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        $notification = $delete.parentNode;
+        $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification);
+          location = location
+        });
+      });
+    });
+</script>
 </html>

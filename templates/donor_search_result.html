@@ -2,76 +2,148 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <style>
-    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+        html, body {
+            margin: 0;
+            height: 120%;
+        }
+                .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
 
-    body{
-      background: #f2f2f2;
-      font-family: 'Open Sans', sans-serif;
-    }
-	</style>
+
+    </style>
     <title>MED360 | Results for {{bld_grp}} </title>
 </head>
-<body>
+<body class="hero is-widescreen" style="background:#E4E9F2">
 <div id="body">
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
-            <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
-        </a>
-        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
-        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        {% if auth %}
-        <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn" style="float:right;">Hi, {{current_user.name}}
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('view_profile') }}">My Profile</a>
-                <a href="{{url_for('logout') }}">Logout</a>
+    <nav aria-label="main navigation" class="hero-navbar login level" role="navigation">
+        <div class="navbar-brand level-left">
+            <a class="navbar-item level-item" href="{{ url_for('index') }}">
+                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+            </a>
+            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
+               role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu level-right" id="navbarBasicExample">
+            <div class="navbar-start level-item">
+                <a class="navbar-item" href="{{url_for('search') }}">
+                    Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                    Search Blood Donor
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                            <strong>My Profile</strong>
+                        </a>
+                        <a class="button is-light" href="{{url_for('logout') }}">
+                            Logout
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        {%else%}
-        <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn" style="float:right;">Hi, Guest
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{url_for('register') }}">Register</a>
-            </div>
-        </div>
-        <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
-    </div>
-    {% endif %}
+    </nav>
 </div>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Donor Name</th>
-        <th>E-Mail</th>
-        <th>Contact Number</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for donor in data %}
-    {%if donor.username != current_user.username%}<tr>
-        <td><a href="{{url_for('hospital_details', hosp_id= donor.name)}}">{{ donor.name }}</a></td>
-<!--        <td>{{donor.name}}</td>-->
-        <td>{{donor.email}}</td>
-        <td>{{donor.mobile}}</td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-    </tbody>
-</table>
+<section class="hero-body is-fullheight body">
+    <div class="container is-fullheight">
+        <table class="table is-striped is-hoverable is-fullwidth hero-shadow">
+            <thead class="thead">
+            <tr class="tr is-selected">
+                <th class="th">Donor Name</th>
+                <th class="th">E-Mail</th>
+                <th class="th">Contact Number</th>
+            </tr>
+            </thead>
+
+            <tbody class="tbody">
+            {% for donor in data %}
+            <tr class="tr">
+                <td class="td">
+                    <a href="#">{{ donor.name }}</a>
+                </td>
+                <td class="td">{{ donor.email }}</td>
+                <td class="td">{{ donor.mobile }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 </body>
 <script>
     function myFunction() {
@@ -82,8 +154,5 @@
     x.className = "topnav";
   }
 }
-
-
-
 </script>
 </html>

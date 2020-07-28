@@ -1,172 +1,287 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<!DOCTYPE html>
 <html>
+
 <head>
-    <title>Med360 | About</title>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet" type="text/css">
+    {% block content %}
+    <title>MED360 | Login</title>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-    }
+        .dip{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow: inset 6px 6px 18px #b9bdc4,
+                        inset -6px -6px 18px #ffffff;
+            }
+        .dp{
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f4f9ff, #cdd2da);
+            box-shadow:  34px 34px 58px #a4a8ae,
+                         -34px -34px 58px #ffffff;
+        }
+        .tile_neo{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow:  6px 6px 18px #b9bdc4,
+                        -6px -6px 18px #ffffff;
+        }
+        .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+        .top {
+          position: fixed;
+          top: 80px;
+          left: 0;
+          z-index: 999;
+          width: 100%;
+          height: 23px;
+        }
+                /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
 
-    html {
-      box-sizing: border-box;
-    }
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
 
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
 
-    .column {
-      float: left;
-      width: 33.3%;
-      margin-bottom: 16px;
-      padding: 0 8px;
-    }
-
-    .card {
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-      margin: 8px;
-    }
-
-    .about-section {
-      padding: 50px;
-      text-align: center;
-      background-color: #474e5d;
-      color: white;
-    }
-
-    .container {
-      padding: 0 16px;
-    }
-
-    .container::after, .row::after {
-      content: "";
-      clear: both;
-      display: table;
-    }
-
-    .title {
-      color: grey;
-    }
-
-    .button {
-      border: none;
-      outline: 0;
-      display: inline-block;
-      padding: 8px;
-      color: white;
-      background-color: #000;
-      text-align: center;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .button:hover {
-      background-color: #555;
-    }
-
-    @media screen and (max-width: 650px) {
-      .column {
-        width: 100%;
-        display: block;
-      }
-    }
-    .footer {
-       position: fixed;
-       left: 0;
-       bottom: 0;
-       width: 100%;
-       background-color: teal;
-       color: white;
-       text-align: center;
-    }
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
 
     </style>
+    <script>
+      window.console = window.console || function(t) {};
+
+    </script>
+    <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+      }
+
+    </script>
 </head>
-<body>
+
+<body class="hero is-fullhd is-mobile">
 <div id="body">
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('index') }}"><a class=" w3-mobile navbar-brand active" href="{{ url_for('index') }}">
-            <img src="{{url_for('static', filename='logo_small.PNG')}}"></a>
-        </a>
-        <a href="{{url_for('search_hospital') }}">Search Hospitals</a>
-        <a href="{{url_for('search_blood_donor')}}">Search Blood Donor</a>
-        {% if auth %}
-        <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn" style="float:right;overflow:hidden;">Hi, {{current_user.name}}
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('view_profile') }}">My Profile</a>
-                <a href="{{url_for('logout') }}">Logout</a>
+    <nav aria-label="main navigation" class="hero-navbar login level" role="navigation">
+        <div class="navbar-brand level-left">
+            <a class="navbar-item level-item" href="{{ url_for('index') }}">
+                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+            </a>
+            <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
+               role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu level-right" id="navbarBasicExample">
+            <div class="navbar-start level-item">
+                <a class="navbar-item" href="{{url_for('search') }}">
+                    Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_hospital') }}">
+                    Advanced Search Hospitals
+                </a>
+                <a class="navbar-item" href="{{url_for('search_blood_donor')}}">
+                    Search Blood Donor
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item is-vertical">
+                    <div class="buttons ">
+                        {% if auth %}
+                        <a class="button is-primary" href="{{ url_for('view_profile') }}">
+                            <strong>My Profile</strong>
+                        </a>
+                        <a class="button is-danger" href="{{url_for('logout') }}">
+                            <strong>Logout</strong>
+                        </a>
+                        {% else %}
+                        <a class="button is-primary" href="{{ url_for('register') }}">
+                            <strong>Register</strong>
+                        </a>
+                        <a class="button is-danger" href="{{url_for('login') }}">
+                            <strong>Login</strong>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
-        {%else%}
-        <div class="dropdown w3-dropdown-hover">
-            <button class="dropbtn" style="float:right;">Hi, Guest
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{url_for('register') }}">Register</a>
+    </nav>
+</div>
+<section class="hero is-fullheight body top" id="app">
+    <div class="section">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="container is-fluid">
+            <br>
+            <div class="notification is-danger is-pulled-right" style="width:25%;">
+                <button class="delete"></button>
+                {% for message in messages %}
+                <strong>{{ message }}</strong>
+                {% endfor %}
             </div>
         </div>
-        <a class="icon" href="javascript:void(0);" onclick="myFunction()" style="font-size:15px;">&#9776;</a>
+        {% endif %}
+        {% endwith %}
+        <div class="container tile_neo is-fluid is-16">
+            <p class="pb pb-2">&nbsp;</p>
+            <div class="field is-vcentered tile is-ancestor">
+                <div class="columns tile is-parent">
+                    <div class="column tile is-child box tile_neo pr pr-2">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Our Vision</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis nibh ac velit cursus,
+                            a accumsan lacus ultrices. Proin euismod risus non consectetur fringilla. Integer hendrerit
+                            massa et neque luctus, non scelerisque augue euismod. Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Mauris laoreet enim non tortor congue porta. Nunc congue quam
+                            eget velit lobortis sodales. Sed quis sapien a tellus tincidunt gravida quis non massa. Sed
+                            placerat lobortis elit, ac vestibulum sem pretium non. Sed vestibulum eros ac tincidunt
+                            rhoncus.
+                        </p>
+                    </div>
+                    <div>
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </div>
+                    <div class="column tile is-child box tile_neo">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Our Mission</p>
+                        <p>Vivamus vitae egestas dui. Pellentesque sit amet sem sit amet erat auctor aliquam. Nullam sed
+                            arcu ac velit volutpat tincidunt id at quam. Vestibulum ante ipsum primis in faucibus orci
+                            luctus et ultrices posuere cubilia curae; Ut ut cursus odio. Suspendisse aliquet, tortor sed
+                            porta varius, tellus ligula faucibus tellus, vel euismod augue leo ac purus. Lorem ipsum
+                            dolor sit amet, consectetur adipiscing elit. Praesent egestas ac ante eget semper.
+                            Vestibulum maximus nunc sed ex hendrerit convallis a eu nisl. Sed ornare nulla a nibh
+                            fermentum blandit.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="pb pb-2">&nbsp;</p>
+            <div class="field is-vcentered tile is-ancestor">
+                <div class="columns tile is-parent">
+                    <div class="column tile is-child box tile_neo">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Our Promise</p>
+                        <p>Quisque quis massa vitae lacus tincidunt elementum. Curabitur egestas gravida rhoncus.
+                            Quisque ut augue ac leo sodales lacinia. Mauris diam magna, volutpat eu mattis at, gravida
+                            vel nibh. Nulla consectetur quam metus, sit amet viverra nibh bibendum tristique.
+                            Fusce dictum id magna sit amet lobortis. Curabitur vehicula tempus lobortis. In hac
+                            habitasse platea dictumst. Vivamus imperdiet ex id mattis rutrum. Aliquam et neque
+                            pulvinar, vehicula orci at, mattis orci. Cras tristique varius arcu ut euismod.
+                        </p>
+                    </div>
+                    <div>
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </div>
+                    <div class="column tile is-child box tile_neo ">
+                        <p class="is-size-4 has-text-centered has-text-weight-bold">Our Vibe</p>
+                        <p>Proin dapibus fermentum commodo. Phasellus maximus vitae metus et elementum. Sed sed mi ut
+                            sem varius elementum. Praesent urna libero, ultricies eget libero at, auctor congue nulla.
+                            Vestibulum efficitur tortor vel ipsum pharetra elementum at ut enim. Curabitur vel quam
+                            condimentum eros aliquet pretium. Sed rhoncus neque lorem, id rhoncus nulla blandit et.
+                            Integer sodales tellus justo, vel viverra purus posuere ut. Nullam pellentesque viverra
+                            faucibus. Duis sodales sagittis lectus.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div style="height:3px">&nbsp;</div>
+        </div>
     </div>
-    {% endif %}
-</div>
-<div class="about-section">
-  <h1>About Us</h1>
-  <p>Some text about who we are and what we do.</p>
-  <p>Resize the browser window to see that this page is responsive by the way.</p>
-</div>
-
-<h2 style="text-align:center">MED360</h2>
-<div class="row">
-  <div class="column">
-    <div class="card">
-      <img alt="Jane" src="/w3images/team1.jpg" style="width:100%">
-      <div class="container">
-        <h2>Our Vision</h2>
-        <p class="title">CEO & Founder</p>
-        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-        <p>jane@example.com</p>
-       </div>
-    </div>
-  </div>
-
-  <div class="column">
-    <div class="card">
-      <img alt="Mike" src="/w3images/team2.jpg" style="width:100%">
-      <div class="container">
-        <h2>Our Mission</h2>
-        <p class="title">Art Director</p>
-        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-        <p>mike@example.com</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="column">
-    <div class="card">
-      <img alt="John" src="/w3images/team3.jpg" style="width:100%">
-      <div class="container">
-        <h2>Why MED360</h2>
-        <p class="title">Designer</p>
-        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-        <p>john@example.com</p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="footer">
-  <p>Terms and conditions here</p>
-</div>
+</section>
+{% endblock %}
 </body>
+<script>
+		document.addEventListener('DOMContentLoaded', () => {
+		  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+			$notification = $delete.parentNode;
+
+			$delete.addEventListener('click', () => {
+			  $notification.parentNode.removeChild($notification);
+			  location=location
+			});
+		  });
+		});
+
+</script>
 </html>
