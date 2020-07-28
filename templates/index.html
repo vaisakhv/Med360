@@ -183,7 +183,8 @@
                     <div class="navbar-brand level-left" style="background:white">
                         {% endif %}
                         <a class="navbar-item level-item" href="{{ url_for('index') }}">
-                            <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+                            <img alt="MED360" height="28" src="{{url_for('static', filename='img/med.png')}}"
+                                 width="112">
                         </a>
                         <a aria-expanded="false" aria-label="menu" class="navbar-burger burger"
                            data-target="navbarBasicExample"
@@ -362,7 +363,7 @@
         <button class="myBtn" onclick="window.location.href='{{url_for('register') }}'">Sign Up</button>
         <button class="myBtn" onclick="window.location.href='{{url_for('about') }}'">About Us</button>
     </div>
-    <img class="image is-3by1" src="{{url_for('static', filename='med.png')}}"
+    <img class="image is-3by1" src="{{url_for('static', filename='img/med.png')}}"
          style="float:right; padding-right: 20px;">
     {% endif %}
 </div>

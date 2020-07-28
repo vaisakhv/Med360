@@ -73,6 +73,7 @@ box-shadow:  -5px -5px 13px #55625c,
         html, body {
             margin: 0;
             height: 100%;
+            overflow:hidden;
         }
        /* width */
         ::-webkit-scrollbar {
@@ -125,8 +126,8 @@ box-shadow:  -5px -5px 13px #55625c,
         {% endif %}
         {% endwith %}
         <div class="container tile_neo is-fluid is-16">
-            <p class="pb pb-2">&nbsp;</p>
-            <div class="field is-vcentered tile is-ancestor">
+
+        <div class="field is-vcentered tile is-ancestor">
                 <div class="columns tile is-parent">
                     <div class="column tile is-child box tile_neo pr pr-2 "
                          onclick="window.location.href='{{url_for('search_hospital') }}'" style="cursor: pointer;">

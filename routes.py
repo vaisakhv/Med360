@@ -111,7 +111,7 @@ def login():
                     print('role_name=', user_role.name, 'role_id=', user_role.uuid)
                     if user_role.name == "admin":
                         print("Enabling admin view")
-                        # admin.add_view(ModelView(Hospital, db.session))
+                        admin.add_view(ModelView(Hospital, db.session))
                         admin.add_view(ModelView(City, db.session))
                         admin.add_view(ModelView(User, db.session))
                         admin.add_view(ModelView(Role, db.session))
@@ -338,7 +338,7 @@ def search_hospital():
             if spec != "None" and state_name != "" and not state_name.isspace():
                 hosps = Hospital.find_by_spec_and_state(_spec=spec, _state=state_name)
                 print("scheme id is ", scheme_id)
-                if scheme_id != 0:
+                if scheme_id != '0':
                     filtered = []
                     scheme = Scheme.find_by_scheme_id(scheme_id)
                     print(scheme.name)
@@ -365,7 +365,7 @@ def search_hospital():
                 hosp = Hospital.find_by_state(state_name)
                 if len(hosp.all()) > 0:
                     print("scheme id is ", scheme_id)
-                    if scheme_id != 0:
+                    if scheme_id != '0':
                         scheme = Scheme.find_by_scheme_id(scheme_id)
                         print(scheme.name)
                         filtered = []

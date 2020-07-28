@@ -51,7 +51,7 @@
     <nav aria-label="main navigation" class="tile_neo level" role="navigation">
         <div class="navbar-brand level-left">
             <a class="navbar-item level-item" href="{{ url_for('index') }}">
-                <img alt="MED360" height="28" src="{{url_for('static', filename='med.png')}}" width="112">
+                <img alt="MED360" height="28" src="{{url_for('static', filename='img/med.png')}}" width="112">
             </a>
             <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navbarBasicExample"
                role="button">
@@ -64,7 +64,7 @@
         <div class="navbar-menu level-right" id="navMenu">
             <div class="navbar-start level-item">
                 <a class="navbar-item" href="{{url_for('search') }}">
-                    Search Hospitals
+                    Global Search
                 </a>
                 <a class="navbar-item" href="{{url_for('search_hospital') }}">
                     Advanced Search Hospitals
@@ -81,8 +81,8 @@
                         <a class="navbar-item" href="{{url_for('about')}}">
                             About
                         </a>
-                        <a class="navbar-item">
-                            Jobs
+                        <a class="navbar-item" href="{{url_for('services')}}">
+                            Our Services
                         </a>
                         <a class="navbar-item">
                             Contact

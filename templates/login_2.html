@@ -13,7 +13,6 @@
     <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 </head>
-
 <body class="hero is-widescreen">
 <section class="hero is-fullheight">
     {% with messages = get_flashed_messages() %}
@@ -31,7 +30,7 @@
     {% endwith %}
     <div class="container hero-body has-text-centered">
         <div class="login">
-            <img src="{{url_for('static', filename='med.png')}}" width="325px"/>
+            <img src="{{url_for('static', filename='img/med.png')}}" width="325px"/>
             <form action="" method="POST">
                 {{form.hidden_tag()}}
                 <div class="field">
@@ -40,14 +39,18 @@
                     </div>
                 </div>
                 <div class="field">
-                    <div class="control">
+                    <div class="control has-icons-right">
                         {{form.passw(class_="input is-medium is-rounded")}}
+                        <!--                        <div class="icon is-right" onclick="viewPassword()">-->
+                        <!--                            <em class="fa fa-eye" id="pass-status"></em>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
-                <div class="showpassw level" style="float:left">
-                    <i aria-hidden="true" class="fa fa-eye" id="pass-status" onClick="viewPassword()">
-                        <a style="text-decoration:none;color:black">Show Password</a>
-                    </i>
+                <div class="field" onclick="viewPassword()" style="float:left;">
+                    <i class="fa fa-eye" id="pass-status"></i>
+                    <a style="text-decoration:none">
+                        <nobr>Show Password</nobr>
+                    </a>
                 </div>
                 <br><br>
                 <button class="button is-block is-fullwidth is-primary is-medium is-rounded" type="submit">
