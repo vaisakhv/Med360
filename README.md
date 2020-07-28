@@ -1,5 +1,5 @@
 # <a href="https://github.com/vaisakhv/M-Care"><h1>M-Care</h1></a>
-MED360 | A Total healthcare platform :syringe: :medical_symbol: :stethoscope:  :drop_of_blood:
+M-Care | A Total healthcare platform :syringe: :medical_symbol: :stethoscope:  :drop_of_blood:
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)  ![GitHub language count](https://img.shields.io/github/languages/count/vaisakhv/Med360)
 
