@@ -284,7 +284,12 @@
                 });
             });
         }
-
+        window.onload = function(){
+            state = state_select.value;
+                    let optionHTML = '';
+                    optionHTML += '<option value="None">Districts</option>';
+                    city_select.innerHTML = optionHTML;
+        }
        let input = document.getElementById('uname');
        let fa_icon = document.getElementById('username_tick');
         var goodColor = "#66cc66";

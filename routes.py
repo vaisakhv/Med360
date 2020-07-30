@@ -183,12 +183,13 @@ def reset_password():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
-    form.city.choices = [(city.uuid, city.name) for city in City.find_by_state('Kerala')]
+    # form.city.choices = [(city.uuid, city.name) for city in City.find_by_state('Kerala')]
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     print(form.validate_on_submit())
     print(form.errors)
-    if form.validate_on_submit():
+    print(form.city.data)
+    if form.is_submitted():
         uname = form.uname.data
         mail = form.mail.data
         passw = form.passw.data
@@ -427,7 +428,6 @@ def search_blood_donor():
         state_name = form.state.data
         bld_grp = form.bld_grp.data
         city_name = city.name
-        print(state_name, bld_grp)
         donors = User.find_blood_donor(location=city_name, blood_type=bld_grp)
         len_of_donors = len(donors)
         if current_user in donors:
@@ -436,7 +436,6 @@ def search_blood_donor():
         if len_of_donors > 0:
             return render_template('donor_search_result.html', data=donors, current_user=current_user, bld_grp=bld_grp,
                                    auth=is_auth())
-        print('no donors with ', bld_grp)
         flash(message="No donors found!!")
         render_template("search_blood_donor.html", current_user=current_user, form=form, auth=is_auth())
     return render_template("search_blood_donor.html", current_user=current_user, form=form, auth=is_auth())
