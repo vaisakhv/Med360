@@ -6,9 +6,10 @@ from flask_login import login_required, LoginManager, login_user, current_user, 
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from med360 import decodeSpecialties, get_age, admin, covid_data
-from models import User, Hospital, City, Role, app, db, Scheme
+from models import User, Hospital, City, Role, Doctor, app, db, Scheme
 from views import (RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm,
-                   ResetPasswordForm, ProfileUpdateForm, ContactForm, SearchForm)
+                   ResetPasswordForm, ProfileUpdateForm, ContactForm, SearchForm,
+                   SeachEmegencyForm)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -39,7 +40,6 @@ def not_found(e):
     return render_template("404.html")
 
 
-@app.errorhandler
 @app.errorhandler(500)
 def server_error(e):
     return render_template("500.html")
@@ -116,6 +116,7 @@ def login():
                         admin.add_view(ModelView(User, db.session))
                         admin.add_view(ModelView(Role, db.session))
                         admin.add_view(ModelView(Scheme, db.session))
+                        admin.add_view(ModelView(Doctor, db.session))
                     next_page = request.args.get('next')
                     print(next_page)
                     return redirect(next_page or url_for('index'))
@@ -486,6 +487,24 @@ def search():
             flash('No results found for ' + search_term)
             return render_template('keyword_search.html', form=form, first_visit=True, auth=is_auth())
     return render_template('keyword_search.html', form=form, first_visit=True, auth=is_auth(), is_hosp=True)
+
+
+@app.route("/emergency", methods=['GET', 'POST'])
+def emergency_numbers():
+    from med360 import get_emergency_numbers
+    form = SeachEmegencyForm()
+    first_time = True
+    print(form.validate_on_submit())
+    print(form.errors)
+    if form.validate_on_submit():
+        dist = form.dist.data
+        print(dist)
+        first_time = False
+        hotline, helpline = get_emergency_numbers(district=dist)
+        print(hotline)
+        print(helpline)
+        return render_template('emergency.html', helpline=helpline, hotline=hotline, form=form, first_time=first_time)
+    return render_template('emergency.html', form=form, first_time=first_time)
 
 
 def __init__(self, **kwargs):

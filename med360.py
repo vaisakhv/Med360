@@ -1,6 +1,9 @@
+import base64
 from datetime import date
 
 import requests
+from Cryptodome.Cipher import AES
+from Cryptodome.Random import get_random_bytes
 from flask_admin import Admin
 
 from models import db, app, User, City, Role, Scheme
@@ -12,6 +15,29 @@ def get_scheme_data():
     import pandas as pd
     schemes_file = r'../kb/scheme_hosp.txt'
     return pd.read_csv(open(schemes_file, 'r'), delimiter='\t')
+
+
+def get_states_for_help():
+    from pickle import load
+    final_dist = load(open('kb/dist_list.pkl', 'rb'))
+    return [(i, i) for i in final_dist]
+
+
+def get_emergency_numbers(district):
+    """
+    :param district: district name
+    :type district: str
+    :return: two pd.df
+    :rtype: pd.df
+    """
+    import pandas as pd
+    helpline_pkl = r'kb/helpline.pkl'
+    hotline_pkl = r'kb/hotline_numbers.pkl'
+    helpline_df = pd.read_pickle(helpline_pkl)
+    hotline_df = pd.read_pickle(hotline_pkl)
+    hotline_result = hotline_df[hotline_df['District'].str.contains(district, case=False)]
+    helpline_result = helpline_df[helpline_df['District'].str.contains(district, case=False)]
+    return hotline_result, helpline_result
 
 
 def get_all_states_for_donors():
@@ -97,18 +123,21 @@ def distinct(input_list):
             seen_uuid.append(obj.uuid)
     return final_out
 
-# class Security:
-#     __key = b'aT_s_1b8FBAD_mGTxAkJ3RvUlfrSJCQ1ewYHqFV58Vg='
-#
-#     @classmethod
-#     def encrypt(cls, plain):
-#         f = Fernet(cls.__key)
-#         return f.encrypt(plain.encode("utf-8")).decode("utf-8")
-#
-#     @classmethod
-#     def decrypt(cls, encrypted):
-#         f = Fernet(cls.__key)
-#         return f.decrypt(encrypted.encode("utf-8")).decode("utf-8")
-#
-#     def __init__(self, __key):
-#         self.__key = __key
+
+class Security:
+    def encrypt(raw, __key):
+        BS = AES.block_size
+        pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+
+        raw = base64.b64encode(pad(raw).encode('utf8'))
+        iv = get_random_bytes(AES.block_size)
+        cipher = AES.new(key=__key[:16].encode('utf8'), mode=AES.MODE_CFB, iv=iv)
+        return base64.b64encode(iv + cipher.encrypt(raw))
+
+    def decrypt(enc, __key):
+        unpad = lambda s: s[:-ord(s[-1:])]
+
+        enc = base64.b64decode(enc)
+        iv = enc[:AES.block_size]
+        cipher = AES.new(__key[:16].encode('utf8'), AES.MODE_CFB, iv)
+        return unpad(base64.b64decode(cipher.decrypt(enc[AES.block_size:])))

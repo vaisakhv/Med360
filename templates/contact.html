@@ -63,61 +63,153 @@ input[type=submit]:hover {
     margin-top: 0;
   }
 }
+        .dip{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow: inset 6px 6px 18px #b9bdc4,
+                        inset -6px -6px 18px #ffffff;
+            }
+        .dp{
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f4f9ff, #cdd2da);
+            box-shadow:  34px 34px 58px #a4a8ae,
+                         -34px -34px 58px #ffffff;
+        }
+        .tile_neo{
+            border-radius: 35px;
+            background: #E4E9F2;
+            box-shadow:  6px 6px 18px #b9bdc4,
+                        -6px -6px 18px #ffffff;
+        }
+        .button {
+          position: relative;
+          background: #f3f0f1;
+          margin-bottom: 25px;
+          border-radius: 32px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.1s ease-in-out;
+        }
+         .button span {
+          line-height: 100px;
+          font-family: "Montserrat", sans-serif;
+          font-size: 32px;
+          font-weight: semibold;
+        }
+         .button:nth-child(1) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2) {
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(2):hover {
+          opacity: 0.3;
+          box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8), 6px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+         .button:nth-child(1):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+         .button:nth-child(2):active {
+          opacity: 1;
+          box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+          color: #79e3b6;
+        }
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+
+                /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+
 </style>
+    <script src="{{ url_for('static',filename='js/fa.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/bulma.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 </head>
-<body>
-<div class="container">
-    {% include "includes/navbar.html" %}
-    <div style="text-align:center">
-        <h2>Contact Us</h2>
-        <p>Swing by for a cup of coffee, or leave us a message:</p>
-    </div>
-    <div class="row">
-        <div class="column">
-            <img src="{{url_for('static', filename='med.png')}}" style="width:100%">
+<body class="hero is-widescreen">
+{% include "includes/navbar.html" %}
+<p class="pb pb-2">&nbsp;</p>
+<section class="hero is-fullheight  is-widescreen">
+    <div class="container tile_neo hero-body has-text-centered column is-half is-vcentered">
+        <div style="text-align:center">
+            <a class="has-text-weight-bold is-size-5">Contact Us</a>
+            <br>
+            <a>Swing by for a cup of coffee, or leave us a message:</a>
         </div>
-        <div class="column">
-            {% if success %}
-            <p>Thank you for your message. We'll get back to you shortly.</p>
+        <div class="row">
+            <div class="column">
+                <img src="{{url_for('static', filename='img/med.png')}}" style="width:100%">
+            </div>
+            <div class="column">
+                {% if success %}
+                <p>Thank you for your message. We'll get back to you shortly.</p>
 
-            {% else %}
+                {% else %}
 
-            {% for message in form.name.errors %}
-            <div class="flash">{{ message }}</div>
-            {% endfor %}
+                {% for message in form.name.errors %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
 
-            {% for message in form.email.errors %}
-            <div class="flash">{{ message }}</div>
-            {% endfor %}
+                {% for message in form.email.errors %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
 
-            {% for message in form.subject.errors %}
-            <div class="flash">{{ message }}</div>
-            {% endfor %}
+                {% for message in form.subject.errors %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
 
-            {% for message in form.message.errors %}
-            <div class="flash">{{ message }}</div>
-            {% endfor %}
-            {% endif %}
-      <form action="{{ url_for('contact') }}" method=post>
-          {{ form.hidden_tag() }}
-          {{ form.name.label }}
-          {{ form.name }}
+                {% for message in form.message.errors %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                <form action="{{ url_for('contact') }}" method=post>
+                    {{ form.hidden_tag() }}
+                    {{ form.name.label }}
+                    {{ form.name }}
 
-          {{ form.email.label }}
-          {{ form.email }}
+                    {{ form.email.label }}
+                    {{ form.email }}
 
-          {{ form.subject.label }}
-          {{ form.subject }}
+                    {{ form.subject.label }}
+                    {{ form.subject }}
 
-          {{ form.message.label }}
-          {{ form.message }}
-
-          {{ form.submit }}
-
-      </form>
+                    {{ form.message.label }}
+                    {{ form.message }}
+                    <button class="button is-primary is-rounded is-medium" type="submit">
+                        Send
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+</section>
 {% endblock %}
 </body>
 </html>

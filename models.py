@@ -71,6 +71,12 @@ partners = db.Table('partners',
                     )
 
 
+# our_doctors = db.Table('our_doctors',
+#                     db.Column('uuid', db.String, db.ForeignKey('doctor.uuid')),
+#                     db.Column('hosp_id', db.String, db.ForeignKey('hospital.uuid'))
+#                     )
+
+
 class Scheme(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(40), unique=True)
@@ -136,6 +142,8 @@ class Hospital(db.Model):
     hosp_contact_mail = db.Column(db.String(80))
     hosp_type = db.Column(db.String(30), nullable=False)
 
+    # our_doctors = db.relationship('Doctors', secondary=partners, backref=db.backref('Hospital'), lazy='dynamic')
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -180,6 +188,35 @@ class Hospital(db.Model):
         return str(str(self.hosp_name))
 
 
+class Doctor(db.Model):
+    uuid = db.Column(db.String(40), unique=True, primary_key=True)
+    grad_country = db.Column(db.String(100), unique=False, nullable=False)
+    reg_no = db.Column(db.Integer(), unique=True, nullable=False)
+    specialization = db.Column(db.String, nullable=False)
+    experience = db.Column(db.Integer(), nullable=False)
+    work_location = db.Column(db.String(100), nullable=False)
+    work_hrs = db.Column(db.Integer(), nullable=False)
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+        return 'commit-success'
+
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+        return 'commit-success'
+
+    def __init__(self, uuid, grad_country, reg_no, specialization, experiene, work_location, work_hrs):
+        self.uuid = uuid
+        self.grad_country = grad_country
+        self.reg_no = reg_no
+        self.specialization = specialization
+        self.experience = experiene
+        self.work_location = work_location
+        self.work_hrs = work_hrs
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     uuid = db.Column(db.String(40), unique=True)
@@ -199,7 +236,7 @@ class User(db.Model, UserMixin):
     bld_grp = db.Column(db.String(5), nullable=True)
     po_num = db.Column(db.Integer(), nullable=True)
     organ_donation = db.Column(db.Boolean(), nullable=False)
-    pan = db.Column(db.String(10), nullable=True, unique=True)
+    pan = db.Column(db.String(10), nullable=True)
     role = db.Column(db.Integer(), nullable=False, default=2)
 
     def save_to_db(self):
@@ -253,6 +290,7 @@ class User(db.Model, UserMixin):
         else:
             self.pan = pan
 
+
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(40), unique=True)
@@ -286,5 +324,5 @@ def __init__(self, **kwargs):
 
 if __name__ == "__main__":
     # run migrate
-    # manager.run()
-    db.create_all()
+    manager.run()
+    # db.create_all()

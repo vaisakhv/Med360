@@ -27,7 +27,7 @@ def addCities():
         i += 1
 
 
-def addHospitals():
+def add_hospitals():
     from models import Hospital
 
     hospitals = pd.DataFrame()
@@ -36,8 +36,6 @@ def addHospitals():
     hospitals.index = hospitals.Sno
     hospitals = hospitals.drop('Sno', axis=1)
     hospitals = hospitals.drop('Unnamed: 0', axis=1)
-    cols = ['Hospital Name', 'Hospital Type', 'Hospital Address', 'Hospital E-Mail',
-            'Hospital Contact', 'Specialities Empanelled', 'Specialities Upgraded']
 
     for i, row in hospitals.iterrows():
         new_hosp = Hospital(hosp_name=cleanVal(row['Hospital Name']), hosp_type=cleanVal(row['Hospital Type']),
@@ -68,54 +66,10 @@ def add_scheme_by_hosp_id(hosp_id, scheme_id):
     hosp.save_to_db()
 
 
-def conver_to_uuid(id):
+def convert_to_uuid(id):
     from models import Hospital
     hosp = Hospital.query.filter_by(hosp_id=id).first()
     return hosp.uuid
-
-
-def bulk_update_hospital_schemes():
-    """
-    Updates the schemes fields in hosp objects based on the file specified
-    
-    :return: none
-    :rtype: none
-    """""
-    from models import Scheme, Hospital
-    import pandas as pd
-    new_scheme_file = "kb/Medical_Scheme_details_with_hosp_code.txt"
-    schemes = pd.read_csv(open(new_scheme_file, 'r'), delimiter='\t')
-    for i, row in schemes.iterrows():
-        if type(row.CODE) is str:
-            name_of_scheme = row['AVAILABLE INSURANCE']
-            hosp_id = row.CODE
-            try:
-                names = name_of_scheme.split('\n')
-                for name in names:
-                    if '). ' in name:
-                        name = name.split('). ')[-1].strip()
-                    if "CMCHIS" in name:
-                        name = 'CMCHIS'
-                    scheme = Scheme.find_by_scheme_name(name=name)
-                    if len(scheme.all()) > 0:
-                        if "CMCHIS" in name:
-                            name = 'CMCHIS'
-                        if ' ' in hosp_id.strip():
-                            ids = hosp_id.split(' ')
-                            for id in ids:
-                                hosp = Hospital.find_by_id(conver_to_uuid(id=int(id)))
-                                hosp.Schemes.append(scheme.all()[0])
-                                hosp.save_to_db()
-                                print(scheme.all()[0])
-                                print('done ', hosp.hosp_name)
-                        print('in else')
-                        hosp = Hospital.find_by_id(conver_to_uuid(int(hosp_id)))
-                        hosp.Schemes.append(scheme.all()[0])
-                        hosp.save_to_db()
-                        print(scheme.all()[0])
-                        print('yo ', hosp.hosp_name)
-            except Exception as e:
-                print(str(e))
 
 
 def add_schemes():
@@ -131,9 +85,3 @@ def add_schemes():
                                 )
             new_scheme.save_to_db()
 
-
-if __name__ == '__main__':
-    # addHospitals()
-    # addCities()
-    # getCities("Kerala")
-    pass

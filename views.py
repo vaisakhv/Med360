@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import (SelectField, StringField, IntegerField, PasswordField,
-                     validators, TextAreaField, SubmitField, RadioField)
+                     validators, TextAreaField, RadioField)
 from wtforms.fields.html5 import DateField
 
 from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles, get_all_schemes
@@ -119,7 +119,6 @@ class ContactForm(FlaskForm):
     email = StringField("Email", [validators.DataRequired()])
     subject = StringField("Subject", [validators.DataRequired()])
     message = TextAreaField("Message", [validators.DataRequired()])
-    submit = SubmitField("Send")
 
 
 class SearchForm(FlaskForm):
@@ -130,3 +129,8 @@ class SearchForm(FlaskForm):
 
 class AddScheme(FlaskForm):
     sch = SelectField("scheme", choices=get_all_schemes())
+
+
+class SeachEmegencyForm(FlaskForm):
+    from med360 import get_states_for_help
+    dist = SelectField('district', [validators.DataRequired('Please select you state')], choices=get_states_for_help())
