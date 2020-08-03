@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('static',filename='css/neumorphic_login.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/nunito-google.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+    .search {
+      width: 100%;
+      position: relative;
+      display: flex;
+    }
+
+    .searchTerm {
+      width: 100%;
+      border: 3px solid #00B4CC;
+      border-right: none;
+      padding: 5px;
+      height: 20px;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+      color: #9DBFAF;
+    }
+
+    .searchTerm:focus{
+      color: #00B4CC;
+    }
+
+
+
+    /*Resize the wrap to see the search bar change!*/
+    .wrap{
+      width: 30%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+            /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }/*logo as watermark*/
+.right_bottom {
+  right: 0;
+  height:50%;
+  top:75%;
+  width:25%;
+}
+.split {
+  height: 25%;
+  width: 30%;
+  position: fixed;
+  z-index: 1;
+  top: 50;
+  overflow-x: hidden;
+  padding-top: 5px;
+}
+.img{
+    filter: opacity(0.5);
+}
+
+.content {
+  position: fixed;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+}
+
+
+.myBtn {
+  width: 200px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.myBtn:hover {
+  background: #ddd;
+  color: black;
+}
+/* cards */
+.column_card {
+  float: left;
+  width: 22%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card_card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
+
+
+.container_card {
+  padding: 0 16px;
+}
+
+.container_card::after, .row_card::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title_card {
+  color: grey;
+}
+
+
+@media screen and (max-width: 650px) {
+  .column_card {
+    width: 100%;
+    display: block;
+  }
+}
+.fa_icon_card{
+    font-size:100px;
+    text-align-last:center;
+}
+
+    .is-rounded{
+        border-radius: 35px;
+    }
+    .tile_neo{
+    border-radius: 35px;
+    background: #b88acc;
+    box-shadow: inset -5px -5px 5px #a279b4,
+            inset 5px 5px 5px #ce9be4;
+    }
+
+    .grad1 {
+    width:100%;
+    background-color: #1fc8db; /* For browsers that do not support gradients */
+    background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    color:white;
+    opacity:0.95;
+}
+
+    .containerTab {
+      float: right;
+      width: 27.5%;
+      padding:2.5px;
+      text-align: center;
+      font-size: 25px;
+      cursor: pointer;
+      color: white;
+    }
+
+
+
+    </style>
+    <title>MED360 | Results for {{searchterm}} </title>
+</head>
+<body class="hero is-widescreen">
+{% include "includes/navbar.html" %}
+<section class="hero-body is-fullheight body">
+    <div class="container is-fullheight">
+        <table class="table is-striped is-hoverable is-fullwidth hero-shadow">
+            <thead class="thead">
+            <tr class="tr is-selected">
+                <th class="th">Hospital Name</th>
+                <th class="th">Address</th>
+                <th class="th">Contact Number</th>
+            </tr>
+            </thead>
+            <tbody class="tbody">
+            {% for item in data %}
+            <tr class="tr">
+                <td class="td">
+                    <a href={{url_for('hospital_details',hosp_id=item.uuid)}}>{{ item.hosp_name
+                        }}</a>
+                </td>
+                <td class="td">{{ item.hosp_addr }}</td>
+                <td class="td">{{ item.hosp_contact_no }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+<div class="hero hero-body">
+    <div class="mainContainer">
+        <div>
+            <br>
+            <div class="row_card">
+                <div class="column_card">
+                    <div class="card_card grad1 is-rounded">
+                        <div class="is-centered" style="text-align: center;font-size: xx-large;"><a
+                                href="http://127.0.0.1:5000/scheme?sch_id=2d734561-fd4e-404a-b85c-0da3b5f17956"
+                                style="text-decoration: none;">
+                            <strong>Suggested Scheme</strong></a></div>
+                        <div class="container_card ">
+                            <p>Ayushman Bharat (PM-JAY)</p>
+                            <p class="title_card">We care for you</p>
+                            <p>We save your time and give you the best based on your </p>
+                            <ol style="padding-left: inherit">
+                                <li>
+                                    Eligibility
+                                </li>
+                                <li>
+                                    Financial profile
+                                </li>
+                            </ol>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column_card">
+                    <div class="card_card grad1 is-rounded">
+                        <div class="is-centered" style="text-align: center;font-size: xx-large;"><a href="#"
+                                                                                                    style="text-decoration: none;">
+                            <strong>Suggested Laboratories</strong></a></div>
+                        <div class="container_card">
+                            <strong>Suggested Lab Name</strong>
+                            <p class="title_card">How can we help?</p>
+                            <p>We save your time by suggesting labs based on </p>
+                            <ol style="padding-left: inherit">
+                                <li>
+                                    Geo-Location
+                                </li>
+                                <li>
+                                    Accredited Labs
+                                </li>
+                            </ol>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column_card">
+                    <div class="card_card grad1 is-rounded">
+                        <div class="is-centered" style="text-align: center;font-size: xx-large;"><a href="#"
+                                                                                                    style="text-decoration: none;">
+                            <strong>Suggested Pharmacies</strong></a></div>
+                        <div class="container_card">
+                            <strong>Nearby Lab</strong>
+                            <p class="title_card">How can we help?</p>
+                            <p>We save your time by suggesting labs based on </p>
+                            <ol style="padding-left: inherit">
+                                <li>
+                                    Geo-Location
+                                </li>
+                                <li>
+                                    Accredited Labs
+                                </li>
+                            </ol>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+    document.addEventListener('DOMContentLoaded', () => {
+      (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        $notification = $delete.parentNode;
+
+        $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification);
+          location = location
+
+        });
+      });
+    });
+
+
+</script>
+</html>
