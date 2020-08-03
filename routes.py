@@ -7,9 +7,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from med360 import decodeSpecialties, get_age, admin, covid_data
 from models import User, Hospital, City, Role, Doctor, app, db, Scheme
-from views import (RegisterForm, SearchHospitalForm, FindBloodDonorForm, LoginForm,
+from views import (SearchHospitalForm, FindBloodDonorForm, LoginForm,
                    ResetPasswordForm, ProfileUpdateForm, ContactForm, SearchForm,
-                   SeachEmegencyForm)
+                   SeachEmergencyForm, DoctorSignupForm)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -100,7 +100,6 @@ def login():
     if form.validate_on_submit():
         uname = form.uname.data
         passw = form.passw.data
-        print(uname, passw)
         user = User.find_by_username(username=uname)
         if uname != '' or passw != '':
             if user is not None:
@@ -145,6 +144,10 @@ def logout():
 @login_required
 def view_profile():
     user_role = Role.find_by_id(current_user.role)
+    if user_role.name == 'doctor':
+        doc = Doctor.find_by_id(current_user.uuid)
+        return render_template('profile_page.html', title='My Details', user=current_user, role=user_role.name, doc=doc,
+                               auth=is_auth())
     return render_template('profile_page.html', title='My Details', user=current_user, role=user_role.name,
                            auth=is_auth())
 
@@ -182,63 +185,33 @@ def reset_password():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    form = RegisterForm()
-    # form.city.choices = [(city.uuid, city.name) for city in City.find_by_state('Kerala')]
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    print(form.validate_on_submit())
+    return render_template("register.html")
+
+
+@app.route("/care_provider", methods=['POST', 'GET'])
+@login_required
+def register_as_doc():
+    form = DoctorSignupForm()
+    form.validate_on_submit()
     print(form.errors)
-    print(form.city.data)
-    if form.is_submitted():
-        uname = form.uname.data
-        mail = form.mail.data
-        passw = form.passw.data
-        conf_passw = form.conf_passw.data
-        name = form.name.data
-        sex = form.sex.data
-        dob = form.dob.data
-        bld_grp = form.bld_grp.data
-        addr = form.addr.data
-        state = form.state.data
-        city = City.get_by_id(form.city.data)
-        print(city, form.city.data)
-        po_num = form.pincode.data
-        mobile = form.mobile.data
-        aadhar = form.aadhar.data
-        donor = form.donor.data
-        organ_donation = False
-        bld_donation = False
-        if donor != 'none':
-            if donor == 'blood':
-                bld_donation = True
-            elif donor == 'organ':
-                organ_donation = True
-            elif donor == 'both':
-                organ_donation = True
-                bld_donation = True
-        # organ_donation = bool(strtobool(form.organ_donation.data))
-        # bld_donation = bool(strtobool(form.bld_donation.data))
-        user_role = 'ef7bbd83-6bac-4700-9e26-4d33491aa8ea'
-        print('selected role id is ', user_role)
-        r = Role.find_by_id(user_role)
-        print('selected role name is ', r.name)
-        existing_user = User.query.filter_by(mobile=mobile, email=mail, username=uname, aadhar=aadhar).first()
-        if existing_user is None:
-            if conf_passw == passw:
-                new_user = User(username=uname, email=mail, password=generate_password_hash(passw, method='sha256'),
-                                city=city.name, age=get_age(dob),
-                                name=name, sex=sex, dob=dob, pan='null',
-                                bld_grp=bld_grp, addr=addr, state=state, po_num=po_num, mobile=mobile, aadhar=aadhar,
-                                organ_donation=bool(organ_donation), bld_donaton=bool(bld_donation), role=user_role)
-                new_user.save_to_db()
-                return redirect(url_for("login"))
-            print("Password don't match")
-            flash(message="Passwords don't match!!")
-            return render_template("register.html", form=form)
-        print('user existing')
-        flash(message='A user with same details already exists')
-        return render_template("register.html", form=form)
-    return render_template("register.html", form=form)
+    if form.validate_on_submit():
+        grad_country = form.grad_country.data
+        reg_no = form.reg_no.data
+        spec = form.specialization.data
+        exp = form.experience.data
+        work_lcn = form.work_location.data
+        op_start = form.start_at.data
+        op_end = form.end_at.data
+        user = User.find_by_id(current_user.uuid)
+        doc_role = Role.find_by_name('doctor')
+        user.role = doc_role.uuid
+        print(user.name, user.role)
+        new_doc = Doctor(uuid=user.uuid, experiene=exp, grad_country=grad_country, specialization=spec,
+                         work_location=work_lcn, op_start=op_start, op_end=op_end, reg_no=reg_no)
+        new_doc.save_to_db()
+        logout_user()
+        return redirect(url_for("index"))
+    return render_template('doc_register.html', form=form)
 
 
 @app.route('/update', methods=['POST', 'GET'])
@@ -394,7 +367,7 @@ def search_hospital():
     return render_template("search_hospital.html", current_user=current_user, form=form, auth=is_auth())
 
 
-@app.route("/hospitalDetails", methods=["GET", "POST"])
+@app.route("/hospitalDetails", methods=["GET"])
 @login_required
 def hospital_details():
     selected_id = str(request.args.get('hosp_id'))
@@ -403,19 +376,18 @@ def hospital_details():
     specs_emp = hosp.hosp_spec_empanl
     dec_specs_up = decodeSpecialties(specs_up)
     dec_specs_emp = decodeSpecialties(specs_emp)
-    # from views import AddScheme
-    # form = AddScheme()
-    # if form.is_submitted():
-    #     sch_id = form.sch.data
-    #     print(sch_id)
-    #     scheme = Scheme.find_by_scheme_id(sch_id)
-    #     print(scheme.name)
-    #     hosp.Schemes.append(scheme)
-    #     hosp.save_to_db()
-    #     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
-    #                        specs_emp=dec_specs_emp, auth=is_auth())
+
     return render_template('hospitalDetails.html', title='Hospital Details', data=hosp, specs_up=dec_specs_up,
                            specs_emp=dec_specs_emp, auth=is_auth())
+
+
+@app.route("/showDoctors", methods=["GET"])
+@login_required
+def show_docs():
+    selected_id = str(request.args.get('hosp_id'))
+    hosp = Hospital.find_by_id(selected_id)
+    return render_template('show_docs.html', title='Hospital Details', hosp=hosp.doctors,
+                           User=User, auth=is_auth())
 
 
 @app.route('/search_blood_donor', methods=['POST', 'GET'])
@@ -425,7 +397,6 @@ def search_blood_donor():
     form.city.choices = [(city.id, city.name) for city in City.find_by_state('Kerala')]
     if form.is_submitted():
         city = City.get_by_id(form.city.data)
-        state_name = form.state.data
         bld_grp = form.bld_grp.data
         city_name = city.name
         donors = User.find_blood_donor(location=city_name, blood_type=bld_grp)
@@ -464,6 +435,31 @@ def search_for_scheme(search_term):
     return distinct(results_keyword)
 
 
+@app.route('/nearby', methods=['GET', 'POST'])
+def near_me():
+    hosp = Hospital.find_by_state('Chennai')
+    return render_template('searchResult.html', data=hosp, current_user=current_user,
+                           searchterm='Chennai', auth=is_auth())
+
+
+@app.route('/for_you')
+def for_you():
+    scheme_id = "ff4176c9-0a4a-49ac-962c-f84ff1ecd2f6"
+    hosp = Hospital.find_by_state('Chennai')
+    if len(hosp.all()) > 0:
+        print("scheme id is ", scheme_id)
+        if scheme_id != '0':
+            scheme = Scheme.find_by_scheme_id(scheme_id)
+            print(scheme.name)
+            filtered = []
+            for a_hosp in hosp:
+                if a_hosp in scheme.partner_hospitals.all():
+                    filtered.append(a_hosp)
+            return render_template('searchResultNew.html', data=filtered, current_user=current_user,
+                                   auth=is_auth(),
+                                   searchterm='Near Me')
+
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     form = SearchForm()
@@ -491,7 +487,7 @@ def search():
 @app.route("/emergency", methods=['GET', 'POST'])
 def emergency_numbers():
     from med360 import get_emergency_numbers
-    form = SeachEmegencyForm()
+    form = SeachEmergencyForm()
     first_time = True
     print(form.validate_on_submit())
     print(form.errors)

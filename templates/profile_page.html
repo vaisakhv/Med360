@@ -69,10 +69,17 @@
           box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5), inset 8px 8px 16px rgba(0, 0, 0, 0.1);
           color: #79e3b6;
         }
+        {% if role == 'doctor' %}
+        html, body {
+            margin: 0;
+            height: 150%;
+        }
+        {% else %}
         html, body {
             margin: 0;
             height: 120%;
         }
+        {% endif %}
                 /* width */
         ::-webkit-scrollbar {
           width: 4px;
@@ -109,20 +116,38 @@
         <div class="level is-mobile">
             <div class="level-left">
                 {% if current_user.sex == 'Male' %}
+                {% if role != 'doctor' %}
                 <div class="level-left">
                     <figure class="image is-128x128">
                         <img alt="dp" class="level-item  dp" height="480"
                              src="{{url_for('static', filename='male.png')}}" width="640">
                     </figure>
                 </div>
-                {%else%}
+                {% else %}
+                <div class="level-left">
+                    <figure class="image is-128x128">
+                        <img alt="dp" class="level-item  dp" height="480"
+                             src="{{url_for('static', filename='img/male_doc.png')}}" width="640">
+                    </figure>
+                </div>
+                {% endif %}
+                {% else %}
+                {% if role != 'doctor' %}
                 <div class="level-left">
                     <figure class="image is-128x128">
                         <img alt="dp" class="level-item  dp" height="480"
                              src="{{url_for('static', filename='female.png')}}" width="640">
                     </figure>
                 </div>
-                {%endif %}
+                {% else %}
+                <div class="level-left">
+                    <figure class="image is-128x128">
+                        <img alt="dp" class="level-item  dp" height="480"
+                             src="{{url_for('static', filename='img/fem_doc.png')}}" width="640">
+                    </figure>
+                </div>
+                {% endif %}
+                {% endif %}
                 <div class="column">
                     <div class="level-item row ">
                         <p class="title is-2">{{user.name}}</p>
@@ -135,8 +160,104 @@
         </div>
     </div>
 </section>
+{% if role == 'doctor' %}
 <section class="section tile is-ancestor">
+    <div class="columns is-4 tile is-parent is-fluid is-vertical container">
+        <div class="columns tile is-child box tile_neo">
+            <div class="column field  is-vcentered">
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left"><em class="fa">hospital</em></div>
+                    <span>Workplaces</span>
+                    <p class="is-size-7">&nbsp;</p>
+                    <ul>
+                        {% for item in doc.working_hospitals.all() %}
+                        <li><a href="{{url_for('hospital_details',hosp_id=item.uuid)}}">{{item.hosp_name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <p class="pb pb-2">&nbsp;</p>
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left">
+                        <div class="fa">map-marker</div>
+                    </div>
+                    <span>Work Location</span>
+                    <p class="is-size-7">&nbsp;</p>
+                    {{doc.work_location}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns is-3 tile is-parent is-fluid is-vertical ">
+        <div class="column tile_neo is-size-5 has-icons-left tile is-child">
+            <div class="dip is-size-5">
+                <div class="column field ">
+                    <div class="has-icons-left">
+                        <div class="icon is-left fa fa-stethoscope"></div>
+                        <span>Specialization</span>
+                    </div>
+                    <p class="is-size-7">&nbsp;</p>
+                    <div>{{doc.specialization}}</div>
+                </div>
+            </div>
+            <div class="pb-6">&nbsp;</div>
+            <div class="dip is-size-5 ">
+                <div class="column field">
+                    <div class="has-icons-left">
+                        <div class="icon is-left fa fa-certificate"></div>
+                        <span>Experience</span>
+                    </div>
+                    <p class="is-size-7">&nbsp;</p>
+                    <span>{{doc.experience}} Years</span>
+                </div>
+            </div>
+            <p class="pb pb-2">&nbsp;</p>
+            <div class="column dip is-size-5 has-icons-left">
+                <div class="icon is-left">
+                    <div class="fa">clock</div>
+                </div>
+                <span>Working hours</span>
+                <p class="is-size-7">&nbsp;</p>
+                {{doc.op_start}}<a> to </a>{{doc.op_end}}
+            </div>
+        </div>
+    </div>
     <div class="columns is-3 tile is-parent is-fluid is-vertical container">
+        <div class="columns tile is-child box tile_neo">
+            <div class="column field  is-vcentered">
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left"><em class="fa">hashtag</em></div>
+                    <span>Registration Number</span>
+                    {{doc.reg_no}}
+                </div>
+                <p class="pb pb-2">&nbsp;</p>
+                <div class="column dip is-size-5 has-icons-left">
+                    <div class="icon is-left">
+                        <div class="fa">graduation-cap</div>
+                    </div>
+                    <span>Graduation Country</span>
+                    {{doc.grad_country}}
+                </div>
+            </div>
+        </div>
+        <div class="columns tile is-child box dip is-vcentered">
+            <div class="column field  ">
+                <div class="column buttons">
+                    <a class="button is-primary is-normal is-fullwidth" href="#">
+                        <strong>Manage Appointments</strong>
+                    </a>
+                </div>
+                <div class="column buttons">
+                    <a class="button is-danger is-normal is-fullwidth" href="#">
+                        <strong>Update Professional Profile</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="section tile is-ancestor">
+    <div class="columns is-4 tile is-parent is-fluid is-vertical container">
         <div class="columns tile is-child box tile_neo">
             <div class="column field  is-vcentered">
                 <div class="column dip is-size-5 has-icons-left">
@@ -152,27 +273,8 @@
                 </div>
             </div>
         </div>
-        <div class="columns tile is-child box tile_neo">
-            <div class="column field  ">
-                <div class="column dip is-size-5 has-icons-left">
-                    {% if current_user.sex == 'Male' %}
-                    <div class="icon is-left"><em class="fa">mars</em></div>
-                    {% else %}
-                    <div class="icon is-left"><em class="fa">venus</em></div>
-                    {% endif %}
-                    {{user.sex}}
-                </div>
-                <div class="pb pb-6">&nbsp;</div>
-                <div class="column dip is-size-5 has-icons-left">
-                    <div class="icon is-left">
-                        <div class="fa">birthday-cake</div>
-                    </div>
-                    {{user.dob}}
-                </div>
-            </div>
-        </div>
     </div>
-    <div class="columns is-3 tile is-parent is-fluid is-vertical">
+    <div class="columns is-3 tile is-parent is-fluid is-vertical ">
         <div class="column tile_neo is-size-5 has-icons-left tile is-child">
             <div class="dip is-size-5">
                 <div class="column field ">
@@ -253,6 +355,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 </body>
 <script>
 	// Get the modal

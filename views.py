@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import (SelectField, StringField, IntegerField, PasswordField,
-                     validators, TextAreaField, RadioField)
+                     validators, TextAreaField, RadioField, TimeField)
 from wtforms.fields.html5 import DateField
 
 from med360 import get_all_states, get_all_states_for_donors, spec_code_dict, get_all_roles, get_all_schemes
@@ -76,6 +76,8 @@ class RegisterForm(FlaskForm):
     donor = SelectField('donor', [validators.DataRequired('Please select one')],
                         choices=[('blood', 'Blood Donor'), ('organ', 'Organ Donor'), ('none', 'None'),
                                  ('both', 'Both')])
+    is_doc = SelectField("is_doc", choices=[('True', 'Yes'), ('False', 'No')],
+                         default='False', validators=[validators.DataRequired()])
     # organ_donation = SelectField('organ_donation', [validators.DataRequired('Please select one')],
     #                              choices=[('True', 'Yes'), ('False', 'No')])
     # bld_donation = SelectField('bld_donation', [validators.DataRequired('Please select one')],
@@ -131,6 +133,17 @@ class AddScheme(FlaskForm):
     sch = SelectField("scheme", choices=get_all_schemes())
 
 
-class SeachEmegencyForm(FlaskForm):
+class SeachEmergencyForm(FlaskForm):
     from med360 import get_states_for_help
     dist = SelectField('district', [validators.DataRequired('Please select you state')], choices=get_states_for_help())
+
+
+class DoctorSignupForm(FlaskForm):
+    import datetime
+    grad_country = StringField('grad_country', [validators.DataRequired()])
+    reg_no = IntegerField("reg_no", [validators.DataRequired()])
+    experience = IntegerField("experience", [validators.DataRequired()])
+    specialization = StringField("specialization", [validators.DataRequired()])
+    work_location = StringField("work_location", [validators.DataRequired()])
+    start_at = TimeField('Start at', [validators.DataRequired()], default=datetime.time(10, 30))
+    end_at = TimeField('End at', [validators.DataRequired()], default=datetime.time(13, 30))

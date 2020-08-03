@@ -28,7 +28,7 @@
 		    .control.has-icons-left .icon.is-left, .control.has-icons-right .icon.is-right {
         color:#666666
     }
-    html, body {margin: 0; height: 132%;}
+    html, body {margin: 0; height: 100%;}
         .dip{
             border-radius: 35px;
             background: #E4E9F2;
@@ -42,10 +42,10 @@
                          -34px -34px 58px #ffffff;
         }
         .tile_neo{
-            border-radius: 35px;
-            background: #E4E9F2;
-            box-shadow:  6px 6px 18px #b9bdc4,
-                        -6px -6px 18px #ffffff;
+        border-radius: 46px;
+        background: #6fbeeb;
+        box-shadow:  12px 12px 24px #5ea2c8,
+                     -12px -12px 24px #80dbff;
         }
         .button {
           position: relative;
@@ -140,126 +140,39 @@
                 <img alt="MED360" src="{{url_for('static', filename='img/med.png')}}" width="325px"/>
             </div>
             <form action="" id="register-form" method="POST">
-                {{form.hidden_tag()}}
                 <div class="field">
-                    <label class="label">Name</label>
-                    <div class="control has-icons-left">
-                        {{form.name(class_='input is-rounded')}}
-                        <span class="icon is-left"><em class="fa">user</em></span>
-                    </div>
-                    <label class="label">Username</label>
+                    <label class="label">Aadhaar Number</label>
                     <div class="control has-icons-right has-icons-left">
-                        {{form.uname(class_='input is-rounded')}}
-                        <span class="icon is-left"><em class="fa fa-user-circle"></em></span>
-                        <span class="icon is-right" id="username_tick"><em class="fa fa-user-circle"></em></span>
+                        <input class="input is-rounded uname" id="uname" type="text"></input>
+                        <span class="icon is-left"><em class="fa fa-id-card"></em></span>
                     </div>
-                    <div class="columns row-one">
-                        <div class="column">
-                            <label class="label">Email</label>
-                            <div class="control has-icons-left">
-                                {{form.mail(class_='input is-rounded')}}
-                                <span class="icon is-left"><em class="fa">envelope-square</em></span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <label class="label">Mobile</label>
-                            <div class="control has-icons-left">
-                                {{form.mobile(class_='input is-rounded')}}
-                                <span class="icon is-left"><em class="fa fa-phone "></em></span>
-                            </div>
-                        </div>
+                    <label class="label">OTP</label>
+                    <div class="control has-icons-right has-icons-left">
+                        <input class="input is-rounded" type="text"></input>
+                        <span class="icon is-left"><em class="fa fa-key"></em></span>
                     </div>
-                    <div class="columns row-one">
-                        <div class="column">
-                            <label class="label">Password</label>
-                            <div class="control has-icons-left">
-                                {{form.passw(class_='input is-rounded')}}
-                                <span class="icon is-left"><em class="fa">key</em></span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <label class="label">Confirm Passsword</label>
-                            <div class="control has-icons-left has-icons-right">
-                                {{form.conf_passw(class_='input is-rounded')}}
-                                <span class="icon is-left"><em class="fa">lock</em></span>
-                                <span class="icon is-right" id="psw_tick"><em class="fa fa-check "></em></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="columns row-one">
-                        <div class="column">
-                            <label class="label">Sex</label>
-                            <div class="control has-icons-right">
-                                {{form.sex(class_='input is-rounded', style='background:#D9DDE6')}}
-                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <label class="label">Blood Group</label>
-                            <div class="control has-icons-right">
-                                {{form.bld_grp(class_='input is-rounded', style='background:#D9DDE6')}}
-                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="columns row-one">
-                        <div class="column">
-                            <label class="label">Date of Birth</label>
-                            <div class="control">
-                                {{form.dob(class_='input is-rounded', style='background:#D9DDE6')}}
-                            </div>
-                        </div>
-                        <div class="column">
-                            <label class="label">Donor</label>
-                            <div class="control has-icons-right">
-                                {{form.donor(class_='input is-rounded', style='background:#D9DDE6')}}
-                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
-                            </div>
-                        </div>
-                    </div>
-                    <label class="label">Address</label>
+                    <label class="label">Password</label>
                     <div class="control has-icons-left">
-                        {{form.addr(class_='input is-rounded')}}
-                        <span class="icon is-left"><em class="fa fa-map-marker"></em></span>
+                        <input class="input is-rounded" type="password"></input>
+                        <span class="icon is-left"><em class="fa fa-lock"></em></span>
                     </div>
-                    <div class="columns row-one">
-                        <div class="column">
-                            <label class="label">State</label>
-                            <div class="control has-icons-right">
-                                {{form.state(class_='input is-rounded', style='background:#D9DDE6')}}
-                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <label class="label">City</label>
-                            <div class="control has-icons-right">
-                                {{form.city(class_='input is-rounded', style='background:#D9DDE6')}}
-                                <span class="icon is-right"><em class="fa">chevron-down</em></span>
-                            </div>
-                        </div>
+                    <label class="label">Confirm Password</label>
+                    <div class="control has-icons-right has-icons-left">
+                        <input class="input is-rounded" type="password"></input>
+                        <span class="icon is-left"><em class="fa fa-lock"></em></span>
                     </div>
-                    <div class="columns row-one">
-                        <div class="column">
-                            <label class="label">Pincode</label>
-                            <div class="control has-icons-left">
-                                {{form.pincode(class_='input is-rounded')}}
-                                <span class="icon is-left"><em class="fa">map-pin</em></span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <label class="label">Aadhaar</label>
-                            <div class="control has-icons-left">
-                                {{form.aadhar(class_='input is-rounded')}}
-                                <span class="icon is-left"><em class="fa">id-card</em></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-grouped">
-                        <div class="control">
+                    <br>
+                    <div class="level-item field is-grouped is-centered">
+                        <div class="control ">
                             <button class="button is-primary tile_neo is-medium is-block is-fullwidth is-rounded"
-                                    type="submit">
+                                    href="http://127.0.0.1:5000/login">
                                 Register
                             </button>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <a href="{{url_for('login') }}">Login to your Account</a>
                         </div>
                     </div>
                 </div>
@@ -269,87 +182,5 @@
 </section>
 {% endblock %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script>
-        let state_select = document.getElementById('state')
-        let city_select = document.getElementById('city')
-        state_select.onchange = function(){
-            state = state_select.value;
-            fetch('/city/'+state).then(function(response){
-                response.json().then(function(data){
-                    let optionHTML = '';
-                    for (city of data.cities){
-                        optionHTML += '<option value="'+city.id+'">'+city.name+'</option>';
-                    }
-                    city_select.innerHTML = optionHTML;
-                });
-            });
-        }
-        window.onload = function(){
-            state = state_select.value;
-                    let optionHTML = '';
-                    optionHTML += '<option value="None">Districts</option>';
-                    city_select.innerHTML = optionHTML;
-        }
-       let input = document.getElementById('uname');
-       let fa_icon = document.getElementById('username_tick');
-        var goodColor = "#66cc66";
-        var badColor = "#ff6666";
-        fa_icon.innerHTML = "<i class='fa'>"
-       input.onkeyup = function() {
-            fa_icon.innerHTML = "<i class='fa'>"
-            fetch('/check/'+input.value).then(function(response){
-                response.json().then(function(data){
-                    if (data == false && input.value.length > 3){
-                        fa_icon.style.color = goodColor;
-                        fa_icon.innerHTML = "<i class='fa fa-check'>"
-                    }else{
-                        fa_icon.style.color = badColor;
-                        fa_icon.innerHTML = "<i class='fa fa-times-circle'>"
-                    }
-                });
-            });
-            $.get('/check/' + input.value, function(data) {
-
-            });
-        };
-
-		$('#conf_passw').on('keyup', function ()
-		{
-			var pass1 = document.getElementById('passw');
-			var pass2 = document.getElementById('conf_passw');
-			var message = document.getElementById('psw_tick');
-			var goodColor = "#66cc66";
-			var badColor = "#ff6666";
-
-			if(pass1.value.length > 5)
-			{
-				pass1.style.backgroundColor = goodColor;
-				message.style.color = goodColor;
-				message.innerHTML = "character number ok!"
-			}
-			else
-			{
-				pass1.style.backgroundColor = badColor;
-				message.style.color = badColor;
-				message.innerHTML = "<em class='fa fa-times'></em>"
-				return;
-			}
-
-			if(pass1.value == pass2.value)
-			{
-				pass2.style.backgroundColor = goodColor;
-				message.style.color = goodColor;
-				message.innerHTML = "<em class='fa fa-check'></em>"
-			}
-			else
-			{
-				pass2.style.backgroundColor = badColor;
-				message.style.color = badColor;
-				message.innerHTML = "<em class='fa fa-times'></em>"
-			}
-		});
-
-
-</script>
 </body>
 </html>

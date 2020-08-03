@@ -114,27 +114,27 @@
 <section class="section">
     <div class="container is-fluid is-widescreen ">
         <div class="level is-mobile">
-            <div class="level-left">
+            <div class="level-left" style="display:inline">
                 <div class="level-left">
                     <figure class="image is-128x128">
-                        <img alt="dp" class="level-item  dp" height="480"
-                             src="{{url_for('static', filename='logo.jpg')}}" width="640">
+                        <img alt="dp" class="level-item"
+                             src="{{url_for('static', filename='img/apollo.png')}}">
                     </figure>
                 </div>
                 <div class="title column level-item">
                     <div class=" row ">
                         <span class="long_str is-2">{{data.hosp_name}}</span>
                     </div>
-                    <div class="subtitle row">
-                        <span class=" is-3 long_str">{{data.hosp_addr}}</span>
-                    </div>
                 </div>
+            </div>
+            <div>
+                <img src="{{url_for('static', filename='img/map.png')}}">
             </div>
         </div>
     </div>
 </section>
 <section class="section tile is-ancestor">
-    <div class="columns is-4 tile is-parent is-fluid is-vertical container">
+    <div class="columns is-5 tile is-parent is-fluid is-vertical container">
         <div class="columns tile is-child box tile_neo">
             <div class="column field  is-vcentered">
                 <div class="column dip is-size-5 has-icons-left">
@@ -173,7 +173,8 @@
                     </a>
                 </div>
                 <div class="column buttons">
-                    <a class="button is-danger is-medium is-fullwidth" href="#">
+                    <a class="button is-danger is-medium is-fullwidth"
+                       href="{{url_for('show_docs',hosp_id=data.uuid)}}">
                         <strong>Show Doctors</strong>
                     </a>
                 </div>
@@ -210,6 +211,7 @@
         </div>
     </div>
 </section>
+</div>
 </body>
 <script>
 	// Get the modal

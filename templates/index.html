@@ -197,6 +197,9 @@
 
                     <div class="navbar-menu level-right" id="navbarBasicExample">
                         <div class="navbar-start level-item">
+                            <a class="navbar-item" href="{{url_for('for_you') }}">
+                                Recommended Services
+                            </a>
                             <a class="navbar-item" href="{{url_for('search') }}">
                                 Search Hospitals
                             </a>
@@ -209,24 +212,6 @@
                             <a class="navbar-item" href="{{url_for('emergency_numbers')}}">
                                 Emergency Numbers
                             </a>
-                            <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link">
-                                    More
-                                </a>
-
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item" href="{{url_for('about')}}">
-                                        About
-                                    </a>
-                                    <a class="navbar-item" href="{{url_for('services')}}">
-                                        Our Services
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="{{url_for('contact')}}">
-                                        Contact Us
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                         <div class="navbar-end">
                             <div class="navbar-item is-vertical">

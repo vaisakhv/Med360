@@ -70,11 +70,10 @@ partners = db.Table('partners',
                     db.Column('hosp_id', db.String, db.ForeignKey('hospital.uuid'))
                     )
 
-
-# our_doctors = db.Table('our_doctors',
-#                     db.Column('uuid', db.String, db.ForeignKey('doctor.uuid')),
-#                     db.Column('hosp_id', db.String, db.ForeignKey('hospital.uuid'))
-#                     )
+hospitals = db.Table('hospitals',
+                     db.Column('doc_uuid', db.String, db.ForeignKey('doctor.uuid')),
+                     db.Column('hosp_uuid', db.String, db.ForeignKey('hospital.uuid'))
+                     )
 
 
 class Scheme(db.Model):
@@ -142,8 +141,6 @@ class Hospital(db.Model):
     hosp_contact_mail = db.Column(db.String(80))
     hosp_type = db.Column(db.String(30), nullable=False)
 
-    # our_doctors = db.relationship('Doctors', secondary=partners, backref=db.backref('Hospital'), lazy='dynamic')
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -195,7 +192,13 @@ class Doctor(db.Model):
     specialization = db.Column(db.String, nullable=False)
     experience = db.Column(db.Integer(), nullable=False)
     work_location = db.Column(db.String(100), nullable=False)
-    work_hrs = db.Column(db.Integer(), nullable=False)
+    op_start = db.Column(db.Time(), nullable=False)
+    op_end = db.Column(db.Time(), nullable=False)
+    working_hospitals = db.relationship('Hospital', secondary=hospitals, backref=db.backref('doctors'), lazy='dynamic')
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(uuid=id).first()
 
     def save_to_db(self):
         db.session.add(self)
@@ -207,14 +210,15 @@ class Doctor(db.Model):
         db.session.commit()
         return 'commit-success'
 
-    def __init__(self, uuid, grad_country, reg_no, specialization, experiene, work_location, work_hrs):
+    def __init__(self, uuid, grad_country, reg_no, specialization, experiene, work_location, op_start, op_end):
         self.uuid = uuid
         self.grad_country = grad_country
         self.reg_no = reg_no
         self.specialization = specialization
         self.experience = experiene
         self.work_location = work_location
-        self.work_hrs = work_hrs
+        self.op_start = op_start
+        self.op_end = op_end
 
 
 class User(db.Model, UserMixin):
@@ -254,6 +258,10 @@ class User(db.Model, UserMixin):
                                  cls.addr.contains(location) | cls.state.contains(location) | cls.city.contains(
                                      location)).all()
         return users
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(uuid=id).first()
 
     @classmethod
     def find_by_username(cls, username):
@@ -324,5 +332,5 @@ def __init__(self, **kwargs):
 
 if __name__ == "__main__":
     # run migrate
-    manager.run()
-    # db.create_all()
+    # manager.run()
+    db.create_all()
